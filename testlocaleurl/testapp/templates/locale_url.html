@@ -1,0 +1,4 @@
+{% load localeurl_tags %}
+ {% locale_url "nl" testapp.views.dummy %} 
+ {% locale_url "en-us" testapp.views.dummy 4 %} 
+ {% locale_url "fr" testapp.views.dummy test=4 %} 
