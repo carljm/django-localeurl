@@ -26,11 +26,11 @@ class LocaleURLMiddleware(object):
     is be patched to return paths with locale prefix.
     """
     def strip_locale_from_request(self,request):
-        check = re.search(r'^/([^/]+)(/.*)$', request.path)
+        check = re.search(r'^/([^/]+)(/.*)$', request.path_info)
         if check is not None:
             locale = check.group(1)
             if locale in SUPPORTED_LOCALES:
-                request.path = check.group(2)
+                request.path_info = check.group(2)
                 return locale
         return None
 
@@ -56,7 +56,7 @@ def redirect_locale(request, path=None, locale=None):
     settings if the request does not contain LANGUAGE_CODE.
     """
     if path is None:
-        path = request.path
+        path = request.path_info
     path = strip_locale_prefix(path)
     if locale is None:
         try:

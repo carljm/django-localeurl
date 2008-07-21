@@ -1,5 +1,6 @@
 from django import template
-from django.template import Node, Token, resolve_variable, defaulttags
+from django.template import Node, Token, TemplateSyntaxError
+from django.template import resolve_variable, defaulttags
 from django.template.defaultfilters import stringfilter
 from django.utils import translation
 from localeurl.utils import strip_locale_prefix

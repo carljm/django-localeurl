@@ -34,7 +34,7 @@ Module middleware:
     >>> r = c.get('/test/')
     >>> r.status_code
     302
-    >>> r.headers['Location'] == '/en-us/test/'
+    >>> r['Location'] == 'http://testserver/en-us/test/'
     True
 
     >>> r = c.get('/fr/test/')

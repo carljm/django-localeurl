@@ -9,6 +9,6 @@ urlpatterns = patterns('django.views.generic.simple',
 )
 
 urlpatterns += patterns('testapp.views',
-     (r'^dummy/(?P<test>.+)$', 'dummy'),
-     (r'^dummy/$', 'dummy'),
+     url(r'^dummy/$', 'dummy', name='dummy0'),
+     url(r'^dummy/(?P<test>.+)$', 'dummy', name='dummy1'),
 )
