@@ -45,7 +45,8 @@ class LocaleURLMiddleware(object):
         request.LANGUAGE_CODE = translation.get_language()
 
     def process_response(self, request, response):
-        response['Content-Language'] = translation.get_language()
+        if 'Content-Language' not in response:
+            response['Content-Language'] = translation.get_language()
         translation.deactivate()
         return response
 
