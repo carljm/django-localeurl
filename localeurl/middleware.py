@@ -31,9 +31,6 @@ class LocaleURLMiddleware(object):
             locale = check.group(1)
             if locale in SUPPORTED_LOCALES:
                 request.path_info = check.group(2)
-                prefix = urlresolvers.get_script_prefix()
-                prefix += locale + '/'
-                urlresolvers.set_script_prefix(prefix)
                 return locale
         return None
 
@@ -68,3 +65,13 @@ def redirect_locale(request, path=None, locale=None):
         except AttributeError:
             locale = settings.LANGUAGE_CODE
     return HttpResponseRedirect('/' + locale + path)
+
+# Replace reverse function
+def reverse(viewname, urlconf=None, args=None, kwargs=None):
+    path = django_reverse(viewname, urlconf, args, kwargs)
+    if is_locale_independent(path):
+        return path
+    else:
+        return '/' + translation.get_language() + path
+django_reverse = urlresolvers.reverse
+urlresolvers.reverse = reverse
