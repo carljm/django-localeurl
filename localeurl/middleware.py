@@ -36,13 +36,11 @@ class LocaleURLMiddleware(object):
 
     def process_request(self, request):
         locale = self.strip_locale_from_request(request)
-        if locale is None:
-            if is_locale_independent(request.path):
-                locale = settings.LANGUAGE_CODE
-            else:
-                return redirect_locale(request, locale)
-        translation.activate(locale)
-        request.LANGUAGE_CODE = translation.get_language()
+        if locale is not None:
+            translation.activate(locale)
+            request.LANGUAGE_CODE = translation.get_language()
+        elif not is_locale_independent(request.path):
+            return redirect_locale(request)
 
     def process_response(self, request, response):
         if 'Content-Language' not in response:
@@ -52,12 +50,12 @@ class LocaleURLMiddleware(object):
 
 def redirect_locale(request, path=None, locale=None):
     """
-    Prepend a locale to the path. If path is omitted, the current path is used.
+    Prepend a locale to the path. If path is omitted, the request path is used.
     If locale is omitted the current locale is used, or the default from
     settings if the request does not contain LANGUAGE_CODE.
     """
     if path is None:
-        path = request.path_info
+        path = request.path
     path = strip_locale_prefix(path)
     if locale is None:
         try:
