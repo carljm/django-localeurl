@@ -9,7 +9,7 @@ def is_locale_independent(path):
     A path is independent if it starts with MEDIA_URL or it is matched by any
     pattern from LOCALE_INDEPENDENT_PATHS.
     """
-    if path.startswith(settings.MEDIA_URL):
+    if settings.MEDIA_URL and path.startswith(settings.MEDIA_URL):
         return True
     for path_re in LOCALE_INDEPENDENT_PATHS:
         if path_re.search(path):
