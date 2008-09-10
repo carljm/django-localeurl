@@ -1,3 +1,6 @@
+# Copyright (c) 2008 Joost Cassee
+# Licensed under the terms of the MIT License (see LICENSE.txt)
+
 import re
 from django import http
 from django.conf import settings

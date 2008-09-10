@@ -1,15 +1,23 @@
+#!/usr/bin/env python
+#
+# Copyright (c) 2008 Joost Cassee
+# Licensed under the terms of the MIT License (see LICENSE.txt)
+
 from distutils.core import setup
 
-setup(
-    name = "django-localeurl",
-    version = "DEV",
+app_name = 'localeurl'
+version = 'DEV'
 
-    packages = ['localeurl', 'localeurl.templatetags'],
-    package_data = {'localeurl': ['*.txt']},
+setup(
+    name = "django-%s" % app_name,
+    version = version,
+
+    packages = [app_name, '%s.templatetags' % app_name],
 
     author = "Joost Cassee",
     author_email = "joost@cassee.net",
-    description = "A Django application that allow you to specify the language of a page in the URL.",
+    description = "A Django application that allow you to specify the" \
+            " language of a page in the URL.",
     long_description = \
 """
 Suppose you have a Django website in multiple languages. The localeurl
@@ -30,7 +38,7 @@ Some reasons for using localeurl:
 """,
     license = "MIT License",
     keywords = "django i18n",
-    classifiers=[
+    classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Framework :: Django',
@@ -42,6 +50,8 @@ Some reasons for using localeurl:
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development :: Localization',
     ],
-    url = "http://code.google.com/p/django-localeurl/",
-    download_url = "http://django-localeurl.googlecode.com/files/localeurl-1.0.tar.gz",
+    platforms = ['any'],
+    url = "http://code.google.com/p/django-%s/" % app_name,
+    download_url = "http://code.google.com/p/django-%s/downloads/list" \
+            % app_name,
 )

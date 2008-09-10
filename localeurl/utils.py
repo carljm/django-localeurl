@@ -1,3 +1,6 @@
+# Copyright (c) 2008 Joost Cassee
+# Licensed under the terms of the MIT License (see LICENSE.txt)
+
 from django.conf import settings
 
 LOCALE_INDEPENDENT_PATHS = getattr(settings, 'LOCALE_INDEPENDENT_PATHS', ())
