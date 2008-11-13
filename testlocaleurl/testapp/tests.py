@@ -87,4 +87,22 @@ Template tags and filters:
     >>> r.content
     '\\n /admin/ \\n /admin/ \\n /admin/ \\n'
 
+Test REDIRECT_LOCALE_INDEPENDENT_PATHS:
+
+    (Changing the settings at runtime is a bit of a hack.)
+    >>> from localeurl import middleware
+    >>> middleware.REDIRECT_LOCALE_INDEPENDENT_PATHS = True
+
+    >>> r = c.get('/en-us/test/independent/')
+    >>> r.status_code
+    302
+    >>> r['Location'] == 'http://testserver/test/independent/'
+    True
+
+    >>> r = c.get('/test/independent/')
+    >>> r.status_code
+    200
+    >>> r.context['LANGUAGE_CODE'] == 'en-us'
+    True
+
 """

@@ -10,6 +10,8 @@ from django.utils import translation
 from localeurl.utils import strip_locale_prefix, is_locale_independent
 
 SUPPORTED_LOCALES = dict(settings.LANGUAGES)
+REDIRECT_LOCALE_INDEPENDENT_PATHS = getattr(settings,
+        'REDIRECT_LOCALE_INDEPENDENT_PATHS', False)
 
 # Make sure the default language is in the list of supported languages
 assert settings.LANGUAGE_CODE in SUPPORTED_LOCALES
@@ -40,6 +42,9 @@ class LocaleURLMiddleware(object):
     def process_request(self, request):
         locale = self.strip_locale_from_request(request)
         if locale is not None:
+            if REDIRECT_LOCALE_INDEPENDENT_PATHS and \
+                    is_locale_independent(request.path_info):
+                return HttpResponseRedirect(request.path_info)
             translation.activate(locale)
             request.LANGUAGE_CODE = translation.get_language()
         elif not is_locale_independent(request.path):
