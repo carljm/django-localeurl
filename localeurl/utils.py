@@ -4,6 +4,7 @@
 from django.conf import settings
 
 LOCALE_INDEPENDENT_PATHS = getattr(settings, 'LOCALE_INDEPENDENT_PATHS', ())
+SUPPORTED_LOCALES = dict(settings.LANGUAGES)
 
 def is_locale_independent(path):
     """
@@ -29,3 +30,14 @@ def strip_locale_prefix(path):
         if path.startswith(locale):
             return path[len(locale)-1:]
     return path
+
+def get_language(locale):
+    """
+    Returns the supported language (from settings.LANGUAGES)
+    """
+    if locale in SUPPORTED_LOCALES:
+        return locale
+    elif locale[:2] in SUPPORTED_LOCALES:
+        return locale[:2]
+    else:
+        return None

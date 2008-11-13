@@ -34,7 +34,7 @@ Module middleware:
     >>> r = c.get('/test/')
     >>> r.status_code
     302
-    >>> r['Location'] == 'http://testserver/en-us/test/'
+    >>> r['Location'] == 'http://testserver/nl/test/'
     True
 
     >>> r = c.get('/fr/test/')
@@ -52,13 +52,13 @@ Module middleware:
     >>> r = c.get('/test/independent/')
     >>> r.status_code
     200
-    >>> r.context['LANGUAGE_CODE'] == 'en-us'
+    >>> r.context['LANGUAGE_CODE'] == 'nl-be'
     True
 
     >>> r = c.get('/test/independent/extra/path/')
     >>> r.status_code
     200
-    >>> r.context['LANGUAGE_CODE'] == 'en-us'
+    >>> r.context['LANGUAGE_CODE'] == 'nl-be'
     True
 
     >>> r = c.get('/en-gb/test/independent/')
@@ -102,7 +102,7 @@ Test REDIRECT_LOCALE_INDEPENDENT_PATHS:
     >>> r = c.get('/test/independent/')
     >>> r.status_code
     200
-    >>> r.context['LANGUAGE_CODE'] == 'en-us'
+    >>> r.context['LANGUAGE_CODE'] == 'nl-be'
     True
 
 """

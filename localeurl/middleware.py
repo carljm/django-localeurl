@@ -7,14 +7,14 @@ from django.conf import settings
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
 from django.utils import translation
-from localeurl.utils import strip_locale_prefix, is_locale_independent
+from localeurl.utils import strip_locale_prefix, is_locale_independent, get_language
 
-SUPPORTED_LOCALES = dict(settings.LANGUAGES)
 REDIRECT_LOCALE_INDEPENDENT_PATHS = getattr(settings,
         'REDIRECT_LOCALE_INDEPENDENT_PATHS', False)
 
 # Make sure the default language is in the list of supported languages
-assert settings.LANGUAGE_CODE in SUPPORTED_LOCALES
+assert get_language(settings.LANGUAGE_CODE) is not None, \
+        "Please ensure that settings.LANGUAGE_CODE is in settings.LANGUAGE."
 
 class LocaleURLMiddleware(object):
     """
@@ -34,7 +34,7 @@ class LocaleURLMiddleware(object):
         check = re.search(r'^/([^/]+)(/.*)$', request.path_info)
         if check is not None:
             locale = check.group(1)
-            if locale in SUPPORTED_LOCALES:
+            if get_language(locale) == locale:
                 request.path_info = check.group(2)
                 return locale
         return None
@@ -67,13 +67,16 @@ def redirect_locale(request, path=None, locale=None):
     path = strip_locale_prefix(path)
     if locale is None:
         try:
-            locale = request.LANGUAGE_CODE
+            locale = get_language(request.LANGUAGE_CODE)
         except AttributeError:
-            locale = settings.LANGUAGE_CODE
+            locale = get_language(settings.LANGUAGE_CODE)
     return HttpResponseRedirect('/' + locale + path)
 
 # Replace reverse function
 def reverse(viewname, urlconf=None, args=None, kwargs=None):
+    """
+    Returns the URL from a view name, taking into account locale prefixes.
+    """
     path = django_reverse(viewname, urlconf, args, kwargs)
     if is_locale_independent(path):
         return path
