@@ -7,10 +7,8 @@ from django.conf import settings
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
 from django.utils import translation
+import localeurl
 from localeurl.utils import strip_locale_prefix, is_locale_independent, get_language
-
-REDIRECT_LOCALE_INDEPENDENT_PATHS = getattr(settings,
-        'REDIRECT_LOCALE_INDEPENDENT_PATHS', False)
 
 # Make sure the default language is in the list of supported languages
 assert get_language(settings.LANGUAGE_CODE) is not None, \
@@ -20,9 +18,9 @@ class LocaleURLMiddleware(object):
     """
     Middleware that sets the language based on the request path prefix and
     strips that prefix from the path. It will also automatically redirect any
-    path without a prefix. Exceptions are paths beginning with MEDIA_URL or
-    matching any regular expression from LOCALE_INDEPENDENT_PATHS from the
-    project settings.
+    path without a prefix, unless PREFIX_DEFAULT_LOCALE is set to True.
+    Exceptions are paths beginning with MEDIA_URL or matching any regular
+    expression from LOCALE_INDEPENDENT_PATHS from the project settings.
 
     For example, the path '/en/admin/' will set request.LANGUAGE_CODE to 'en'
     and request.path to '/admin/'.
@@ -42,12 +40,16 @@ class LocaleURLMiddleware(object):
     def process_request(self, request):
         locale = self.strip_locale_from_request(request)
         if locale is not None:
-            if REDIRECT_LOCALE_INDEPENDENT_PATHS and \
-                    is_locale_independent(request.path_info):
+            if (is_locale_independent(request.path_info)
+                    and localeurl.REDIRECT_LOCALE_INDEPENDENT_PATHS):
+                return HttpResponseRedirect(request.path_info)
+            if (locale == get_language(settings.LANGUAGE_CODE)
+                    and not localeurl.PREFIX_DEFAULT_LOCALE):
                 return HttpResponseRedirect(request.path_info)
             translation.activate(locale)
             request.LANGUAGE_CODE = translation.get_language()
-        elif not is_locale_independent(request.path):
+        elif (not is_locale_independent(request.path)
+                and localeurl.PREFIX_DEFAULT_LOCALE):
             return redirect_locale(request)
 
     def process_response(self, request, response):
@@ -80,7 +82,10 @@ def reverse(viewname, urlconf=None, args=None, kwargs=None):
     path = django_reverse(viewname, urlconf, args, kwargs)
     if is_locale_independent(path):
         return path
-    else:
-        return '/' + translation.get_language() + path
+    lang = get_language(translation.get_language())
+    def_lang = get_language(settings.LANGUAGE_CODE)
+    if lang == def_lang and not localeurl.PREFIX_DEFAULT_LOCALE:
+        return path
+    return '/' + translation.get_language() + path
 django_reverse = urlresolvers.reverse
 urlresolvers.reverse = reverse

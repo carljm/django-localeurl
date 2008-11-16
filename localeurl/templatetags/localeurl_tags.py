@@ -5,15 +5,21 @@ from django import template
 from django.template import Node, Token, TemplateSyntaxError
 from django.template import resolve_variable, defaulttags
 from django.template.defaultfilters import stringfilter
+from django.conf import settings
 from django.utils import translation
-from localeurl.utils import strip_locale_prefix
+import localeurl
+from localeurl.utils import strip_locale_prefix, get_language
 
 register = template.Library()
 
 
 def chlocale(path, locale):
     """Changes the path's locale prefix."""
-    return '/' + locale + rmlocale(path)
+    if get_language(locale) == get_language(settings.LANGUAGE_CODE) \
+            and not localeurl.PREFIX_DEFAULT_LOCALE:
+        return rmlocale(path)
+    else:
+        return '/' + get_language(locale) + rmlocale(path)
 
 chlocale = stringfilter(chlocale)
 register.filter('chlocale', chlocale)

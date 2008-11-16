@@ -2,8 +2,8 @@
 # Licensed under the terms of the MIT License (see LICENSE.txt)
 
 from django.conf import settings
+from localeurl import LOCALE_INDEPENDENT_PATHS
 
-LOCALE_INDEPENDENT_PATHS = getattr(settings, 'LOCALE_INDEPENDENT_PATHS', ())
 SUPPORTED_LOCALES = dict(settings.LANGUAGES)
 
 def is_locale_independent(path):

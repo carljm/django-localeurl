@@ -1,6 +1,8 @@
 """
 Tests for the localeurl application.
 
+    >>> import localeurl
+
 Module utils:
 
     >>> from localeurl.utils import *
@@ -67,6 +69,31 @@ Module middleware:
     >>> r.context['LANGUAGE_CODE'] == 'en-gb'
     True
 
+Test middleware with default language not being prefixed:
+
+    (Changing the settings at runtime is a bit of a hack.)
+    >>> localeurl.PREFIX_DEFAULT_LOCALE = False
+
+    >>> r = c.get('/test/')
+    >>> r.status_code
+    200
+    >>> r.context['LANGUAGE_CODE'] == 'nl-be'
+    True
+
+    >>> r = c.get('/nl/test/')
+    >>> r.status_code
+    302
+    >>> r['Location'] == 'http://testserver/test/'
+    True
+
+    >>> r = c.get('/fr/test/')
+    >>> r.status_code
+    200
+    >>> r.context['LANGUAGE_CODE'] == 'fr'
+    True
+
+    >>> localeurl.PREFIX_DEFAULT_LOCALE = True
+
 Template tags and filters:
 
     >>> r = c.get('/nl/test/locale_url/')
@@ -79,7 +106,7 @@ Template tags and filters:
     >>> r.status_code
     200
     >>> r.content
-    '\\n /fr/admin/ \\n /en-gb/admin/ \\n /nl/admin/ \\n'
+    '\\n /nl/admin/ \\n /en-gb/admin/ \\n /nl/admin/ \\n'
 
     >>> r = c.get('/nl/test/rmlocale/')
     >>> r.status_code
@@ -87,11 +114,28 @@ Template tags and filters:
     >>> r.content
     '\\n /admin/ \\n /admin/ \\n /admin/ \\n'
 
+Testing PREFIX_DEFAULT_LOCALE templatetags:
+
+    >>> localeurl.PREFIX_DEFAULT_LOCALE = False
+
+    >>> r = c.get('/test/locale_url/')
+    >>> r.status_code
+    200
+    >>> r.content
+    '\\n /test/dummy/ \\n /en-us/test/dummy/4 \\n /fr/test/dummy/4 \\n'
+
+    >>> r = c.get('/fr/test/chlocale/')
+    >>> r.status_code
+    200
+    >>> r.content
+    '\\n /admin/ \\n /en-gb/admin/ \\n /fr/admin/ \\n'
+
+    >>> localeurl.PREFIX_DEFAULT_LOCALE = True
+
 Test REDIRECT_LOCALE_INDEPENDENT_PATHS:
 
     (Changing the settings at runtime is a bit of a hack.)
-    >>> from localeurl import middleware
-    >>> middleware.REDIRECT_LOCALE_INDEPENDENT_PATHS = True
+    >>> localeurl.REDIRECT_LOCALE_INDEPENDENT_PATHS = True
 
     >>> r = c.get('/en-us/test/independent/')
     >>> r.status_code
@@ -104,5 +148,7 @@ Test REDIRECT_LOCALE_INDEPENDENT_PATHS:
     200
     >>> r.context['LANGUAGE_CODE'] == 'nl-be'
     True
+
+    >>> localeurl.REDIRECT_LOCALE_INDEPENDENT_PATHS = False
 
 """
