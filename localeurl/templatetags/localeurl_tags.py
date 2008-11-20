@@ -41,6 +41,7 @@ def locale_url(parser, token):
     Examples:
       {% locale_url "de" cal.views.day day %}
       {% locale_url "nl" cal.views.home %}
+      {% locale_url "en-gb" cal.views.month month as month_url %}
     """
     bits = token.split_contents()
     if len(bits) < 3:
@@ -56,7 +57,14 @@ class LocaleURLNode(Node):
         self.urlnode = urlnode
 
     def render(self, context):
+        locale = resolve_variable(self.locale, context)
         path = self.urlnode.render(context)
-        return chlocale(path, resolve_variable(self.locale, context))
+        if self.urlnode.asvar:
+            self.urlnode.render(context)
+            context[self.urlnode.asvar] = chlocale(context[self.urlnode.asvar],
+                    locale)
+            return ''
+        else:
+            return chlocale(path, locale)
 
 register.tag('locale_url', locale_url)

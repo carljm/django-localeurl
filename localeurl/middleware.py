@@ -65,7 +65,7 @@ def redirect_locale(request, path=None, locale=None):
     settings if the request does not contain LANGUAGE_CODE.
     """
     if path is None:
-        path = request.path
+        path = request.get_full_path()
     path = strip_locale_prefix(path)
     if locale is None:
         try:

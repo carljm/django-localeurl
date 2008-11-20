@@ -33,10 +33,17 @@ Module middleware:
 
     >>> from django.test.client import Client
     >>> c = Client()
+
     >>> r = c.get('/test/')
     >>> r.status_code
     302
     >>> r['Location'] == 'http://testserver/nl/test/'
+    True
+
+    >>> r = c.get('/test/?somevar=somevalue')
+    >>> r.status_code
+    302
+    >>> r['Location'] == 'http://testserver/nl/test/?somevar=somevalue'
     True
 
     >>> r = c.get('/fr/test/')
@@ -100,7 +107,7 @@ Template tags and filters:
     >>> r.status_code
     200
     >>> r.content
-    '\\n /nl/test/dummy/ \\n /en-us/test/dummy/4 \\n /fr/test/dummy/4 \\n'
+    '\\n /nl/test/dummy/ \\n /en-us/test/dummy/4 \\n /fr/test/dummy/4 \\n /nl/test/dummy/4 \\n'
 
     >>> r = c.get('/nl/test/chlocale/')
     >>> r.status_code
@@ -122,7 +129,7 @@ Testing PREFIX_DEFAULT_LOCALE templatetags:
     >>> r.status_code
     200
     >>> r.content
-    '\\n /test/dummy/ \\n /en-us/test/dummy/4 \\n /fr/test/dummy/4 \\n'
+    '\\n /test/dummy/ \\n /en-us/test/dummy/4 \\n /fr/test/dummy/4 \\n /test/dummy/4 \\n'
 
     >>> r = c.get('/fr/test/chlocale/')
     >>> r.status_code
@@ -141,6 +148,12 @@ Test REDIRECT_LOCALE_INDEPENDENT_PATHS:
     >>> r.status_code
     302
     >>> r['Location'] == 'http://testserver/test/independent/'
+    True
+
+    >>> r = c.get('/en-us/test/independent/?somevar=somevalue')
+    >>> r.status_code
+    302
+    >>> r['Location'] == 'http://testserver/test/independent/?somevar=somevalue'
     True
 
     >>> r = c.get('/test/independent/')
