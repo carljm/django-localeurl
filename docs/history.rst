@@ -4,6 +4,7 @@ Changelog
 
 2008-11-26:
   * Moved the documentation into the source tree. (Based on `a blog post`_ by Andi Albrecht.)
+  * Released version 1.2.
   
 2008-11-20:
   * Released version 1.1.
