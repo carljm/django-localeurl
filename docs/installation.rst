@@ -7,7 +7,9 @@ This section describes how to install the localeurl application in your Django p
 Prerequisites
 -------------
 
-The localeurl application requires **Django 1.0** or higher.
+The localeurl application requires Django_ 1.0 or higher.
+
+.. _Django: http://www.djangoproject.com/download/
 
 Installation
 ------------
