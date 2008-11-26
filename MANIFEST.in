@@ -1,1 +1,3 @@
-include *.txt
+include *.txt *.py
+graft docs/source
+graft docs/build/html

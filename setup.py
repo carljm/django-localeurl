@@ -4,15 +4,18 @@
 # Licensed under the terms of the MIT License (see LICENSE.txt)
 
 from distutils.core import setup
+from distutils.filelist import findall
+import metadata
 
-app_name = 'localeurl'
-version = 'DEV'
+app_name = metadata.name
+version = metadata.version
 
 setup(
     name = "django-%s" % app_name,
     version = version,
 
     packages = [app_name, '%s.templatetags' % app_name],
+    data_files = [('.', findall('docs/build/html'))],
 
     author = "Joost Cassee",
     author_email = "joost@cassee.net",
