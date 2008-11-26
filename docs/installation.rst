@@ -14,7 +14,7 @@ Installation
 
 Installation basically consists of installing the middleware. If you want to use the template tags and filters also add localeurl to the installed applications.
 
-#. Place the ``localeurl`` module in your Python path. (Django adds your project directory to the path, so you may put it there.)
+#. Place the ``localeurl`` module in your Python path. You could put it into your Django project directory or run ``python setup.py install`` from a shell.)
 
 #. Add ``'localeurl.middleware.LocaleURLMiddleware'`` to ``settings.MIDDLEWARE_CLASSES``. It must come *after* ``'django.middleware.locale.LocaleMiddleware'`` if you want to use HTTP language negotiation as a fall-back language discovery mechanism. Also, it must come *before* ``'django.middleware.common.CommonMiddleware'`` or ``settings.APPEND_SLASH`` will not work.
 
