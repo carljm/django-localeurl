@@ -26,7 +26,7 @@
 <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
           URL_ROOT:    '',
-          VERSION:     'DEV',
+          VERSION:     'trunk',
           COLLAPSE_MODINDEX: false,
           FILE_SUFFIX: '.html'
       };
@@ -37,7 +37,7 @@
     <link rel="contents" title="Global table of contents" href="contents.html" />
     <link rel="index" title="Global index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="localeurl vDEV documentation" href="index.html" />
+    <link rel="top" title="localeurl vtrunk documentation" href="index.html" />
     <link rel="next" title="Changelog" href="history.html" />
     <link rel="prev" title="Installation" href="installation.html" />
 </head>
@@ -61,7 +61,7 @@
  
  </div>
  <div id="psum">
- <i><a href="http://code.google.com/p/django-localeurl/" style="text-decoration:none; color:#000">localeurl vDEV documentation</a></i>
+ <i><a href="http://code.google.com/p/django-localeurl/" style="text-decoration:none; color:#000">localeurl vtrunk documentation</a></i>
  </div>
  
  </td>
@@ -157,7 +157,7 @@
  
  
  
- <a href="index.html">localeurl vDEV documentation</a> |
+ <a href="index.html">localeurl vtrunk documentation</a> |
  <span>
    <a href="history.html" title="Changelog"
       accesskey="N">next</a>
@@ -316,7 +316,7 @@
   <div class="section">
 <h1 id="usage">Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <p>The localeurl application integrates into normal Django apps by setting <tt class="docutils literal"><span class="pre">request.LANGUAGE_CODE</span></tt> based on the URL and then stripping off the language prefix from <tt class="docutils literal"><span class="pre">request.path_info</span></tt> so that the URLconf modules do not need to change. Existing applications should work transparently with localeurl if they follow the usual Django convention of using <tt class="docutils literal"><span class="pre">url</span></tt> tags in templates to generate links. Paths without locale prefix are redirected to the default locale, either from <tt class="docutils literal"><span class="pre">request.LANGUAGE_CODE</span></tt> (set by a previous language discovery middleware such as <tt class="docutils literal"><span class="pre">django.middleware.locale.LocaleMiddleware</span></tt>) or from <tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt>. So a request for <tt class="docutils literal"><span class="pre">/about/</span></tt> would be redirected to <tt class="docutils literal"><span class="pre">/fr/about/</span></tt> if French is the default language.</p>
-<p>The application adds one template tag and two filters. Add the following at the top of a template to enabled them:</p>
+<p>The application adds one template tag and two filters. Add the following at the top of a template to enable them:</p>
 <pre>{% load localeurl_tags %}</pre>
 <div class="section">
 <h2 id="the-locale-url-tag">The <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag<a class="headerlink" href="#the-locale-url-tag" title="Permalink to this headline">¶</a></h2>

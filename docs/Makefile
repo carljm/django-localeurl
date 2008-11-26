@@ -24,7 +24,7 @@ help:
 	@echo "  htmlsvn   to set the SVN properties to publish the HTML docs"
 
 clean:
-	-rm -rf .build/*
+	-rm -rf .build/doctrees
 
 html:
 	mkdir -p .build/html .build/doctrees

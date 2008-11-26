@@ -1,4 +1,4 @@
 name = 'localeurl'
 authors = 'Joost Cassee'
-version = 'DEV'
+version = 'trunk'
 release = version
