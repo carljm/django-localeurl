@@ -4,6 +4,9 @@ Changelog
 
 2008-11-26:
   * Moved the documentation into the source tree. (Based on `a blog post`_ by Andi Albrecht.)
+  
+2008-11-20:
+  * Released version 1.1.
 
 2008-11-16:
   * Added the ``PREFIX_DEFAULT_LANGUAGE`` settings option contributed by Jonas Christian.
