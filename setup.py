@@ -15,7 +15,6 @@ setup(
     version = version,
 
     packages = [app_name, '%s.templatetags' % app_name],
-    data_files = [('.', findall('docs/build/html'))],
 
     author = "Joost Cassee",
     author_email = "joost@cassee.net",
