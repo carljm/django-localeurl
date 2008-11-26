@@ -2,7 +2,7 @@
 Installation
 ============
 
-This section describes how to install the localeurl application in your Django application.
+This section describes how to install the localeurl application in your Django project.
 
 Prerequisites
 -------------

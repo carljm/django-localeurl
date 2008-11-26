@@ -4,7 +4,6 @@
 # Licensed under the terms of the MIT License (see LICENSE.txt)
 
 from distutils.core import setup
-from distutils.filelist import findall
 import metadata
 
 app_name = metadata.name
