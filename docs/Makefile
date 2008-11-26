@@ -70,7 +70,7 @@ linkcheck:
 	@echo "Link check complete; look for any errors in the above output " \
 	      "or in .build/linkcheck/output.txt."
 
-htmlsvn:
+htmlsvn: html
 	svn propset -R svn:mime-type text/css \
 		`find .build/html -name .svn -type f -prune -o -name *.css`
 	svn propset -R svn:mime-type text/javascript \
