@@ -26,7 +26,7 @@ You can refer to a specific URL in a specified language like this::
 The ``chlocale`` filter
 -----------------------
 
-To add or change the locale prefix of a path use ``chlocale``. It takes one argument: the new locale.
+To add or change the locale prefix of a path use ``chlocale``. It takes one argument: the new locale. If the path is locale-independent any prefix on the path will be stripped. This is also the case if ``settings.PREFIX_DEFAULT_LANGUAGE == False`` and the locale argument is the default locale.
 
 Examples
 ^^^^^^^^

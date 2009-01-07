@@ -14,9 +14,14 @@ register = template.Library()
 
 
 def chlocale(path, locale):
-    """Changes the path's locale prefix."""
-    if get_language(locale) == get_language(settings.LANGUAGE_CODE) \
-            and not localeurl.PREFIX_DEFAULT_LOCALE:
+    """
+    Changes the path's locale prefix if the path is not locale-independent.
+    Otherwise removes locale prefix.
+    """
+    if not localeurl.PREFIX_DEFAULT_LOCALE and \
+            get_language(locale) == get_language(settings.LANGUAGE_CODE):
+        return rmlocale(path)
+    if is_locale_independent(rmed):
         return rmlocale(path)
     else:
         return '/' + get_language(locale) + rmlocale(path)
