@@ -8,7 +8,8 @@ from django.template.defaultfilters import stringfilter
 from django.conf import settings
 from django.utils import translation
 import localeurl
-from localeurl.utils import strip_locale_prefix, get_language
+from localeurl.utils import is_locale_independent, strip_locale_prefix, \
+        get_language
 
 register = template.Library()
 
@@ -18,13 +19,14 @@ def chlocale(path, locale):
     Changes the path's locale prefix if the path is not locale-independent.
     Otherwise removes locale prefix.
     """
+    stripped_path = rmlocale(path)
     if not localeurl.PREFIX_DEFAULT_LOCALE and \
             get_language(locale) == get_language(settings.LANGUAGE_CODE):
-        return rmlocale(path)
-    if is_locale_independent(rmed):
-        return rmlocale(path)
+        return stripped_path
+    if is_locale_independent(stripped_path):
+        return stripped_path
     else:
-        return '/' + get_language(locale) + rmlocale(path)
+        return '/' + get_language(locale) + stripped_path
 
 chlocale = stringfilter(chlocale)
 register.filter('chlocale', chlocale)
