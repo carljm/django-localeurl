@@ -4,7 +4,6 @@
 import re
 from django import http
 from django.conf import settings
-from django.core import urlresolvers
 from django.http import HttpResponseRedirect
 from django.utils import translation
 import localeurl
@@ -73,19 +72,3 @@ def redirect_locale(request, path=None, locale=None):
         except AttributeError:
             locale = get_language(settings.LANGUAGE_CODE)
     return HttpResponseRedirect('/' + locale + path)
-
-# Replace reverse function
-def reverse(viewname, urlconf=None, args=None, kwargs=None):
-    """
-    Returns the URL from a view name, taking into account locale prefixes.
-    """
-    path = django_reverse(viewname, urlconf, args, kwargs)
-    if is_locale_independent(path):
-        return path
-    lang = get_language(translation.get_language())
-    def_lang = get_language(settings.LANGUAGE_CODE)
-    if lang == def_lang and not localeurl.PREFIX_DEFAULT_LOCALE:
-        return path
-    return '/' + translation.get_language() + path
-django_reverse = urlresolvers.reverse
-urlresolvers.reverse = reverse

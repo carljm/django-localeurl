@@ -32,7 +32,7 @@ Changelog
 Credits
 -------
 
-localeurl was written by `Joost Cassee`_ based on the work by Atli Þorbjörnsson. Contributions by Jonas Christian.
+localeurl is developed by `Joost Cassee`_ and `Artiom Diomin`_ based on the work by Atli Þorbjörnsson. Contributions by Jonas Christian.
 
 It was partly taken from and partly inspired by discussions on the django-users_ and django-multilingual_ mailinglists:
  * Atli Þorbjörnsson: `Locale from URL Middleware`_
@@ -46,6 +46,7 @@ The announcement of localeurl on these lists can be found here:
  * `Announcement on django-multilingual`_
 
 .. _`Joost Cassee`: http://joost.cassee.net/
+.. _`Artiom Diomin`: http://jabber.linux.md/
 .. _django-users: http://groups.google.com/group/django-users
 .. _django-multilingual: http://code.google.com/p/django-multilingual/
 .. _`Locale from URL Middleware`: http://groups.google.com/group/django-users/browse_thread/thread/7c5508174340191a/8cb2eb93168ef282

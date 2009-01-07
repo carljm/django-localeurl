@@ -2,7 +2,9 @@
 Usage
 =====
 
-The localeurl application integrates into normal Django apps by setting ``request.LANGUAGE_CODE`` based on the URL and then stripping off the language prefix from ``request.path_info`` so that the URLconf modules do not need to change. Existing applications should work transparently with localeurl if they follow the usual Django convention of using ``url`` tags in templates to generate links. Paths without locale prefix are redirected to the default locale, either from ``request.LANGUAGE_CODE`` (set by a previous language discovery middleware such as ``django.middleware.locale.LocaleMiddleware``) or from ``settings.LANGUAGE_CODE``. So a request for ``/about/`` would be redirected to ``/fr/about/`` if French is the default language.
+The localeurl application integrates into your Django project by setting ``request.LANGUAGE_CODE`` based on the URL and then stripping off the language prefix from ``request.path_info`` so that the URLconf modules do not need to change. Existing applications should work transparently with localeurl if they follow the usual Django convention of using ``url`` tags in templates to generate links.
+
+Paths without locale prefix are redirected to the default locale, either from ``request.LANGUAGE_CODE`` (set by a previous language discovery middleware such as ``django.middleware.locale.LocaleMiddleware``) or from ``settings.LANGUAGE_CODE``. So a request for ``/about/`` would be redirected to ``/fr/about/`` if French is the default language. (This behavior can be changed using ``settings.PREFIX_DEFAULT_LANGUAGE``.)
 
 The application adds one template tag and two filters. Add the following at the top of a template to enable them::
 
@@ -12,14 +14,14 @@ The application adds one template tag and two filters. Add the following at the 
 The ``locale_url`` tag
 ----------------------
 
-The localeurl application replaces the ``urlresolvers.reverse function`` to return locale-specific URLs. Therefore existing template should not need to be changed. To manipulate the language on rendered URLs you can use the ``locale_url`` tag. This tag behaves exactly like the standard ``url`` tag, except you specify a language.
+The localeurl application replaces the ``urlresolvers.reverse function`` to return locale-specific URLs, so existing templates should not need to be changed. To manipulate the language on rendered URLs you can use the ``locale_url`` tag. This tag behaves exactly like the standard ``url`` tag, except you specify a language.
 
 Examples
 ^^^^^^^^
 
 You can refer to a specific URL in a specified language like this::
 
-  <a href="{% locale_url "de" articles.views.display id=article.pk %}">Show article in German</a>
+  <a href="{% locale_url "de" articles.views.display id=article.id %}">Show article in German</a>
 
 The ``chlocale`` filter
 -----------------------
@@ -51,7 +53,7 @@ This filter can be used to allow users to go to a different language version of 
 
 	{% for lang in LANGUAGES %}
 		{% ifequal lang.0 LANGUAGE_CODE %}
-		    <li class="active">{{ lang.1 }}</li>
+		    <li class="selected">{{ lang.1 }}</li>
 		{% else %}
 		    <li><a href="{{ request.path|chlocale:lang.0 }}">{{ lang.1 }}</a></li>
 		{% endifequal %}
