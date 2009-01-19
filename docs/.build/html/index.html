@@ -291,7 +291,7 @@
   <div class="section">
 <h1 id="welcome-to-the-localeurl-documentation">Welcome to the localeurl documentation<a class="headerlink" href="#welcome-to-the-localeurl-documentation" title="Permalink to this headline">¶</a></h1>
 <p>The localeurl <a class="reference" href="http://www.djangoproject.com/">Django</a> application allow you to specify the language of a page in the URL.</p>
-<p>Suppose you have a Django website in multiple languages. The localeurl application allow you to specify the language of a page in the URL, like so: <tt class="docutils literal"><span class="pre">http://www.example.com/nl/company/profile</span></tt>. Any URLs without language prefix will be redirected to add the prefix for the default language.</p>
+<p>Suppose you have a Django website in multiple languages. The localeurl application allow you to specify the language of a page in the URL. It can either use the first component of the domain (<tt class="docutils literal"><span class="pre">http://nl.example.com/about/</span></tt>) or the path prefix (<tt class="docutils literal"><span class="pre">http://www.example.com/nl/about/</span></tt>). Any URLs without the path prefix will be redirected to add the prefix for the default language.</p>
 <p>Some reasons for using localeurl:</p>
 <blockquote>
 <ul class="simple">
@@ -307,7 +307,7 @@
 <li><a class="reference" href="installation.html">Installation</a><ul>
 <li><a class="reference" href="installation.html#prerequisites">Prerequisites</a></li>
 <li><a class="reference" href="installation.html#id1">Installation</a></li>
-<li><a class="reference" href="installation.html#configuration">Configuration</a></li>
+<li><a class="reference" href="installation.html#id2">Configuration</a></li>
 </ul>
 </li>
 </ul>

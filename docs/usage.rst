@@ -10,6 +10,8 @@ The application adds one template tag and two filters. Add the following at the 
 
   {% load localeurl_tags %}
 
+The tag and filters do not work yet if you use domain-based locale selection (``LOCALE_URL_TYPE = 'domain_prefix'``, see :ref:`configuration`).
+
 
 The ``locale_url`` tag
 ----------------------

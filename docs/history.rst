@@ -2,10 +2,19 @@
 Changelog
 =========
 
+2009-01-19:
+  * Added rudimental support for getting the locale from the domain name.
+  * Removed ``REDIRECT_LOCALE_INDEPENDENT_PATHS`` settings option; this is now the default.
+  * Removed support for fall-back to ``LocaleURLMiddleware`` language negotiation.
+  * Internal restructuring.
+
+2009-01-07:
+  * Added Artiom Diomin as a maintainer.
+
 2008-11-26:
   * Moved the documentation into the source tree. (Based on `a blog post`_ by Andi Albrecht.)
   * Released version 1.2.
-  
+
 2008-11-20:
   * Released version 1.1.
 
@@ -26,7 +35,7 @@ Changelog
 2008-06-10:
   * Moved to Google Code.
   * Released version 0.9.0.
-  
+
 .. _`a blog post`: http://andialbrecht.blogspot.com/2008/10/google-code-sphinx-theme.html
 
 Credits

@@ -1,40 +1,37 @@
 # Copyright (c) 2008 Joost Cassee
 # Licensed under the terms of the MIT License (see LICENSE.txt)
 
+from django.conf import settings
+from django.core.urlresolvers import get_script_prefix
 from django import template
 from django.template import Node, Token, TemplateSyntaxError
 from django.template import resolve_variable, defaulttags
 from django.template.defaultfilters import stringfilter
-from django.conf import settings
 from django.utils import translation
-import localeurl
-from localeurl.utils import is_locale_independent, strip_locale_prefix, \
-        get_language
+import localeurl.settings
+from localeurl import utils
 
 register = template.Library()
 
 
-def chlocale(path, locale):
+def chlocale(url, locale):
     """
-    Changes the path's locale prefix if the path is not locale-independent.
+    Changes the URL's locale prefix if the path is not locale-independent.
     Otherwise removes locale prefix.
     """
-    stripped_path = rmlocale(path)
-    if not localeurl.PREFIX_DEFAULT_LOCALE and \
-            get_language(locale) == get_language(settings.LANGUAGE_CODE):
-        return stripped_path
-    if is_locale_independent(stripped_path):
-        return stripped_path
-    else:
-        return '/' + get_language(locale) + stripped_path
+    script_prefix, path = strip_script_prefix(url)
+    _, path = utils.strip_path(path)
+    return utils.locale_url(path, locale)
 
 chlocale = stringfilter(chlocale)
 register.filter('chlocale', chlocale)
 
 
 def rmlocale(url):
-    """Removes the locale prefix from the path."""
-    return strip_locale_prefix(url)
+    """Removes the locale prefix from the URL."""
+    script_prefix, path = strip_script_prefix(url)
+    _, path = utils.strip_path(path)
+    return ''.join([script_prefix, path])
 
 rmlocale = stringfilter(rmlocale)
 register.filter('rmlocale', rmlocale)
@@ -75,3 +72,13 @@ class LocaleURLNode(Node):
             return chlocale(path, locale)
 
 register.tag('locale_url', locale_url)
+
+def strip_script_prefix(url):
+    """
+    Strips the SCRIPT_PREFIX from the URL. Because this function is meant for
+    use in templates, it assumes the URL starts with the prefix.
+    """
+    assert url.startswith(get_script_prefix()), \
+            "URL does not start with SCRIPT_PREFIX: %s" % url
+    pos = len(get_script_prefix()) - 1
+    return url[:pos], url[pos:]

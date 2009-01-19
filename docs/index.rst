@@ -3,7 +3,7 @@ Welcome to the localeurl documentation
 
 The localeurl Django_ application allow you to specify the language of a page in the URL.
 
-Suppose you have a Django website in multiple languages. The localeurl application allow you to specify the language of a page in the URL, like so: ``http://www.example.com/nl/company/profile``. Any URLs without language prefix will be redirected to add the prefix for the default language.
+Suppose you have a Django website in multiple languages. The localeurl application allow you to specify the language of a page in the URL. It can either use the first component of the domain (``http://nl.example.com/about/``) or the path prefix (``http://www.example.com/nl/about/``). Any URLs without the path prefix will be redirected to add the prefix for the default language.
 
 Some reasons for using localeurl:
 
