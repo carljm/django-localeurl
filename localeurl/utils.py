@@ -10,6 +10,7 @@ SUPPORTED_LOCALES = dict(settings.LANGUAGES)
 LOCALES_RE = '|'.join(SUPPORTED_LOCALES)
 PATH_RE = re.compile(r'^/(?P<locale>%s)(?P<path>.*)$' % LOCALES_RE)
 DOMAIN_RE = re.compile(r'^(?P<locale>%s)\.(?P<domain>.*)$' % LOCALES_RE)
+DOMAIN_MAP = dict(localeurl.settings.DOMAINS)
 
 def is_locale_independent(path):
     """
@@ -27,26 +28,35 @@ def is_locale_independent(path):
 
 def strip_path(path):
     """
-    Returns the path without the locale prefix. If the path does not begin
-    with a locale it is returned without change. The path must contain the
-    script prefix.
+    Separates the locale prefix from the rest of the path. If the path does not
+    begin with a locale it is returned without change.
     """
-    check = PATH_RE.match(path)
-    if check:
-        return check.group('locale'), check.group('path')
-    else:
-        return '', path
+    if localeurl.settings.URL_TYPE == 'path_prefix':
+        check = PATH_RE.match(path)
+        if check:
+            return check.group('locale'), check.group('path')
+    return '', path
 
 def strip_domain(domain):
     """
-    Returns the domain without the locale component. If the domain does not
-    begin with a locale it is returned without change.
+    Returns the locale component and the domain without the locale component.
+    If the domain does not begin with a locale it is returned without change.
     """
-    check = DOMAIN_RE.match(domain)
-    if check:
-        return check.group('locale'), check.group('domain')
-    else:
-        return '', domain
+    if localeurl.settings.URL_TYPE == 'domain_component':
+        check = DOMAIN_RE.match(domain)
+        if check:
+            return check.group('locale'), check.group('domain')
+    return '', domain
+
+def get_locale_from_domain(domain):
+    """
+    Returns the locale parsed from the domain.
+    """
+    raise AssertionError("Not implemented")
+    if localeurl.settings.URL_TYPE == 'domain':
+        if domain in DOMAIN_MAP:
+            return DOMAIN_MAP[domain]
+    return ''
 
 def supported_language(locale):
     """
@@ -70,11 +80,11 @@ def locale_path(path, locale=''):
     Generate the localeurl-enabled path from a path without locale prefix. If
     the locale is empty settings.LANGUAGE_CODE is used.
     """
+    if localeurl.settings.URL_TYPE != 'path_prefix':
+        return path
     if not locale:
         locale = supported_language(settings.LANGUAGE_CODE)
-    if localeurl.settings.URL_TYPE == 'domain_prefix':
-        return path
-    elif is_locale_independent(path):
+    if is_locale_independent(path):
         return path
     elif is_default_locale(locale) \
             and not localeurl.settings.PREFIX_DEFAULT_LOCALE:

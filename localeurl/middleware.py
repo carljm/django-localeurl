@@ -4,6 +4,7 @@
 import re
 from django import http
 from django.conf import settings
+import django.core.exceptions
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
 from django.utils import translation
@@ -32,6 +33,10 @@ class LocaleURLMiddleware(object):
     If you use this middleware the django.core.urlresolvers.reverse function
     is be patched to return paths with locale prefix (see models.py).
     """
+    def __init__(self):
+        if not settings.USE_I18N:
+            raise django.core.exceptions.MiddlewareNotUsed()
+
     def process_request(self, request):
         locale, path = self.split_locale_from_request(request)
         locale_path = utils.locale_path(path, locale)
@@ -50,7 +55,9 @@ class LocaleURLMiddleware(object):
         return response
 
     def split_locale_from_request(self, request):
-        if localeurl.settings.URL_TYPE == 'domain_prefix':
+        if localeurl.settings.URL_TYPE == 'domain':
+            raise AssertionError("URL_TYPE 'domain' not yet supported")
+        elif localeurl.settings.URL_TYPE == 'domain_component':
             locale, _ = utils.strip_domain(request.get_host())
             path_info = request.path_info
         else:
