@@ -10,7 +10,7 @@
  <link type="text/css" rel="stylesheet"
        href="_static/custom.css" />
  <link type="text/css" rel="stylesheet"
-       href="http://code.google.com/hosting/css/d_20081006.css" />
+       href="http://www.gstatic.com/codesite/ph/4770211810525696068/css/d_20081117.css" />
  <link rel="stylesheet"  type="text/css"
        href="_static/pygments.css" /> 
  
@@ -20,7 +20,7 @@
  
 <!--[if IE]>
  <link type="text/css" rel="stylesheet"
-       href="http://code.google.com/hosting/css/d_ie.css" />
+       href="http://www.gstatic.com/codesite/ph/4770211810525696068/css/d_ie.css" />
 <![endif]-->
 
 <script type="text/javascript">
@@ -43,13 +43,7 @@
 </head>
 <body class="t6">
  <div id=gaia>
-  <font size="-1">
- 
- <a href="http://code.google.com/p/support/wiki/WhatsNew" style="color:#a03">What's new?</a>
- | <a href="http://code.google.com/p/support/">Help</a>
- 
- </font> 
-
+ &nbsp;
  </div>
  <table style="padding:0px; margin: 0px 0px -6px 0; width:100%" cellpadding=0 cellspacing=0>
  <tr>
@@ -319,7 +313,7 @@
 <p>Paths without locale prefix are redirected to the default locale, either from <tt class="docutils literal"><span class="pre">request.LANGUAGE_CODE</span></tt> (set by a previous language discovery middleware such as <tt class="docutils literal"><span class="pre">django.middleware.locale.LocaleMiddleware</span></tt>) or from <tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt>. So a request for <tt class="docutils literal"><span class="pre">/about/</span></tt> would be redirected to <tt class="docutils literal"><span class="pre">/fr/about/</span></tt> if French is the default language. (This behavior can be changed using <tt class="docutils literal"><span class="pre">settings.PREFIX_DEFAULT_LANGUAGE</span></tt>.)</p>
 <p>The application adds one template tag and two filters. Add the following at the top of a template to enable them:</p>
 <pre>{% load localeurl_tags %}</pre>
-<p>The tags do not work yet if you use domain-based locale selection (<tt class="docutils literal"><span class="pre">LOCALE_URL_TYPE</span> <span class="pre">=</span> <span class="pre">'domain_prefix'</span></tt>, see <a class="reference" href="installation.html#configuration"><em>Configuration</em></a>).</p>
+<p>The tag and filters do not work yet if you use domain-based locale selection (<tt class="docutils literal"><span class="pre">LOCALE_URL_TYPE</span> <span class="pre">=</span> <span class="pre">'domain_prefix'</span></tt>, see <a class="reference" href="installation.html#configuration"><em>Configuration</em></a>).</p>
 <div class="section">
 <h2 id="the-locale-url-tag">The <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag<a class="headerlink" href="#the-locale-url-tag" title="Permalink to this headline">¶</a></h2>
 <p>The localeurl application replaces the <tt class="docutils literal"><span class="pre">urlresolvers.reverse</span> <span class="pre">function</span></tt> to return locale-specific URLs, so existing templates should not need to be changed. To manipulate the language on rendered URLs you can use the <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag. This tag behaves exactly like the standard <tt class="docutils literal"><span class="pre">url</span></tt> tag, except you specify a language.</p>
