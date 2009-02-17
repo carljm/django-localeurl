@@ -307,17 +307,27 @@
 </div>
 <div class="section">
 <h2 id="id1">Installation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>Installation basically consists of installing the middleware. If you want to use the template tags and filters also add localeurl to the installed applications.</p>
+<p>Installation basically consists of installing the middleware. If you want to
+use the template tags and filters also add localeurl to the installed
+applications.</p>
 <ol class="arabic simple">
-<li>Place the <tt class="docutils literal"><span class="pre">localeurl</span></tt> module in your Python path. You can put it into your Django project directory or run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt> from a shell.</li>
-<li>Add <tt class="docutils literal"><span class="pre">'localeurl.middleware.LocaleURLMiddleware'</span></tt> to <tt class="docutils literal"><span class="pre">settings.MIDDLEWARE_CLASSES</span></tt>. It must come <em>before</em> <tt class="docutils literal"><span class="pre">'django.middleware.common.CommonMiddleware'</span></tt> or <tt class="docutils literal"><span class="pre">settings.APPEND_SLASH</span></tt> will not work.</li>
+<li>Place the <tt class="docutils literal"><span class="pre">localeurl</span></tt> module in your Python path. You can put it into your
+Django project directory or run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt> from a shell.</li>
+<li>Add <tt class="docutils literal"><span class="pre">'localeurl.middleware.LocaleURLMiddleware'</span></tt> to
+<tt class="docutils literal"><span class="pre">settings.MIDDLEWARE_CLASSES</span></tt>. It must come <em>before</em>
+<tt class="docutils literal"><span class="pre">'django.middleware.common.CommonMiddleware'</span></tt> or <tt class="docutils literal"><span class="pre">settings.APPEND_SLASH</span></tt>
+will not work.</li>
 <li>Add <tt class="docutils literal"><span class="pre">'localeurl'</span></tt> to <tt class="docutils literal"><span class="pre">settings.INSTALLED_APPS</span></tt>.</li>
-<li>Make sure <tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt> or its root language is in <tt class="docutils literal"><span class="pre">settings.LANGUAGES</span></tt>. For example, if <tt class="docutils literal"><span class="pre">LANGUAGE_CODE</span> <span class="pre">==</span> <span class="pre">'en-us'</span></tt> then <tt class="docutils literal"><span class="pre">LANGUAGES</span></tt> must contain either <tt class="docutils literal"><span class="pre">'en-us'</span></tt> or <tt class="docutils literal"><span class="pre">'en'</span></tt>. If you have not changed either option you do not have to do anything.</li>
+<li>Make sure <tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt> or its root language is in
+<tt class="docutils literal"><span class="pre">settings.LANGUAGES</span></tt>. For example, if <tt class="docutils literal"><span class="pre">LANGUAGE_CODE</span> <span class="pre">==</span> <span class="pre">'en-us'</span></tt> then
+<tt class="docutils literal"><span class="pre">LANGUAGES</span></tt> must contain either <tt class="docutils literal"><span class="pre">'en-us'</span></tt> or <tt class="docutils literal"><span class="pre">'en'</span></tt>. If you have not
+changed either option you do not have to do anything.</li>
 </ol>
 </div>
 <div class="section">
 <h2 id="id2"><span id="configuration"></span>Configuration<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>The application can be configured by editing the project&#8217;s <tt class="docutils literal"><span class="pre">settings.py</span></tt> file.</p>
+<p>The application can be configured by editing the project&#8217;s <tt class="docutils literal"><span class="pre">settings.py</span></tt>
+file.</p>
 <dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">LOCALE_URL_TYPE</span></tt> (default: <tt class="docutils literal"><span class="pre">'path_prefix'</span></tt>)</dt>
 <dd><p class="first">Configures where localeurl expects to find the locale in the URL.</p>

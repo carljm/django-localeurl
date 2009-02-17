@@ -16,17 +16,24 @@ The localeurl application requires Django_ 1.0 or higher.
 Installation
 ------------
 
-Installation basically consists of installing the middleware. If you want to use the template tags and filters also add localeurl to the installed applications.
+Installation basically consists of installing the middleware. If you want to
+use the template tags and filters also add localeurl to the installed
+applications.
 
-#. Place the ``localeurl`` module in your Python path. You can put it into your Django project directory or run ``python setup.py install`` from a shell.
+#. Place the ``localeurl`` module in your Python path. You can put it into your
+   Django project directory or run ``python setup.py install`` from a shell.
 
-#. Add ``'localeurl.middleware.LocaleURLMiddleware'`` to ``settings.MIDDLEWARE_CLASSES``. It must come *before* ``'django.middleware.common.CommonMiddleware'`` or ``settings.APPEND_SLASH`` will not work.
+#. Add ``'localeurl.middleware.LocaleURLMiddleware'`` to
+   ``settings.MIDDLEWARE_CLASSES``. It must come *before*
+   ``'django.middleware.common.CommonMiddleware'`` or ``settings.APPEND_SLASH``
+   will not work.
 
 #. Add ``'localeurl'`` to ``settings.INSTALLED_APPS``.
 
-#. Make sure ``settings.LANGUAGE_CODE`` or its root language is in ``settings.LANGUAGES``. For example, if ``LANGUAGE_CODE == 'en-us'`` then ``LANGUAGES`` must contain either ``'en-us'`` or ``'en'``. If you have not changed either option you do not have to do anything.
-
-.. _`the latest release`: http://code.google.com/p/django-localeurl/downloads/list/|release|
+#. Make sure ``settings.LANGUAGE_CODE`` or its root language is in
+   ``settings.LANGUAGES``. For example, if ``LANGUAGE_CODE == 'en-us'`` then
+   ``LANGUAGES`` must contain either ``'en-us'`` or ``'en'``. If you have not
+   changed either option you do not have to do anything.
 
 
 .. _configuration:
@@ -34,7 +41,8 @@ Installation basically consists of installing the middleware. If you want to use
 Configuration
 -------------
 
-The application can be configured by editing the project's ``settings.py`` file.
+The application can be configured by editing the project's ``settings.py``
+file.
 
 ``LOCALE_URL_TYPE`` (default: ``'path_prefix'``)
   Configures where localeurl expects to find the locale in the URL.

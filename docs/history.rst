@@ -2,6 +2,10 @@
 Changelog
 =========
 
+Repository:
+  * Changed chlocale tag to strip prefix of locale-independent paths.
+  * Moved the monkey-patching of urlresolvers.reverse to models.py.
+
 2009-01-19:
   * Added rudimental support for getting the locale from the domain name.
   * Removed ``REDIRECT_LOCALE_INDEPENDENT_PATHS`` settings option; this is now the default.
