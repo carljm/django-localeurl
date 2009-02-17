@@ -8,7 +8,7 @@ import localeurl.settings
 
 SUPPORTED_LOCALES = dict(settings.LANGUAGES)
 LOCALES_RE = '|'.join(SUPPORTED_LOCALES)
-PATH_RE = re.compile(r'^/(?P<locale>%s)(?P<path>.*)$' % LOCALES_RE)
+PATH_RE = re.compile(r'^/(?P<locale>%s)(?P<path>/.*)$' % LOCALES_RE)
 DOMAIN_RE = re.compile(r'^(?P<locale>%s)\.(?P<domain>.*)$' % LOCALES_RE)
 DOMAIN_MAP = dict(localeurl.settings.DOMAINS)
 
