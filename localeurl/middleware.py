@@ -41,6 +41,9 @@ class LocaleURLMiddleware(object):
         locale, path = self.split_locale_from_request(request)
         locale_path = utils.locale_path(path, locale)
         if locale_path != request.path_info:
+            if request.META.get("QUERY_STRING", ""):
+                locale_path = "%s?%s" % (locale_path, 
+                        request.META['QUERY_STRING'])
             return HttpResponseRedirect(locale_path)
         request.path_info = path
         if not locale:
