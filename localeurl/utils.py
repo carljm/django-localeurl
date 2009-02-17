@@ -8,7 +8,7 @@ import localeurl.settings
 
 SUPPORTED_LOCALES = dict(settings.LANGUAGES)
 LOCALES_RE = '|'.join(SUPPORTED_LOCALES)
-PATH_RE = re.compile(r'^/(?P<locale>%s)(?P<path>/.*)$' % LOCALES_RE)
+PATH_RE = re.compile(r'^/(?P<locale>%s)(?P<path>.*)$' % LOCALES_RE)
 DOMAIN_RE = re.compile(r'^(?P<locale>%s)\.(?P<domain>.*)$' % LOCALES_RE)
 DOMAIN_MAP = dict(localeurl.settings.DOMAINS)
 
@@ -34,7 +34,9 @@ def strip_path(path):
     if localeurl.settings.URL_TYPE == 'path_prefix':
         check = PATH_RE.match(path)
         if check:
-            return check.group('locale'), check.group('path')
+            path_info = check.group('path') or '/'
+            if path_info.startswith('/'):
+                return check.group('locale'), path_info
     return '', path
 
 def strip_domain(domain):
