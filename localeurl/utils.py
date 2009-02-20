@@ -10,7 +10,6 @@ SUPPORTED_LOCALES = dict(settings.LANGUAGES)
 LOCALES_RE = '|'.join(SUPPORTED_LOCALES)
 PATH_RE = re.compile(r'^/(?P<locale>%s)(?P<path>.*)$' % LOCALES_RE)
 DOMAIN_RE = re.compile(r'^(?P<locale>%s)\.(?P<domain>.*)$' % LOCALES_RE)
-DOMAIN_MAP = dict(localeurl.settings.DOMAINS)
 
 def is_locale_independent(path):
     """
@@ -77,6 +76,17 @@ def is_default_locale(locale):
     """
     return locale == supported_language(settings.LANGUAGE_CODE)
 
+def get_fallback_locale(request=None):
+    """
+    Returns the default locale. If a language is already set on the request,
+    it is used, otherwise settings.LANGUAGE_CODE. The returned locale is
+    guaranteed to be in settings.LANGUAGES
+    """
+    if request is not None and hasattr(request, 'LANGUAGE_CODE'):
+        return supported_language(request.LANGUAGE_CODE)
+    else:
+        return supported_language(settings.LANGUAGE_CODE)
+
 def locale_path(path, locale=''):
     """
     Generate the localeurl-enabled path from a path without locale prefix. If
@@ -101,3 +111,9 @@ def locale_url(path, locale=''):
     """
     path = locale_path(path, locale)
     return ''.join([urlresolvers.get_script_prefix(), path[1:]])
+
+def strip_script_prefix(url):
+    assert url.startswith(get_script_prefix()), \
+            "URL does not start with SCRIPT_PREFIX: %s" % url
+    pos = len(get_script_prefix()) - 1
+    return url[:pos], url[pos:]

@@ -42,32 +42,59 @@ Configuration
 -------------
 
 The application can be configured by editing the project's ``settings.py``
-file.
+file. How the locale is derived from the URL depends on the resolver that is
+used. The resolver is configured using the ``LOCALEURL_RESOLVER`` settings
+option. Resolvers can define their own configuration options.
 
-``LOCALE_URL_TYPE`` (default: ``'path_prefix'``)
-  Configures where localeurl expects to find the locale in the URL.
+The following resolvers are available in the localeurl distribution.
 
-  ``'path_prefix'``
-    The locale is the first part of the path: ``http://example.com/<locale>/path/``
+Path prefix resolver
+^^^^^^^^^^^^^^^^^^^^
 
-  ``'domain_prefix'``
-    The locale is the first component of the domain: ``http://<locale>.example.com/path/``
+``localeurl.resolvers.path_prefix.PathPrefixResolver``
+
+This is the default resolver and expects the locale to be specified as a
+prefix to the URL path, i.e. ``http://example.com/<locale>/path/``. The
+resolver uses the following settings:
 
 ``LOCALE_INDEPENDENT_PATHS``
-  A tuple of regular expression objects matching paths that will not be redirected to add the language prefix. For example, a site with a language selection splash page would add ``'^/$'`` as a locale independent path match. Note that for performance reasons you must use ``re`` objects, not strings. Additionally, any path starting with ``settings.MEDIA_URL`` will also not be redirected. This only works if it is a path, i.e. not a full URL.
+  A tuple of regular expression objects matching paths that are not prefixed
+  by a locale and do not have their locale set. For example, a site with a
+  language selection splash page would add ``'^/$'`` as a locale independent
+  path match.
 
-  This options can only be used if ``LOCALE_URL_TYPE == 'path_prefix'``.
+  Note that for performance reasons you must use ``re`` objects, not strings.
+  Additionally, any path starting with ``settings.MEDIA_URL`` will also not be
+  redirected. Obviously, this is only relevant if it is a path, i.e. not a
+  full URL.
 
-Example::
+  Example::
 
-  import re
-  LOCALE_INDEPENDENT_PATHS = (
-      re.compile('^/$'),
-      re.compile('^/games/'),
-      re.compile('^/ajax/'),
-  )
+    import re
+    LOCALE_INDEPENDENT_PATHS = (
+        re.compile('^/$'),
+        re.compile('^/games/'),
+        re.compile('^/ajax/'),
+    )
 
 ``PREFIX_DEFAULT_LANGUAGE`` (default: ``True``)
-  Whether to add the prefix for the default language (``settings.LANGUAGE_CODE``). For example, if ``LANGUAGE_CODE == 'en'`` then the path ``/about/`` will be passed to the URL resolver unchanged and ``/en/about/`` will be redirected to ``/about/``.
+  Whether to add the prefix for the default language
+  (``settings.LANGUAGE_CODE``). For example, if ``LANGUAGE_CODE == 'en'`` then
+  the path ``/about/`` will be passed to the URL resolver unchanged, setting
+  the locale to ``'en'``, and ``/en/about/`` will be redirected to ``/about/``.
 
-  This options can only be used if ``LOCALE_URL_TYPE == 'path_prefix'``.
+Domain prefix resolver
+^^^^^^^^^^^^^^^^^^^^^^
+
+``localeurl.resolver,domain_prefix.DomainPrefixResolver``
+
+This resolver derived the locale from the first component of the domain, i.e.
+``http://<locale>.example.com/path/``
+
+Domains resolver
+^^^^^^^^^^^^^^^^
+
+``localeurl.resolver,domains.DomainsResolver``
+
+This resolver maps the domain to the locale.
+

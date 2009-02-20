@@ -6,14 +6,8 @@ from django.core import urlresolvers
 from django.utils import translation
 import localeurl
 import localeurl.settings
-from localeurl import utils
+from localeurl.resolver import resolver
 
-if localeurl.settings.URL_TYPE == 'path_prefix' and settings.USE_I18N:
+if settings.USE_I18N:
     def reverse(viewname, urlconf=None, args=[], kwargs={}, prefix=None):
-        locale = utils.supported_language(kwargs.pop('locale',
-                translation.get_language()))
-        path = django_reverse(viewname, urlconf, args, kwargs, prefix)
-        return utils.locale_url(path, locale)
-
-    django_reverse = urlresolvers.reverse
-    urlresolvers.reverse = reverse
+        return resolver.reverse(viewname, urlconf, args, kwargs, prefix)

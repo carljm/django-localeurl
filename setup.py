@@ -3,11 +3,35 @@
 # Copyright (c) 2008 Joost Cassee
 # Licensed under the terms of the MIT License (see LICENSE.txt)
 
+from distutils.core import Command
 from distutils.core import setup
 import metadata
+import os
 
 app_name = metadata.name
 version = metadata.version
+
+class TestCommand(Command):
+    description = "Tests the application using the Django test framework"
+    user_options = []
+
+    def initialize_options(self):
+        self._dir = os.getcwd()
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        from django.core.management import call_command, setup_environ
+        try:
+            from localeurl.tests import settings
+        except ImportError:
+            import sys
+            sys.stderr.write("Error: Can't find the file 'settings.py' in the"
+                    " directory containing localeurl/tests.")
+            sys.exit(1)
+        setup_environ(settings)
+        call_command('test')
 
 setup(
     name = "django-%s" % app_name,
@@ -55,4 +79,8 @@ Some reasons for using localeurl:
     url = "http://code.google.com/p/django-%s/" % app_name,
     download_url = "http://code.google.com/p/django-%s/downloads/list" \
             % app_name,
+
+    cmdclass = {
+        'test': TestCommand
+    },
 )
