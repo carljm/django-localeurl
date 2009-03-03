@@ -1,6 +1,7 @@
 # Copyright (c) 2008 Joost Cassee
 # Licensed under the terms of the MIT License (see LICENSE.txt)
 
+import urlparse
 from django.conf import settings as django_settings
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
@@ -43,6 +44,19 @@ class DomainsResolver(Resolver):
             return "%s://%s%s%s" % (request.is_secure() and 'https' or 'http',
                     self.locale_domain_map[locale],
                     urlresolvers.get_script_prefix(), path[1:])
+
+    def parse_locale_url(self, url):
+        (_, domain, path, query, fragment) = urlparse.urlsplit(url)
+        if domain:
+            try:
+                locale = self.domain_locale_map[domain]
+            except KeyError:
+                locale = None
+        else:
+            locale = None
+        path = urlparse.urlunsplit(('', '', path, query, fragment))
+        (_, path) = self.strip_script_prefix(path)
+        return (path, locale)
 
     def get_locale_domain(self, request, locale):
         return "%s://%s" % (request.is_secure() and 'https' or 'http',

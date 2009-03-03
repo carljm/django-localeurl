@@ -3,3 +3,6 @@ def test(request):
 
 def locale_independent(request):
     pass
+
+def param_test(request, arg):
+    pass

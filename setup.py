@@ -27,8 +27,8 @@ class TestCommand(Command):
             from localeurl.tests import settings
         except ImportError:
             import sys
-            sys.stderr.write("Error: Can't find the file 'settings.py' in the"
-                    " directory containing localeurl/tests.")
+            sys.stderr.write("Error: Can't find the file 'settings.py' in"
+                    " localeurl/tests.")
             sys.exit(1)
         setup_environ(settings)
         call_command('test')

@@ -52,6 +52,17 @@ class DomainResolverTestCase(ResolverTestCase):
         self.assertEqual('http://example.fr%s%s' % (self.script_name, PATH),
                 resolver.build_locale_url(PATH, 'fr', request))
 
+    def test_parse_locale_url(self):
+        resolver = DomainsResolver(self.settings)
+        path = "%s%s" % (self.script_name, PATH)
+        self.assertEqual((PATH, None), resolver.parse_locale_url(path))
+        self.assertEqual((PATH, None),
+                resolver.parse_locale_url("http://example.nl%s" % path))
+        self.assertEqual((PATH, 'en'),
+                resolver.parse_locale_url("http://example.com%s" % path))
+        self.assertEqual((PATH, 'fr'),
+                resolver.parse_locale_url("http://example.fr%s" % path))
+
     def test_reverses_path(self):
         resolver = DomainsResolver(self.settings)
         self.assertEqual('%s/test/' % (self.script_name),

@@ -4,11 +4,6 @@
 from django.conf import settings
 from django.utils import translation
 from localeurl.resolver import resolver
-from localeurl import utils
-
-# Make sure the default language is in the list of supported languages
-assert utils.supported_language(settings.LANGUAGE_CODE) is not None, \
-        "Please ensure that settings.LANGUAGE_CODE is in settings.LANGUAGES."
 
 class LocaleURLMiddleware(object):
     """
@@ -23,6 +18,10 @@ class LocaleURLMiddleware(object):
         if not settings.USE_I18N:
             from django.core.exceptions import MiddlewareNotUsed
             raise MiddlewareNotUsed()
+
+        # Make sure the default language is in the list of supported languages
+        assert resolver.is_supported_locale(settings.LANGUAGE_CODE), \
+                "settings.LANGUAGE_CODE must be in settings.LANGUAGES."
 
     def process_request(self, request):
         response = resolver.process_request(request)

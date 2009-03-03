@@ -90,3 +90,10 @@ class PathPrefixResolver(Resolver):
         else:
             path = ''.join([u'/', locale, path])
         return ''.join([urlresolvers.get_script_prefix(), path[1:]])
+
+    def parse_locale_url(self, url):
+        (_, path) = self.strip_script_prefix(url)
+        (locale, path) = self.split_path(path)
+        if not locale:
+            locale = None
+        return (path, locale)

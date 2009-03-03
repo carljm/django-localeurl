@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT License (see LICENSE.txt)
 
 import re
+import urlparse
 from django.conf import settings as django_settings
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
@@ -24,7 +25,6 @@ class DomainComponentResolver(Resolver):
     def process_request(self, request):
         locale, domain = self.split_domain(request.get_host())
         if not self.is_supported_locale(locale):
-            # Set locale to fallback language
             locale = self.get_fallback_locale(request)
         request.get_host = lambda: domain
         request.LANGUAGE_CODE = locale
@@ -38,6 +38,18 @@ class DomainComponentResolver(Resolver):
             return "%s://%s%s%s" % (request.is_secure() and 'https' or 'http',
                     self.join_domain(locale, request.get_host()),
                     urlresolvers.get_script_prefix(), path[1:])
+
+    def parse_locale_url(self, url):
+        (_, domain, path, query, fragment) = urlparse.urlsplit(url)
+        if domain:
+            (locale, _) = self.split_domain(domain)
+            if not locale:
+                locale = None
+        else:
+            locale = None
+        path = urlparse.urlunsplit(('', '', path, query, fragment))
+        (_, path) = self.strip_script_prefix(path)
+        return (path, locale)
 
     def join_domain(self, locale, domain):
         return self.domain_reverse % {'locale': locale, 'domain': domain}

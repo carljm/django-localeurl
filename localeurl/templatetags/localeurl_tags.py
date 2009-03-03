@@ -9,29 +9,15 @@ from django.template import resolve_variable, defaulttags
 from django.template.defaultfilters import stringfilter
 from django.utils import translation
 import localeurl.settings
-from localeurl import utils
+from localeurl.resolver import resolver
 
 register = template.Library()
 
 
-def chlocale(url, locale):
-    """
-    Changes the URL's locale prefix if the path is not locale-independent.
-    Otherwise removes locale prefix.
-    """
-    script_prefix, path = strip_script_prefix(url)
-    _, path = utils.strip_path(path)
-    return utils.locale_url(path, locale)
-
-chlocale = stringfilter(chlocale)
-register.filter('chlocale', chlocale)
-
-
 def rmlocale(url):
     """Removes the locale prefix from the URL."""
-    script_prefix, path = strip_script_prefix(url)
-    _, path = utils.strip_path(path)
-    return ''.join([script_prefix, path])
+    path, _ = resolver.parse_locale_url(url)
+    return ''.join([get_script_prefix(), path])
 
 rmlocale = stringfilter(rmlocale)
 register.filter('rmlocale', rmlocale)
@@ -62,23 +48,17 @@ class LocaleURLNode(Node):
 
     def render(self, context):
         locale = resolve_variable(self.locale, context)
-        path = self.urlnode.render(context)
+        url = self.urlnode.render(context)
         if self.urlnode.asvar:
             self.urlnode.render(context)
             context[self.urlnode.asvar] = chlocale(context[self.urlnode.asvar],
-                    locale)
+                    locale, context['request'])
             return ''
         else:
-            return chlocale(path, locale)
+            return chlocale(url, locale, context['request'])
 
 register.tag('locale_url', locale_url)
 
-def strip_script_prefix(url):
-    """
-    Strips the SCRIPT_PREFIX from the URL. Because this function is meant for
-    use in templates, it assumes the URL starts with the prefix.
-    """
-    assert url.startswith(get_script_prefix()), \
-            "URL does not start with SCRIPT_PREFIX: %s" % url
-    pos = len(get_script_prefix()) - 1
-    return url[:pos], url[pos:]
+def chlocale(url, locale, request):
+    path, _ = resolver.parse_locale_url(url)
+    return resolver.build_locale_url(path, locale, request)

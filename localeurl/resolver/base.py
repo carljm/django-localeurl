@@ -24,6 +24,14 @@ class Resolver(object):
         """
         raise NotImplementedError
 
+    def parse_locale_url(self, url):
+        """
+        Returns a tuple (path, locale) from a localized URL (as returned from
+        build_locale_url or the patched urlresolvers.reverse function). locale
+        is None if no supported locale is found in the URL.
+        """
+        raise NotImplementedError
+
     def reverse(self, viewname, urlconf=None, args=[], kwargs={}, prefix=None):
         """
         Returns the URL to a view. This function uses the urlresolvers.reverse
@@ -81,3 +89,13 @@ class Resolver(object):
         """
         return self.supported_language(self.settings.LANGUAGE_CODE)
     default_locale = property(_default_locale)
+
+    def strip_script_prefix(self, url):
+        """
+        Strips the SCRIPT_PREFIX from the URL. The function assumes the URL
+        starts with the prefix.
+        """
+        assert url.startswith(urlresolvers.get_script_prefix()), \
+                "URL does not start with SCRIPT_PREFIX: %s" % url
+        pos = len(urlresolvers.get_script_prefix()) - 1
+        return url[:pos], url[pos:]

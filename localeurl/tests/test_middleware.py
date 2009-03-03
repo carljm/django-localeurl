@@ -15,6 +15,8 @@ class MiddlewareTestCase(TestCase):
         class ResolverStub(object):
             def process_request(self, request):
                 request.LANGUAGE_CODE = LOCALE
+            def is_supported_locale(self, locale):
+                return True
         self._orig_resolver = localeurl.middleware.resolver
         localeurl.middleware.resolver = ResolverStub()
         self.request = type("RequestStub", (), {})()

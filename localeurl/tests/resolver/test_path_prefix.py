@@ -73,6 +73,18 @@ class PathPrefixResolverTestCase(ResolverTestCase):
         self.assertEqual('%s/fr/test/' % self.script_name,
                 resolver.build_locale_url('/test/', 'fr', request))
 
+    def test_parse_locale_url(self):
+        resolver = PathPrefixResolver(self.settings)
+        path = "/test/?foo=bar"
+        self.assertEqual((path, None), resolver.parse_locale_url("%s%s" %
+                (self.script_name, path)))
+        self.assertEqual((path, 'en'), resolver.parse_locale_url("%s/en%s" %
+                (self.script_name, path)))
+        self.assertEqual((path, 'fr'), resolver.parse_locale_url("%s/fr%s" %
+                (self.script_name, path)))
+        self.assertEqual(("/nl%s" % path, None), resolver.parse_locale_url(
+                "%s/nl%s" % (self.script_name, path)))
+
     def _test_reverses_path(self, view, locale, expected_path):
         translation.activate(locale)
         resolver = PathPrefixResolver(self.settings)
