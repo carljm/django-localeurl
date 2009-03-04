@@ -2,6 +2,7 @@ import re
 from django.test import TestCase
 from django.utils import translation
 from localeurl.resolver.path_prefix import PathPrefixResolver
+from localeurl.models import django_reverse
 from localeurl.tests.resolver.test_base import ResolverTestCase
 from localeurl.tests.utils import RequestFactory, TestSettings
 
@@ -89,7 +90,7 @@ class PathPrefixResolverTestCase(ResolverTestCase):
         translation.activate(locale)
         resolver = PathPrefixResolver(self.settings)
         self.assertEqual("%s%s" % (self.script_name, expected_path),
-                resolver.reverse(view))
+                resolver.reverse(django_reverse, view))
 
     def test_reverses_path_if_prefix_default_locale(self):
         self.settings['PREFIX_DEFAULT_LOCALE'] = True

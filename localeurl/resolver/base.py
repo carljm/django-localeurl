@@ -1,20 +1,30 @@
 from django.core import urlresolvers
+from django.http import HttpResponseRedirect
+from django.utils import translation
 
 class Resolver(object):
-    def __init__(self, settings, reverse=urlresolvers.reverse):
+    def __init__(self, settings):
         self.settings = settings
-        self.django_reverse = reverse
         self.supported_locales = dict(settings.LANGUAGES)
-        assert self.supported_language(settings.LANGUAGE_CODE) \
-                in self.supported_locales, \
+        assert self.is_supported_locale(settings.LANGUAGE_CODE), \
                 "settings.LANGUAGE_CODE must be in settings.LANGUAGES"
 
     def process_request(self, request):
         """
-        Sets the LANGUAGE_CODE attribute on the request. This method must be
-        implemented in extending classes.
+        Parses the request URL and sets the LANGUAGE_CODE attribute. The
+        default implementation uses the build_locale_url and parse_locale_url
+        methods. It may be overridden to be more efficient in extending
+        classes.
         """
-        raise NotImplementedError
+        url = request.build_absolute_uri()
+        path, locale = self.parse_locale_url(url)
+        if locale is None:
+            locale = self.get_fallback_locale(request)
+        locale_url = self.build_locale_url(path, locale, request)
+        if url != request.build_absolute_uri(locale_url):
+            return HttpResponseRedirect(locale_url)
+        request.path_info = path
+        request.LANGUAGE_CODE = locale
 
     def build_locale_url(self, path, locale=None, request=None, prefix=None):
         """
@@ -32,7 +42,8 @@ class Resolver(object):
         """
         raise NotImplementedError
 
-    def reverse(self, viewname, urlconf=None, args=[], kwargs={}, prefix=None):
+    def reverse(self, django_reverse, viewname, urlconf=None, args=[],
+            kwargs={}, prefix=None):
         """
         Returns the URL to a view. This function uses the urlresolvers.reverse
         function, strips off the script prefix and call build_locale_url with
@@ -41,7 +52,7 @@ class Resolver(object):
         """
         if prefix is None:
             prefix = urlresolvers.get_script_prefix()
-        url = self.django_reverse(viewname, urlconf, args, kwargs, prefix)
+        url = django_reverse(viewname, urlconf, args, kwargs, prefix)
         assert url.startswith(prefix)
         return self.build_locale_url(url[len(prefix)-1:])
 
@@ -63,8 +74,7 @@ class Resolver(object):
         guaranteed to be in settings.LANGUAGES
         """
         if request is not None and hasattr(request, 'LANGUAGE_CODE'):
-            assert self.supported_language(request.LANGUAGE_CODE) \
-                    in self.supported_locales, \
+            assert self.is_supported_locale(request.LANGUAGE_CODE), \
                     "request.LANGUAGE_CODE must be in settings.LANGUAGES"
             return self.supported_language(request.LANGUAGE_CODE)
         else:
@@ -90,12 +100,19 @@ class Resolver(object):
         return self.supported_language(self.settings.LANGUAGE_CODE)
     default_locale = property(_default_locale)
 
+    def _current_locale(self):
+        """
+        The currently activated locale.
+        """
+        return self.supported_language(translation.get_language())
+    current_locale = property(_current_locale)
+
     def strip_script_prefix(self, url):
         """
-        Strips the SCRIPT_PREFIX from the URL. The function assumes the URL
+        Strips the script prefix from the URL. The function assumes the URL
         starts with the prefix.
         """
         assert url.startswith(urlresolvers.get_script_prefix()), \
-                "URL does not start with SCRIPT_PREFIX: %s" % url
+                "URL does not start with script prefix: %s" % url
         pos = len(urlresolvers.get_script_prefix()) - 1
         return url[:pos], url[pos:]

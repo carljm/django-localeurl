@@ -19,10 +19,6 @@ class LocaleURLMiddleware(object):
             from django.core.exceptions import MiddlewareNotUsed
             raise MiddlewareNotUsed()
 
-        # Make sure the default language is in the list of supported languages
-        assert resolver.is_supported_locale(settings.LANGUAGE_CODE), \
-                "settings.LANGUAGE_CODE must be in settings.LANGUAGES."
-
     def process_request(self, request):
         response = resolver.process_request(request)
         if response is not None:

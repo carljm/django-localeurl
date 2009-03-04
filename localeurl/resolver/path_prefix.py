@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT License (see LICENSE.txt)
 
 import re
+import urlparse
 from django.conf import settings as django_settings
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
@@ -37,30 +38,25 @@ class PathPrefixResolver(Resolver):
         self.locale_independent_paths = getattr(settings,
                 'LOCALE_INDEPENDENT_PATHS', ())
 
-    def process_request(self, request):
-        locale, path = self.split_path(request.path_info)
-
-        # Redirect locale independent paths with locale prefix
-        if locale and self.is_locale_independent(path):
-            return self.redirection(path, locale)
-
-        # Redirect default locale with prefix unless PREFIX_DEFAULT_LOCALE
-        if self.is_default_locale(locale) \
+    def build_locale_url(self, path, locale=None, request=None):
+        if locale is None:
+            locale = self.current_locale
+        if self.is_locale_independent(path):
+            pass
+        elif self.is_default_locale(locale) \
                 and not self.prefix_default_locale:
-            return self.redirection(path, locale)
+            pass
+        else:
+            path = ''.join((u'/', locale, path))
+        return ''.join((urlresolvers.get_script_prefix(), path[1:]))
 
-        # Redirect paths without prefix if PREFIX_DEFAULT_LOCALE
-        if not locale and self.prefix_default_locale \
-                and not self.is_locale_independent(path):
-            return self.redirection(path, self.get_fallback_locale(request))
-
+    def parse_locale_url(self, url):
+        path = self._get_path(url)
+        (_, path) = self.strip_script_prefix(path)
+        (locale, path) = self.split_path(path)
         if not locale:
-            locale = self.get_fallback_locale(request)
-        request.path_info = path
-        request.LANGUAGE_CODE = locale
-
-    def redirection(self, path, locale):
-        return HttpResponseRedirect(self.build_locale_url(path, locale))
+            locale = None
+        return (path, locale)
 
     def split_path(self, path):
         check = self.path_re.match(path)
@@ -78,22 +74,6 @@ class PathPrefixResolver(Resolver):
                 return True
         return False
 
-    def build_locale_url(self, path, locale=None, request=None):
-        if not locale:
-            from django.utils import translation
-            locale = self.supported_language(translation.get_language())
-        if self.is_locale_independent(path):
-            pass
-        elif self.is_default_locale(locale) \
-                and not self.prefix_default_locale:
-            pass
-        else:
-            path = ''.join([u'/', locale, path])
-        return ''.join([urlresolvers.get_script_prefix(), path[1:]])
-
-    def parse_locale_url(self, url):
-        (_, path) = self.strip_script_prefix(url)
-        (locale, path) = self.split_path(path)
-        if not locale:
-            locale = None
-        return (path, locale)
+    def _get_path(self, url):
+        (_, _, path, query, fragment) = urlparse.urlsplit(url)
+        return urlparse.urlunsplit(('', '', path, query, fragment))

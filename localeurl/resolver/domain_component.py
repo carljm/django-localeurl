@@ -13,11 +13,10 @@ DOMAIN_PATTERN = r'^(?P<locale>%s)\.(?P<domain>.+)$'
 class DomainComponentResolver(Resolver):
     def __init__(self, settings=django_settings):
         super(DomainComponentResolver, self).__init__(settings)
-        self.reverse = self.django_reverse
         self.default_locale_component = getattr(settings,
                 'DEFAULT_LOCALE_DOMAIN_COMPONENT', self.default_locale)
-        locales_re = '|'.join([self.default_locale_component
-                if self.is_default_locale(locale) else locale
+        locales_re = '|'.join([self.is_default_locale(locale)
+                and self.default_locale_component or locale
                 for locale in self.supported_locales])
         self.domain_re = re.compile(DOMAIN_PATTERN % locales_re)
         self.domain_reverse = urlresolvers.normalize(DOMAIN_PATTERN)[0][0]
@@ -26,18 +25,18 @@ class DomainComponentResolver(Resolver):
         locale, domain = self.split_domain(request.get_host())
         if not self.is_supported_locale(locale):
             locale = self.get_fallback_locale(request)
-        request.get_host = lambda: domain
         request.LANGUAGE_CODE = locale
 
     def build_locale_url(self, path, locale=None, request=None):
         if locale is None:
-            return path
+            return "%s%s" % (urlresolvers.get_script_prefix(), path[1:])
         else:
             assert request is not None, \
                     "Request required for building URL with specified locale"
+            (_, domain) = self.split_domain(request.get_host())
+            domain = self.join_domain(locale, domain)
             return "%s://%s%s%s" % (request.is_secure() and 'https' or 'http',
-                    self.join_domain(locale, request.get_host()),
-                    urlresolvers.get_script_prefix(), path[1:])
+                    domain, urlresolvers.get_script_prefix(), path[1:])
 
     def parse_locale_url(self, url):
         (_, domain, path, query, fragment) = urlparse.urlsplit(url)
@@ -57,6 +56,9 @@ class DomainComponentResolver(Resolver):
     def split_domain(self, domain):
         check = self.domain_re.match(domain)
         if check:
-            return check.group('locale'), check.group('domain')
+            locale = check.group('locale')
+            if locale == self.default_locale_component:
+                locale = self.default_locale
+            return locale, check.group('domain')
         else:
             return '', domain

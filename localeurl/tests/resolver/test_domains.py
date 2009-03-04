@@ -1,4 +1,5 @@
 from django.test import TestCase
+from localeurl.models import django_reverse
 from localeurl.resolver.domains import DomainsResolver
 from localeurl.tests.resolver.test_base import ResolverTestCase
 from localeurl.tests.utils import RequestFactory, TestSettings
@@ -66,4 +67,4 @@ class DomainResolverTestCase(ResolverTestCase):
     def test_reverses_path(self):
         resolver = DomainsResolver(self.settings)
         self.assertEqual('%s/test/' % (self.script_name),
-                resolver.reverse('localeurl.tests.views.test'))
+                resolver.reverse(django_reverse, 'localeurl.tests.views.test'))

@@ -10,7 +10,6 @@ from localeurl.resolver.base import Resolver
 class DomainsResolver(Resolver):
     def __init__(self, settings=django_settings):
         super(DomainsResolver, self).__init__(settings)
-        self.reverse = self.django_reverse
         self.domains = getattr(settings, 'LOCALEURL_DOMAINS', ())
         self.domain_locale_map = dict(self.domains)
         self.locale_domain_map = dict(map(reversed, self.domains))
@@ -21,19 +20,6 @@ class DomainsResolver(Resolver):
         assert all([locale in self.supported_locales
                 for locale in self.locale_domain_map]), \
                 "settings.LANGUAGES must contain all settings.LOCALE_DOMAINS"
-
-    def process_request(self, request):
-        try:
-            locale = self.domain_locale_map[request.get_host()]
-        except KeyError:
-            # Redirect to the domain for the fallback locale
-            return HttpResponseRedirect("%s://%s%s" % (
-                    request.is_secure() and 'https' or 'http',
-                    self.locale_domain_map[self.get_fallback_locale(request)],
-                    request.get_full_path()))
-        if not locale:
-            locale = self.get_fallback_locale(request)
-        request.LANGUAGE_CODE = locale
 
     def build_locale_url(self, path, locale=None, request=None):
         if locale is None:

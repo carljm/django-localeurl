@@ -1,5 +1,7 @@
+import unittest
 import re
 from django.test import TestCase
+from localeurl.models import django_reverse
 from localeurl.resolver.domain_component import DomainComponentResolver
 from localeurl.tests.resolver.test_base import ResolverTestCase
 from localeurl.tests.utils import RequestFactory, TestSettings
@@ -60,4 +62,7 @@ class DomainComponentResolverTestCase(ResolverTestCase):
     def test_reverses_path(self):
         resolver = DomainComponentResolver(self.settings)
         self.assertEqual('%s/test/' % (self.script_name),
-                resolver.reverse('localeurl.tests.views.test'))
+                resolver.reverse(django_reverse, 'localeurl.tests.views.test'))
+
+if __name__ == '__main__':
+    unittest.main()

@@ -10,4 +10,8 @@ from localeurl.resolver import resolver
 
 if settings.USE_I18N:
     def reverse(viewname, urlconf=None, args=[], kwargs={}, prefix=None):
-        return resolver.reverse(viewname, urlconf, args, kwargs, prefix)
+        return resolver.reverse(django_reverse, viewname, urlconf, args,
+                kwargs, prefix)
+
+    django_reverse = urlresolvers.reverse
+    urlresolvers.reverse = reverse
