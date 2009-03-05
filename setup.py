@@ -37,7 +37,8 @@ setup(
     name = "django-%s" % app_name,
     version = version,
 
-    packages = [app_name, '%s.templatetags' % app_name],
+    packages = [app_name, '%s.templatetags' % app_name,
+            '%s.resolver' % app_name],
 
     author = "Joost Cassee",
     author_email = "joost@cassee.net",
