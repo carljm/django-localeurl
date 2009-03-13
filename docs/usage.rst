@@ -2,37 +2,21 @@
 Usage
 =====
 
-The localeurl application integrates into your Django project by setting
-``request.LANGUAGE_CODE`` based on the URL and then stripping off the language
-prefix from ``request.path_info`` so that the URLconf modules do not need to
-change. Existing applications should work transparently with localeurl if they
-follow the usual Django convention of using ``url`` tags in templates to
-generate links.
+The localeurl application integrates into your Django project by setting ``request.LANGUAGE_CODE`` based on the URL and then stripping off the language prefix from ``request.path_info`` so that the URLconf modules do not need to change. Existing applications should work transparently with localeurl if they follow the usual Django convention of using ``url`` tags in templates to generate links.
 
-Paths without locale prefix are redirected to the default locale, either from
-``request.LANGUAGE_CODE`` (set by a previous language discovery middleware such
-as ``django.middleware.locale.LocaleMiddleware``) or from
-``settings.LANGUAGE_CODE``. So a request for ``/about/`` would be redirected to
-``/fr/about/`` if French is the default language. (This behavior can be changed
-using ``settings.PREFIX_DEFAULT_LANGUAGE``.)
+Paths without locale prefix are redirected to the default locale, either from ``request.LANGUAGE_CODE`` (set by a previous language discovery middleware such as ``django.middleware.locale.LocaleMiddleware``) or from ``settings.LANGUAGE_CODE``. So a request for ``/about/`` would be redirected to ``/fr/about/`` if French is the default language. (This behavior can be changed using ``settings.PREFIX_DEFAULT_LANGUAGE``.)
 
-The application adds a template tag and a filter. Add the following at the top
-of a template to enable them::
+The application adds one template tag and two filters. Add the following at the top of a template to enable them::
 
   {% load localeurl_tags %}
 
-The tag and filters do not work yet if you use domain-based locale selection
-(``LOCALE_URL_TYPE = 'domain_prefix'``, see :ref:`configuration`).
+The tag and filters do not work yet if you use domain-based locale selection (``LOCALE_URL_TYPE = 'domain_prefix'``, see :ref:`configuration`).
 
 
 The ``locale_url`` tag
 ----------------------
 
-The localeurl application replaces the ``urlresolvers.reverse function`` to
-return locale-specific URLs, so existing templates should not need to be
-changed. To manipulate the language on rendered URLs you can use the
-``locale_url`` tag. This tag behaves exactly like the standard ``url`` tag,
-except you specify a language.
+The localeurl application replaces the ``urlresolvers.reverse function`` to return locale-specific URLs, so existing templates should not need to be changed. To manipulate the language on rendered URLs you can use the ``locale_url`` tag. This tag behaves exactly like the standard ``url`` tag, except you specify a language.
 
 Examples
 ^^^^^^^^
@@ -44,11 +28,7 @@ You can refer to a specific URL in a specified language like this::
 The ``chlocale`` filter
 -----------------------
 
-To add or change the locale prefix of a path use ``chlocale``. It takes one
-argument: the new locale. If the path is locale-independent any prefix on the
-path will be stripped. This is also the case if
-``settings.PREFIX_DEFAULT_LANGUAGE == False`` and the locale argument is the
-default locale.
+To add or change the locale prefix of a path use ``chlocale``. It takes one argument: the new locale. If the path is locale-independent any prefix on the path will be stripped. This is also the case if ``settings.PREFIX_DEFAULT_LANGUAGE == False`` and the locale argument is the default locale.
 
 Examples
 ^^^^^^^^
@@ -57,8 +37,7 @@ To change the language of a URL to Dutch::
 
 	Please click <a href="{{ help_url|chlocale:"nl" }}">here</a> for Dutch help.
 
-This filter can be used to allow users to go to a different language version of
-the same page. If you have this in your settings file::
+This filter can be used to allow users to go to a different language version of the same page. If you have this in your settings file::
 
 	_ = lambda s: s
 	LANGUAGES = (
@@ -85,8 +64,7 @@ the same page. If you have this in your settings file::
 The ``rmlocale`` filter
 -----------------------
 
-You can use the ``rmlocale`` filter to remove the locale prefix from a path. It
-takes no arguments.
+You can use the ``rmlocale`` filter to remove the locale prefix from a path. It takes no arguments.
 
 Examples
 ^^^^^^^^
