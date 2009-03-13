@@ -5,40 +5,19 @@ Changelog
 Repository:
   * Changed chlocale tag to strip prefix of locale-independent paths.
   * Moved the monkey-patching of urlresolvers.reverse to models.py.
-
-2009-01-19:
-  * Added rudimental support for getting the locale from the domain name.
   * Removed ``REDIRECT_LOCALE_INDEPENDENT_PATHS`` settings option; this is now the default.
-  * Removed support for fall-back to ``LocaleURLMiddleware`` language negotiation.
-  * Internal restructuring.
 
-2009-01-07:
-  * Added Artiom Diomin as a maintainer.
-
-2008-11-26:
+Release 1.2: (2009-01-19):
   * Moved the documentation into the source tree. (Based on `a blog post`_ by Andi Albrecht.)
   * Released version 1.2.
 
-2008-11-20:
-  * Released version 1.1.
-
-2008-11-16:
+Release 1.1: (2008-11-20):
   * Added the ``PREFIX_DEFAULT_LANGUAGE`` settings option contributed by Jonas Christian.
-
-2008-11-13:
   * Added ``REDIRECT_LOCALE_INDEPENDENT_PATHS`` settings option.
 
-2008-09-10:
-  * Released version 1.0.
+Release 1.0: (2008-09-10):
   * Added Django 1.0 or higher as a prerequisite.
-
-2008-08-02:
-  * Released version 1.0rc1.
-  * Added Django 1.0-alpha or higher as a prerequisite.
-
-2008-06-10:
   * Moved to Google Code.
-  * Released version 0.9.0.
 
 .. _`a blog post`: http://andialbrecht.blogspot.com/2008/10/google-code-sphinx-theme.html
 

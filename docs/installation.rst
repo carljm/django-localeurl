@@ -2,7 +2,8 @@
 Installation
 ============
 
-This section describes how to install the localeurl application in your Django project.
+This section describes how to install the localeurl application in your Django
+project.
 
 
 Prerequisites
@@ -28,7 +29,9 @@ applications.
    ``'django.middleware.common.CommonMiddleware'`` or ``settings.APPEND_SLASH``
    will not work.
 
-#. Add ``'localeurl'`` to ``settings.INSTALLED_APPS``.
+#. Add ``'localeurl'`` to ``settings.INSTALLED_APPS``. Because the application
+   needs to replace the standard ``urlresolvers.reverse`` function, it is
+   important to place it high in the list.
 
 #. Make sure ``settings.LANGUAGE_CODE`` or its root language is in
    ``settings.LANGUAGES``. For example, if ``LANGUAGE_CODE == 'en-us'`` then
@@ -44,19 +47,13 @@ Configuration
 The application can be configured by editing the project's ``settings.py``
 file.
 
-``LOCALE_URL_TYPE`` (default: ``'path_prefix'``)
-  Configures where localeurl expects to find the locale in the URL.
-
-  ``'path_prefix'``
-    The locale is the first part of the path: ``http://example.com/<locale>/path/``
-
-  ``'domain_prefix'``
-    The locale is the first component of the domain: ``http://<locale>.example.com/path/``
-
 ``LOCALE_INDEPENDENT_PATHS``
-  A tuple of regular expression objects matching paths that will not be redirected to add the language prefix. For example, a site with a language selection splash page would add ``'^/$'`` as a locale independent path match. Note that for performance reasons you must use ``re`` objects, not strings. Additionally, any path starting with ``settings.MEDIA_URL`` will also not be redirected. This only works if it is a path, i.e. not a full URL.
-
-  This options can only be used if ``LOCALE_URL_TYPE == 'path_prefix'``.
+  A tuple of regular expression objects matching paths that will not be
+  redirected to add the language prefix. For example, a site with a language
+  selection splash page would add ``'^/$'`` as a locale independent path match.
+  Note that for performance reasons you must use ``re`` objects, not strings.
+  Additionally, any path starting with ``settings.MEDIA_URL`` will also not be
+  redirected if it is a path, i.e. not a full URL.
 
 Example::
 
@@ -68,6 +65,7 @@ Example::
   )
 
 ``PREFIX_DEFAULT_LANGUAGE`` (default: ``True``)
-  Whether to add the prefix for the default language (``settings.LANGUAGE_CODE``). For example, if ``LANGUAGE_CODE == 'en'`` then the path ``/about/`` will be passed to the URL resolver unchanged and ``/en/about/`` will be redirected to ``/about/``.
-
-  This options can only be used if ``LOCALE_URL_TYPE == 'path_prefix'``.
+  Whether to add the prefix for the default language
+  (``settings.LANGUAGE_CODE``). For example, if ``LANGUAGE_CODE == 'en'`` then
+  the path ``/about/`` will be passed to the URL resolver unchanged and
+  ``/en/about/`` will be redirected to ``/about/``.

@@ -300,7 +300,8 @@
   
   <div class="section">
 <h1 id="installation">Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>This section describes how to install the localeurl application in your Django project.</p>
+<p>This section describes how to install the localeurl application in your Django
+project.</p>
 <div class="section">
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <p>The localeurl application requires <a class="reference" href="http://www.djangoproject.com/download/">Django</a> 1.0 or higher.</p>
@@ -317,7 +318,9 @@ Django project directory or run <tt class="docutils literal"><span class="pre">p
 <tt class="docutils literal"><span class="pre">settings.MIDDLEWARE_CLASSES</span></tt>. It must come <em>before</em>
 <tt class="docutils literal"><span class="pre">'django.middleware.common.CommonMiddleware'</span></tt> or <tt class="docutils literal"><span class="pre">settings.APPEND_SLASH</span></tt>
 will not work.</li>
-<li>Add <tt class="docutils literal"><span class="pre">'localeurl'</span></tt> to <tt class="docutils literal"><span class="pre">settings.INSTALLED_APPS</span></tt>.</li>
+<li>Add <tt class="docutils literal"><span class="pre">'localeurl'</span></tt> to <tt class="docutils literal"><span class="pre">settings.INSTALLED_APPS</span></tt>. Because the application
+needs to replace the standard <tt class="docutils literal"><span class="pre">urlresolvers.reverse</span></tt> function, it is
+important to place it high in the list.</li>
 <li>Make sure <tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt> or its root language is in
 <tt class="docutils literal"><span class="pre">settings.LANGUAGES</span></tt>. For example, if <tt class="docutils literal"><span class="pre">LANGUAGE_CODE</span> <span class="pre">==</span> <span class="pre">'en-us'</span></tt> then
 <tt class="docutils literal"><span class="pre">LANGUAGES</span></tt> must contain either <tt class="docutils literal"><span class="pre">'en-us'</span></tt> or <tt class="docutils literal"><span class="pre">'en'</span></tt>. If you have not
@@ -329,19 +332,13 @@ changed either option you do not have to do anything.</li>
 <p>The application can be configured by editing the project&#8217;s <tt class="docutils literal"><span class="pre">settings.py</span></tt>
 file.</p>
 <dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">LOCALE_URL_TYPE</span></tt> (default: <tt class="docutils literal"><span class="pre">'path_prefix'</span></tt>)</dt>
-<dd><p class="first">Configures where localeurl expects to find the locale in the URL.</p>
-<dl class="last docutils">
-<dt><tt class="docutils literal"><span class="pre">'path_prefix'</span></tt></dt>
-<dd>The locale is the first part of the path: <tt class="docutils literal"><span class="pre">http://example.com/&lt;locale&gt;/path/</span></tt></dd>
-<dt><tt class="docutils literal"><span class="pre">'domain_prefix'</span></tt></dt>
-<dd>The locale is the first component of the domain: <tt class="docutils literal"><span class="pre">http://&lt;locale&gt;.example.com/path/</span></tt></dd>
-</dl>
-</dd>
 <dt><tt class="docutils literal"><span class="pre">LOCALE_INDEPENDENT_PATHS</span></tt></dt>
-<dd><p class="first">A tuple of regular expression objects matching paths that will not be redirected to add the language prefix. For example, a site with a language selection splash page would add <tt class="docutils literal"><span class="pre">'^/$'</span></tt> as a locale independent path match. Note that for performance reasons you must use <tt class="docutils literal"><span class="pre">re</span></tt> objects, not strings. Additionally, any path starting with <tt class="docutils literal"><span class="pre">settings.MEDIA_URL</span></tt> will also not be redirected. This only works if it is a path, i.e. not a full URL.</p>
-<p class="last">This options can only be used if <tt class="docutils literal"><span class="pre">LOCALE_URL_TYPE</span> <span class="pre">==</span> <span class="pre">'path_prefix'</span></tt>.</p>
-</dd>
+<dd>A tuple of regular expression objects matching paths that will not be
+redirected to add the language prefix. For example, a site with a language
+selection splash page would add <tt class="docutils literal"><span class="pre">'^/$'</span></tt> as a locale independent path match.
+Note that for performance reasons you must use <tt class="docutils literal"><span class="pre">re</span></tt> objects, not strings.
+Additionally, any path starting with <tt class="docutils literal"><span class="pre">settings.MEDIA_URL</span></tt> will also not be
+redirected if it is a path, i.e. not a full URL.</dd>
 </dl>
 <p>Example:</p>
 <div class="highlight"><pre><span class="k">import</span> <span class="nn">re</span>
@@ -353,9 +350,10 @@ file.</p>
 </pre></div>
 <dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">PREFIX_DEFAULT_LANGUAGE</span></tt> (default: <tt class="xref docutils literal"><span class="pre">True</span></tt>)</dt>
-<dd><p class="first">Whether to add the prefix for the default language (<tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt>). For example, if <tt class="docutils literal"><span class="pre">LANGUAGE_CODE</span> <span class="pre">==</span> <span class="pre">'en'</span></tt> then the path <tt class="docutils literal"><span class="pre">/about/</span></tt> will be passed to the URL resolver unchanged and <tt class="docutils literal"><span class="pre">/en/about/</span></tt> will be redirected to <tt class="docutils literal"><span class="pre">/about/</span></tt>.</p>
-<p class="last">This options can only be used if <tt class="docutils literal"><span class="pre">LOCALE_URL_TYPE</span> <span class="pre">==</span> <span class="pre">'path_prefix'</span></tt>.</p>
-</dd>
+<dd>Whether to add the prefix for the default language
+(<tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt>). For example, if <tt class="docutils literal"><span class="pre">LANGUAGE_CODE</span> <span class="pre">==</span> <span class="pre">'en'</span></tt> then
+the path <tt class="docutils literal"><span class="pre">/about/</span></tt> will be passed to the URL resolver unchanged and
+<tt class="docutils literal"><span class="pre">/en/about/</span></tt> will be redirected to <tt class="docutils literal"><span class="pre">/about/</span></tt>.</dd>
 </dl>
 </div>
 </div>
