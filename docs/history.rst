@@ -1,8 +1,11 @@
-=========
-Changelog
-=========
+=======
+History
+=======
 
-Repository:
+Changelog
+---------
+
+Release 1.3: (2009-04-06)
   * Changed chlocale tag to strip prefix of locale-independent paths.
   * Moved the monkey-patching of urlresolvers.reverse to models.py.
   * Removed ``REDIRECT_LOCALE_INDEPENDENT_PATHS`` settings option; this is now
@@ -27,11 +30,13 @@ Release 1.0: (2008-09-10):
 Credits
 -------
 
-localeurl is developed by `Joost Cassee`_ and `Artiom Diomin`_ based on the
-work by Atli Þorbjörnsson. Contributions by Jonas Christian.
+localeurl is developed by `Joost Cassee`_ based on the
+work by Atli Þorbjörnsson. Contributions by Jonas Christian. Includes code
+from the `django-localize`_ project by `Artiom Diomin`_.
 
 It was partly taken from and partly inspired by discussions on the
 django-users_ and django-multilingual_ mailinglists:
+
  * Atli Þorbjörnsson: `Locale from URL Middleware`_
  * Panos Laganakos: `creating a multilingual middleware`_
  * Piotr Majewski: `multilingual middleware NEW FEATURE!`_
@@ -44,6 +49,7 @@ The announcement of localeurl on these lists can be found here:
  * `Announcement on django-multilingual`_
 
 .. _`Joost Cassee`: http://joost.cassee.net/
+.. _`django-localize`: http://github.com/kron4eg/django-localize/tree/master
 .. _`Artiom Diomin`: http://jabber.linux.md/
 .. _django-users: http://groups.google.com/group/django-users
 .. _django-multilingual: http://code.google.com/p/django-multilingual/
