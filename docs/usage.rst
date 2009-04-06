@@ -15,7 +15,7 @@ Paths without locale prefix are redirected to the default locale, either from
 as ``django.middleware.locale.LocaleMiddleware``) or from
 ``settings.LANGUAGE_CODE``. So a request for ``/about/`` would be redirected to
 ``/fr/about/`` if French is the default language. (This behavior can be changed
-using ``settings.PREFIX_DEFAULT_LANGUAGE``.)
+using ``settings.PREFIX_DEFAULT_LOCALE``.)
 
 The application adds one template tag and two filters. Add the following at the
 top of a template to enable them::
@@ -46,7 +46,7 @@ The ``chlocale`` filter
 To add or change the locale prefix of a path use ``chlocale``. It takes one
 argument: the new locale. If the path is locale-independent any prefix on the
 path will be stripped. This is also the case if
-``settings.PREFIX_DEFAULT_LANGUAGE == False`` and the locale argument is the
+``settings.PREFIX_DEFAULT_LOCALE == False`` and the locale argument is the
 default locale.
 
 Examples

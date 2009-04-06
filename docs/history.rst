@@ -5,14 +5,17 @@ Changelog
 Repository:
   * Changed chlocale tag to strip prefix of locale-independent paths.
   * Moved the monkey-patching of urlresolvers.reverse to models.py.
-  * Removed ``REDIRECT_LOCALE_INDEPENDENT_PATHS`` settings option; this is now the default.
+  * Removed ``REDIRECT_LOCALE_INDEPENDENT_PATHS`` settings option; this is now
+    the default.
 
 Release 1.2: (2009-01-19):
-  * Moved the documentation into the source tree. (Based on `a blog post`_ by Andi Albrecht.)
+  * Moved the documentation into the source tree. (Based on `a blog post`_ by
+    Andi Albrecht.)
   * Released version 1.2.
 
 Release 1.1: (2008-11-20):
-  * Added the ``PREFIX_DEFAULT_LANGUAGE`` settings option contributed by Jonas Christian.
+  * Added the ``PREFIX_DEFAULT_LOCALE`` settings option contributed by Jonas
+    Christian.
   * Added ``REDIRECT_LOCALE_INDEPENDENT_PATHS`` settings option.
 
 Release 1.0: (2008-09-10):
@@ -24,14 +27,17 @@ Release 1.0: (2008-09-10):
 Credits
 -------
 
-localeurl is developed by `Joost Cassee`_ and `Artiom Diomin`_ based on the work by Atli Þorbjörnsson. Contributions by Jonas Christian.
+localeurl is developed by `Joost Cassee`_ and `Artiom Diomin`_ based on the
+work by Atli Þorbjörnsson. Contributions by Jonas Christian.
 
-It was partly taken from and partly inspired by discussions on the django-users_ and django-multilingual_ mailinglists:
+It was partly taken from and partly inspired by discussions on the
+django-users_ and django-multilingual_ mailinglists:
  * Atli Þorbjörnsson: `Locale from URL Middleware`_
  * Panos Laganakos: `creating a multilingual middleware`_
  * Piotr Majewski: `multilingual middleware NEW FEATURE!`_
 
-See also `this blog post on internationalisation`_ by Yann Malet that references Atli's code.
+See also `this blog post on internationalisation`_ by Yann Malet that
+references Atli's code.
 
 The announcement of localeurl on these lists can be found here:
  * `Announcement on django-users`_

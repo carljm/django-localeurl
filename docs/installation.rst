@@ -64,7 +64,7 @@ Example::
       re.compile('^/ajax/'),
   )
 
-``PREFIX_DEFAULT_LANGUAGE`` (default: ``True``)
+``PREFIX_DEFAULT_LOCALE`` (default: ``True``)
   Whether to add the prefix for the default language
   (``settings.LANGUAGE_CODE``). For example, if ``LANGUAGE_CODE == 'en'`` then
   the path ``/about/`` will be passed to the URL resolver unchanged and

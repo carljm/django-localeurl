@@ -321,7 +321,7 @@ generate internal links.</p>
 as <tt class="docutils literal"><span class="pre">django.middleware.locale.LocaleMiddleware</span></tt>) or from
 <tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt>. So a request for <tt class="docutils literal"><span class="pre">/about/</span></tt> would be redirected to
 <tt class="docutils literal"><span class="pre">/fr/about/</span></tt> if French is the default language. (This behavior can be changed
-using <tt class="docutils literal"><span class="pre">settings.PREFIX_DEFAULT_LANGUAGE</span></tt>.)</p>
+using <tt class="docutils literal"><span class="pre">settings.PREFIX_DEFAULT_LOCALE</span></tt>.)</p>
 <p>The application adds one template tag and two filters. Add the following at the
 top of a template to enable them:</p>
 <pre>{% load localeurl_tags %}</pre>
@@ -343,7 +343,7 @@ except you specify a language.</p>
 <p>To add or change the locale prefix of a path use <tt class="docutils literal"><span class="pre">chlocale</span></tt>. It takes one
 argument: the new locale. If the path is locale-independent any prefix on the
 path will be stripped. This is also the case if
-<tt class="docutils literal"><span class="pre">settings.PREFIX_DEFAULT_LANGUAGE</span> <span class="pre">==</span> <span class="pre">False</span></tt> and the locale argument is the
+<tt class="docutils literal"><span class="pre">settings.PREFIX_DEFAULT_LOCALE</span> <span class="pre">==</span> <span class="pre">False</span></tt> and the locale argument is the
 default locale.</p>
 <div class="section">
 <h3 id="id1">Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
