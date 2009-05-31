@@ -68,6 +68,7 @@ the same page. If you have this in your settings file::
 	)
 	TEMPLATE_CONTEXT_PROCESSORS = (
 	    'django.core.context_processors.request',
+	    'django.core.context_processors.i18n',
 	    ...
 	)
 

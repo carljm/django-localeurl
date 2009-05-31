@@ -38,7 +38,7 @@
     <link rel="index" title="Global index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="top" title="localeurl trunk documentation" href="index.html" />
-    <link rel="next" title="Changelog" href="history.html" />
+    <link rel="next" title="History" href="history.html" />
     <link rel="prev" title="Installation" href="installation.html" />
 </head>
 <body class="t6">
@@ -153,7 +153,7 @@
  
  <a href="index.html">localeurl trunk documentation</a> |
  <span>
-   <a href="history.html" title="Changelog"
+   <a href="history.html" title="History"
       accesskey="N">next</a>
  </span> |
  <span>
@@ -239,7 +239,7 @@
  <td><ul>
  
  <li>
-   <a href="history.html" title="next chapter">Changelog</a>
+   <a href="history.html" title="next chapter">History</a>
  </li>
  
 
@@ -270,17 +270,17 @@
   <b>Table of Contents</b><br/>
   <table class="pmeta toc" cellpadding=5><tr><td>
 	<ul>
-<li><a class="reference" href="">Usage</a><ul>
-<li><a class="reference" href="#the-locale-url-tag">The <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag</a><ul>
-<li><a class="reference" href="#examples">Examples</a></li>
+<li><a class="reference external" href="">Usage</a><ul>
+<li><a class="reference external" href="#the-locale-url-tag">The <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag</a><ul>
+<li><a class="reference external" href="#examples">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#the-chlocale-filter">The <tt class="docutils literal"><span class="pre">chlocale</span></tt> filter</a><ul>
-<li><a class="reference" href="#id1">Examples</a></li>
+<li><a class="reference external" href="#the-chlocale-filter">The <tt class="docutils literal"><span class="pre">chlocale</span></tt> filter</a><ul>
+<li><a class="reference external" href="#id1">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#the-rmlocale-filter">The <tt class="docutils literal"><span class="pre">rmlocale</span></tt> filter</a><ul>
-<li><a class="reference" href="#id2">Examples</a></li>
+<li><a class="reference external" href="#the-rmlocale-filter">The <tt class="docutils literal"><span class="pre">rmlocale</span></tt> filter</a><ul>
+<li><a class="reference external" href="#id2">Examples</a></li>
 </ul>
 </li>
 </ul>
@@ -307,8 +307,8 @@
    
      
   
-  <div class="section">
-<h1 id="usage">Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <p>The localeurl application provides a middleware class that sets
 <tt class="docutils literal"><span class="pre">request.LANGUAGE_CODE</span></tt> based on a prefix on the URL path. It stripping off
 this language prefix from <tt class="docutils literal"><span class="pre">request.path_info</span></tt> so that the URLconf modules do
@@ -324,46 +324,52 @@ as <tt class="docutils literal"><span class="pre">django.middleware.locale.Local
 using <tt class="docutils literal"><span class="pre">settings.PREFIX_DEFAULT_LOCALE</span></tt>.)</p>
 <p>The application adds one template tag and two filters. Add the following at the
 top of a template to enable them:</p>
-<pre>{% load localeurl_tags %}</pre>
-<div class="section">
-<h2 id="the-locale-url-tag">The <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag<a class="headerlink" href="#the-locale-url-tag" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>{% load localeurl_tags %}</pre>
+</div>
+<div class="section" id="the-locale-url-tag">
+<h2>The <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag<a class="headerlink" href="#the-locale-url-tag" title="Permalink to this headline">¶</a></h2>
 <p>The localeurl application replaces the <tt class="docutils literal"><span class="pre">urlresolvers.reverse</span></tt> function to
 return locale-specific URLs, so existing templates should not need to be
 changed. To manipulate the language on rendered URLs you can use the
 <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag. This tag behaves exactly like the standard <tt class="docutils literal"><span class="pre">url</span></tt> tag,
 except you specify a language.</p>
-<div class="section">
-<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
 <p>You can refer to a specific URL in a specified language like this:</p>
-<pre>&lt;a href="{% locale_url "de" articles.views.display id=article.id %}"&gt;Show article in German&lt;/a&gt;</pre>
+<div class="highlight-python"><pre>&lt;a href="{% locale_url "de" articles.views.display id=article.id %}"&gt;Show article in German&lt;/a&gt;</pre>
 </div>
 </div>
-<div class="section">
-<h2 id="the-chlocale-filter">The <tt class="docutils literal"><span class="pre">chlocale</span></tt> filter<a class="headerlink" href="#the-chlocale-filter" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="the-chlocale-filter">
+<h2>The <tt class="docutils literal"><span class="pre">chlocale</span></tt> filter<a class="headerlink" href="#the-chlocale-filter" title="Permalink to this headline">¶</a></h2>
 <p>To add or change the locale prefix of a path use <tt class="docutils literal"><span class="pre">chlocale</span></tt>. It takes one
 argument: the new locale. If the path is locale-independent any prefix on the
 path will be stripped. This is also the case if
 <tt class="docutils literal"><span class="pre">settings.PREFIX_DEFAULT_LOCALE</span> <span class="pre">==</span> <span class="pre">False</span></tt> and the locale argument is the
 default locale.</p>
-<div class="section">
-<h3 id="id1">Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h3>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>To change the language of a URL to Dutch:</p>
-<pre>Please click &lt;a href="{{ help_url|chlocale:"nl" }}"&gt;here&lt;/a&gt; for Dutch help.</pre>
+<div class="highlight-python"><pre>Please click &lt;a href="{{ help_url|chlocale:"nl" }}"&gt;here&lt;/a&gt; for Dutch help.</pre>
+</div>
 <p>This filter can be used to allow users to go to a different language version of
 the same page. If you have this in your settings file:</p>
-<pre>_ = lambda s: s
-LANGUAGES = (
-    ('en', _(u'English')),
-    ('nl', _(u'Nederlands')),
-    ('de', _(u'Deutsch')),
-    ('fr', _(u'Français')),
-)
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.request',
-    ...
-)</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">_</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span>
+<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s">&#39;en&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;English&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s">&#39;nl&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;Nederlands&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s">&#39;de&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;Deutsch&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s">&#39;fr&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;Français&#39;</span><span class="p">)),</span>
+<span class="p">)</span>
+<span class="n">TEMPLATE_CONTEXT_PROCESSORS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.core.context_processors.request&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.core.context_processors.i18n&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <p>... then you can add a language selection menu in templates like this:</p>
-<pre>{% for lang in LANGUAGES %}
+<div class="highlight-python"><pre>{% for lang in LANGUAGES %}
         {% ifequal lang.0 LANGUAGE_CODE %}
             &lt;li class="selected"&gt;{{ lang.1 }}&lt;/li&gt;
         {% else %}
@@ -372,12 +378,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 {% endfor %}</pre>
 </div>
 </div>
-<div class="section">
-<h2 id="the-rmlocale-filter">The <tt class="docutils literal"><span class="pre">rmlocale</span></tt> filter<a class="headerlink" href="#the-rmlocale-filter" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="the-rmlocale-filter">
+<h2>The <tt class="docutils literal"><span class="pre">rmlocale</span></tt> filter<a class="headerlink" href="#the-rmlocale-filter" title="Permalink to this headline">¶</a></h2>
 <p>You can use the <tt class="docutils literal"><span class="pre">rmlocale</span></tt> filter to remove the locale prefix from a path. It
 takes no arguments.</p>
-<div class="section">
-<h3 id="id2">Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h3>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>To remove the language prefix for a URL:</p>
 <blockquote>
 The language-independent URL for this page is &lt;tt&gt;{{ request.path|rmlocale }}&lt;/tt&gt;.</blockquote>
