@@ -308,23 +308,42 @@ project.</p>
 </div>
 <div class="section" id="id1">
 <h2>Installation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>Installation basically consists of installing the middleware. If you want to
-use the template tags and filters also add localeurl to the installed
-applications.</p>
-<ol class="arabic simple">
-<li>Place the <tt class="docutils literal"><span class="pre">localeurl</span></tt> module in your Python path. You can put it into your
-Django project directory or run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt> from a shell.</li>
-<li>Add <tt class="docutils literal"><span class="pre">'localeurl.middleware.LocaleURLMiddleware'</span></tt> to
+<p>Installation basically consists of installing the middleware and adding
+<tt class="docutils literal"><span class="pre">'localeurl'</span></tt> to the installed applications list.</p>
+<ol class="arabic">
+<li><p class="first">Place the <tt class="docutils literal"><span class="pre">localeurl</span></tt> module in your Python path. You can put it into your
+Django project directory or run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt> from a shell.</p>
+</li>
+<li><p class="first">Add <tt class="docutils literal"><span class="pre">'localeurl.middleware.LocaleURLMiddleware'</span></tt> to
 <tt class="docutils literal"><span class="pre">settings.MIDDLEWARE_CLASSES</span></tt>. It must come <em>before</em>
 <tt class="docutils literal"><span class="pre">'django.middleware.common.CommonMiddleware'</span></tt> or <tt class="docutils literal"><span class="pre">settings.APPEND_SLASH</span></tt>
-will not work.</li>
-<li>Add <tt class="docutils literal"><span class="pre">'localeurl'</span></tt> to <tt class="docutils literal"><span class="pre">settings.INSTALLED_APPS</span></tt>. Because the application
+will not work.</p>
+</li>
+<li><p class="first">Add <tt class="docutils literal"><span class="pre">'localeurl'</span></tt> to <tt class="docutils literal"><span class="pre">settings.INSTALLED_APPS</span></tt>. Because the application
 needs to replace the standard <tt class="docutils literal"><span class="pre">urlresolvers.reverse</span></tt> function, it is
-important to place it high in the list.</li>
-<li>Make sure <tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt> or its root language is in
+important to place it at the top of the list:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;localeurl&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">If you want to use the view, include the localeurl URLconf module in your
+project:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="o">...</span>
+    <span class="p">(</span><span class="s">r&#39;^localeurl/&#39;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s">&#39;localeurl.urls&#39;</span><span class="p">)),</span>
+    <span class="o">...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Make sure <tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt> or its root language is in
 <tt class="docutils literal"><span class="pre">settings.LANGUAGES</span></tt>. For example, if <tt class="docutils literal"><span class="pre">LANGUAGE_CODE</span> <span class="pre">==</span> <span class="pre">'en-us'</span></tt> then
 <tt class="docutils literal"><span class="pre">LANGUAGES</span></tt> must contain either <tt class="docutils literal"><span class="pre">'en-us'</span></tt> or <tt class="docutils literal"><span class="pre">'en'</span></tt>. If you have not
-changed either option you do not have to do anything.</li>
+changed either option you do not have to do anything.</p>
+</li>
 </ol>
 </div>
 <div class="section" id="id2">

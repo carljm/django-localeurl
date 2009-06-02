@@ -17,6 +17,9 @@ as ``django.middleware.locale.LocaleMiddleware``) or from
 ``/fr/about/`` if French is the default language. (This behavior can be changed
 using ``settings.PREFIX_DEFAULT_LOCALE``.)
 
+Templates
+=========
+
 The application adds one template tag and two filters. Add the following at the
 top of a template to enable them::
 
@@ -24,7 +27,7 @@ top of a template to enable them::
 
 
 The ``locale_url`` tag
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 The localeurl application replaces the ``urlresolvers.reverse`` function to
 return locale-specific URLs, so existing templates should not need to be
@@ -32,8 +35,8 @@ changed. To manipulate the language on rendered URLs you can use the
 ``locale_url`` tag. This tag behaves exactly like the standard ``url`` tag,
 except you specify a language.
 
-Examples
-^^^^^^^^
+Example
+-------
 
 You can refer to a specific URL in a specified language like this::
 
@@ -41,7 +44,7 @@ You can refer to a specific URL in a specified language like this::
 
 
 The ``chlocale`` filter
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 To add or change the locale prefix of a path use ``chlocale``. It takes one
 argument: the new locale. If the path is locale-independent any prefix on the
@@ -50,47 +53,79 @@ path will be stripped. This is also the case if
 default locale.
 
 Examples
-^^^^^^^^
+--------
 
 To change the language of a URL to Dutch::
 
-	Please click <a href="{{ help_url|chlocale:"nl" }}">here</a> for Dutch help.
+    Please click <a href="{{ help_url|chlocale:"nl" }}">here</a> for Dutch help.
 
 This filter can be used to allow users to go to a different language version of
 the same page. If you have this in your settings file::
 
-	_ = lambda s: s
-	LANGUAGES = (
-	    ('en', _(u'English')),
-	    ('nl', _(u'Nederlands')),
-	    ('de', _(u'Deutsch')),
-	    ('fr', _(u'Français')),
-	)
-	TEMPLATE_CONTEXT_PROCESSORS = (
-	    'django.core.context_processors.request',
-	    'django.core.context_processors.i18n',
-	    ...
-	)
+    _ = lambda s: s
+    LANGUAGES = (
+        ('en', _(u'English')),
+        ('nl', _(u'Nederlands')),
+        ('de', _(u'Deutsch')),
+        ('fr', _(u'Français')),
+    )
+    TEMPLATE_CONTEXT_PROCESSORS = (
+        'django.core.context_processors.request',
+        'django.core.context_processors.i18n',
+        ...
+    )
 
 ... then you can add a language selection menu in templates like this::
 
-	{% for lang in LANGUAGES %}
-		{% ifequal lang.0 LANGUAGE_CODE %}
-		    <li class="selected">{{ lang.1 }}</li>
-		{% else %}
-		    <li><a href="{{ request.path|chlocale:lang.0 }}">{{ lang.1 }}</a></li>
-		{% endifequal %}
-	{% endfor %}
+    {% for lang in LANGUAGES %}
+        {% ifequal lang.0 LANGUAGE_CODE %}
+            <li class="selected">{{ lang.1 }}</li>
+        {% else %}
+            <li><a href="{{ request.path|chlocale:lang.0 }}">{{ lang.1 }}</a></li>
+        {% endifequal %}
+    {% endfor %}
 
 The ``rmlocale`` filter
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 You can use the ``rmlocale`` filter to remove the locale prefix from a path. It
 takes no arguments.
 
-Examples
-^^^^^^^^
+Example
+-------
 
 To remove the language prefix for a URL:
 
-	The language-independent URL for this page is <tt>{{ request.path|rmlocale }}</tt>.
+    The language-independent URL for this page is <tt>{{ request.path|rmlocale }}</tt>.
+
+Views
+=====
+
+The application supplies a view to change the locale.
+
+The ``change_locale`` view
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Instead of the language selection menu shown in the ``chlocale`` example above,
+you can use the ``localeurl_change_locale`` view to switch to a different
+language. It is designed to mimic the Django ``set_language`` `redirect view`_.
+
+.. _`redirect view`: http://docs.djangoproject.com/en/dev/topics/i18n/#the-set-language-redirect-view
+
+Example
+-------
+
+This form shows a drop-down box to change the page language::
+
+  {% load i18n %}
+
+  <form id="locale_switcher" method="POST" action="{% url localeurl_change_locale %}">
+      <select name="language" onchange="$('#locale_switcher').submit()">
+          {% for lang in LANGUAGES %}
+              <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected="selected"{% endifequal %}>{{ lang.1 }}</option>
+          {% endfor %}
+      </select>
+      <noscript>
+          <input type="submit" value="Set" />
+      </noscript>
+  </form>

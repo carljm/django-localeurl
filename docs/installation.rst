@@ -17,9 +17,8 @@ The localeurl application requires Django_ 1.0 or higher.
 Installation
 ------------
 
-Installation basically consists of installing the middleware. If you want to
-use the template tags and filters also add localeurl to the installed
-applications.
+Installation basically consists of installing the middleware and adding
+``'localeurl'`` to the installed applications list.
 
 #. Place the ``localeurl`` module in your Python path. You can put it into your
    Django project directory or run ``python setup.py install`` from a shell.
@@ -31,7 +30,21 @@ applications.
 
 #. Add ``'localeurl'`` to ``settings.INSTALLED_APPS``. Because the application
    needs to replace the standard ``urlresolvers.reverse`` function, it is
-   important to place it high in the list.
+   important to place it at the top of the list::
+
+     INSTALLED_APPS = (
+         'localeurl',
+         ...
+     )
+
+#. If you want to use the view, include the localeurl URLconf module in your
+   project::
+
+     urlpatterns = patterns('',
+         ...
+         (r'^localeurl/', include('localeurl.urls')),
+         ...
+     )
 
 #. Make sure ``settings.LANGUAGE_CODE`` or its root language is in
    ``settings.LANGUAGES``. For example, if ``LANGUAGE_CODE == 'en-us'`` then

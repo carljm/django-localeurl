@@ -271,16 +271,26 @@
   <table class="pmeta toc" cellpadding=5><tr><td>
 	<ul>
 <li><a class="reference external" href="">Usage</a><ul>
+<li><a class="reference external" href="#templates">Templates</a><ul>
 <li><a class="reference external" href="#the-locale-url-tag">The <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag</a><ul>
-<li><a class="reference external" href="#examples">Examples</a></li>
+<li><a class="reference external" href="#example">Example</a></li>
 </ul>
 </li>
 <li><a class="reference external" href="#the-chlocale-filter">The <tt class="docutils literal"><span class="pre">chlocale</span></tt> filter</a><ul>
-<li><a class="reference external" href="#id1">Examples</a></li>
+<li><a class="reference external" href="#examples">Examples</a></li>
 </ul>
 </li>
 <li><a class="reference external" href="#the-rmlocale-filter">The <tt class="docutils literal"><span class="pre">rmlocale</span></tt> filter</a><ul>
-<li><a class="reference external" href="#id2">Examples</a></li>
+<li><a class="reference external" href="#id1">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference external" href="#views">Views</a><ul>
+<li><a class="reference external" href="#the-change-locale-view">The <tt class="docutils literal"><span class="pre">change_locale</span></tt> view</a><ul>
+<li><a class="reference external" href="#id2">Example</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -322,33 +332,35 @@ as <tt class="docutils literal"><span class="pre">django.middleware.locale.Local
 <tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt>. So a request for <tt class="docutils literal"><span class="pre">/about/</span></tt> would be redirected to
 <tt class="docutils literal"><span class="pre">/fr/about/</span></tt> if French is the default language. (This behavior can be changed
 using <tt class="docutils literal"><span class="pre">settings.PREFIX_DEFAULT_LOCALE</span></tt>.)</p>
+<div class="section" id="templates">
+<h2>Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h2>
 <p>The application adds one template tag and two filters. Add the following at the
 top of a template to enable them:</p>
 <div class="highlight-python"><pre>{% load localeurl_tags %}</pre>
 </div>
 <div class="section" id="the-locale-url-tag">
-<h2>The <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag<a class="headerlink" href="#the-locale-url-tag" title="Permalink to this headline">¶</a></h2>
+<h3>The <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag<a class="headerlink" href="#the-locale-url-tag" title="Permalink to this headline">¶</a></h3>
 <p>The localeurl application replaces the <tt class="docutils literal"><span class="pre">urlresolvers.reverse</span></tt> function to
 return locale-specific URLs, so existing templates should not need to be
 changed. To manipulate the language on rendered URLs you can use the
 <tt class="docutils literal"><span class="pre">locale_url</span></tt> tag. This tag behaves exactly like the standard <tt class="docutils literal"><span class="pre">url</span></tt> tag,
 except you specify a language.</p>
-<div class="section" id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="example">
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
 <p>You can refer to a specific URL in a specified language like this:</p>
 <div class="highlight-python"><pre>&lt;a href="{% locale_url "de" articles.views.display id=article.id %}"&gt;Show article in German&lt;/a&gt;</pre>
 </div>
 </div>
 </div>
 <div class="section" id="the-chlocale-filter">
-<h2>The <tt class="docutils literal"><span class="pre">chlocale</span></tt> filter<a class="headerlink" href="#the-chlocale-filter" title="Permalink to this headline">¶</a></h2>
+<h3>The <tt class="docutils literal"><span class="pre">chlocale</span></tt> filter<a class="headerlink" href="#the-chlocale-filter" title="Permalink to this headline">¶</a></h3>
 <p>To add or change the locale prefix of a path use <tt class="docutils literal"><span class="pre">chlocale</span></tt>. It takes one
 argument: the new locale. If the path is locale-independent any prefix on the
 path will be stripped. This is also the case if
 <tt class="docutils literal"><span class="pre">settings.PREFIX_DEFAULT_LOCALE</span> <span class="pre">==</span> <span class="pre">False</span></tt> and the locale argument is the
 default locale.</p>
-<div class="section" id="id1">
-<h3>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
 <p>To change the language of a URL to Dutch:</p>
 <div class="highlight-python"><pre>Please click &lt;a href="{{ help_url|chlocale:"nl" }}"&gt;here&lt;/a&gt; for Dutch help.</pre>
 </div>
@@ -370,24 +382,52 @@ the same page. If you have this in your settings file:</p>
 </div>
 <p>... then you can add a language selection menu in templates like this:</p>
 <div class="highlight-python"><pre>{% for lang in LANGUAGES %}
-        {% ifequal lang.0 LANGUAGE_CODE %}
-            &lt;li class="selected"&gt;{{ lang.1 }}&lt;/li&gt;
-        {% else %}
-            &lt;li&gt;&lt;a href="{{ request.path|chlocale:lang.0 }}"&gt;{{ lang.1 }}&lt;/a&gt;&lt;/li&gt;
-        {% endifequal %}
+    {% ifequal lang.0 LANGUAGE_CODE %}
+        &lt;li class="selected"&gt;{{ lang.1 }}&lt;/li&gt;
+    {% else %}
+        &lt;li&gt;&lt;a href="{{ request.path|chlocale:lang.0 }}"&gt;{{ lang.1 }}&lt;/a&gt;&lt;/li&gt;
+    {% endifequal %}
 {% endfor %}</pre>
 </div>
 </div>
 </div>
 <div class="section" id="the-rmlocale-filter">
-<h2>The <tt class="docutils literal"><span class="pre">rmlocale</span></tt> filter<a class="headerlink" href="#the-rmlocale-filter" title="Permalink to this headline">¶</a></h2>
+<h3>The <tt class="docutils literal"><span class="pre">rmlocale</span></tt> filter<a class="headerlink" href="#the-rmlocale-filter" title="Permalink to this headline">¶</a></h3>
 <p>You can use the <tt class="docutils literal"><span class="pre">rmlocale</span></tt> filter to remove the locale prefix from a path. It
 takes no arguments.</p>
-<div class="section" id="id2">
-<h3>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>To remove the language prefix for a URL:</p>
 <blockquote>
 The language-independent URL for this page is &lt;tt&gt;{{ request.path|rmlocale }}&lt;/tt&gt;.</blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="views">
+<h2>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h2>
+<p>The application supplies a view to change the locale.</p>
+<div class="section" id="the-change-locale-view">
+<h3>The <tt class="docutils literal"><span class="pre">change_locale</span></tt> view<a class="headerlink" href="#the-change-locale-view" title="Permalink to this headline">¶</a></h3>
+<p>Instead of the language selection menu shown in the <tt class="docutils literal"><span class="pre">chlocale</span></tt> example above,
+you can use the <tt class="docutils literal"><span class="pre">localeurl_change_locale</span></tt> view to switch to a different
+language. It is designed to mimic the Django <tt class="docutils literal"><span class="pre">set_language</span></tt> <a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/i18n/#the-set-language-redirect-view">redirect view</a>.</p>
+<div class="section" id="id2">
+<h4>Example<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>This form shows a drop-down box to change the page language:</p>
+<div class="highlight-python"><pre>{% load i18n %}
+
+&lt;form id="locale_switcher" method="POST" action="{% url localeurl_change_locale %}"&gt;
+    &lt;select name="language" onchange="$('#locale_switcher').submit()"&gt;
+        {% for lang in LANGUAGES %}
+            &lt;option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected="selected"{% endifequal %}&gt;{{ lang.1 }}&lt;/option&gt;
+        {% endfor %}
+    &lt;/select&gt;
+    &lt;noscript&gt;
+        &lt;input type="submit" value="Set" /&gt;
+    &lt;/noscript&gt;
+&lt;/form&gt;</pre>
+</div>
+</div>
 </div>
 </div>
 </div>

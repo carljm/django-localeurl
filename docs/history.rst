@@ -5,6 +5,9 @@ History
 Changelog
 ---------
 
+Repository:
+  * Added the ``change_locale`` view, contributed by Panos Laganakos.
+
 Release 1.3: (2009-04-06)
   * Changed chlocale tag to strip prefix of locale-independent paths.
   * Moved the monkey-patching of urlresolvers.reverse to models.py.
