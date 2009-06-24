@@ -65,8 +65,6 @@ file.
   redirected to add the language prefix. For example, a site with a language
   selection splash page would add ``'^/$'`` as a locale independent path match.
   Note that for performance reasons you must use ``re`` objects, not strings.
-  Additionally, any path starting with ``settings.MEDIA_URL`` will also not be
-  redirected if it is a path, i.e. not a full URL.
 
 Example::
 
@@ -76,6 +74,10 @@ Example::
       re.compile('^/games/'),
       re.compile('^/ajax/'),
   )
+
+``LOCALE_INDEPENDENT_MEDIA_URL`` (default: ``True``)
+  Whether paths starting with ``settings.MEDIA_URL`` (if it is a path, i.e. not
+  a full URL) are considered to be locale-independent.
 
 ``PREFIX_DEFAULT_LOCALE`` (default: ``True``)
   Whether to add the prefix for the default language

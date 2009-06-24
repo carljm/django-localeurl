@@ -355,9 +355,7 @@ file.</p>
 <dd>A tuple of regular expression objects matching paths that will not be
 redirected to add the language prefix. For example, a site with a language
 selection splash page would add <tt class="docutils literal"><span class="pre">'^/$'</span></tt> as a locale independent path match.
-Note that for performance reasons you must use <tt class="docutils literal"><span class="pre">re</span></tt> objects, not strings.
-Additionally, any path starting with <tt class="docutils literal"><span class="pre">settings.MEDIA_URL</span></tt> will also not be
-redirected if it is a path, i.e. not a full URL.</dd>
+Note that for performance reasons you must use <tt class="docutils literal"><span class="pre">re</span></tt> objects, not strings.</dd>
 </dl>
 <p>Example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">import</span> <span class="nn">re</span>
@@ -369,6 +367,9 @@ redirected if it is a path, i.e. not a full URL.</dd>
 </pre></div>
 </div>
 <dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">LOCALE_INDEPENDENT_MEDIA_URL</span></tt> (default: <tt class="xref docutils literal"><span class="pre">True</span></tt>)</dt>
+<dd>Whether paths starting with <tt class="docutils literal"><span class="pre">settings.MEDIA_URL</span></tt> (if it is a path, i.e. not
+a full URL) are considered to be locale-independent.</dd>
 <dt><tt class="docutils literal"><span class="pre">PREFIX_DEFAULT_LOCALE</span></tt> (default: <tt class="xref docutils literal"><span class="pre">True</span></tt>)</dt>
 <dd>Whether to add the prefix for the default language
 (<tt class="docutils literal"><span class="pre">settings.LANGUAGE_CODE</span></tt>). For example, if <tt class="docutils literal"><span class="pre">LANGUAGE_CODE</span> <span class="pre">==</span> <span class="pre">'en'</span></tt> then

@@ -20,7 +20,8 @@ class LocaleURLMiddleware(object):
     Middleware that sets the language based on the request path prefix and
     strips that prefix from the path. It will also automatically redirect any
     path without a prefix, unless PREFIX_DEFAULT_LOCALE is set to True.
-    Exceptions are paths beginning with MEDIA_URL or matching any regular
+    Exceptions are paths beginning with MEDIA_URL (if
+    settings.LOCALE_INDEPENDENT_MEDIA_URL is set) or matching any regular
     expression from LOCALE_INDEPENDENT_PATHS from the project settings.
 
     For example, the path '/en/admin/' will set request.LANGUAGE_CODE to 'en'
@@ -42,7 +43,7 @@ class LocaleURLMiddleware(object):
         locale_path = utils.locale_path(path, locale)
         if locale_path != request.path_info:
             if request.META.get("QUERY_STRING", ""):
-                locale_path = "%s?%s" % (locale_path, 
+                locale_path = "%s?%s" % (locale_path,
                         request.META['QUERY_STRING'])
             return HttpResponseRedirect(locale_path)
         request.path_info = path

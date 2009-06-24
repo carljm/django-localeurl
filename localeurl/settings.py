@@ -12,6 +12,9 @@ LOCALE_INDEPENDENT_PATHS = getattr(settings, 'LOCALE_INDEPENDENT_PATHS', ())
 assert not (URL_TYPE != 'path_prefix' and LOCALE_INDEPENDENT_PATHS), \
         "LOCALE_INDEPENDENT_PATHS only used with URL_TYPE == 'path_prefix'"
 
+LOCALE_INDEPENDENT_MEDIA_URL = getattr(settings,
+        'LOCALE_INDEPENDENT_MEDIA_URL', True)
+
 PREFIX_DEFAULT_LOCALE = getattr(settings, 'PREFIX_DEFAULT_LOCALE', True)
 assert not (URL_TYPE != 'path_prefix' and PREFIX_DEFAULT_LOCALE), \
         "PREFIX_DEFAULT_LOCALE only used with URL_TYPE == 'path_prefix'"
