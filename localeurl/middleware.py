@@ -1,11 +1,8 @@
 # Copyright (c) 2008 Joost Cassee
 # Licensed under the terms of the MIT License (see LICENSE.txt)
 
-import re
-from django import http
 from django.conf import settings
 import django.core.exceptions
-from django.core import urlresolvers
 from django.http import HttpResponseRedirect
 from django.utils import translation
 import localeurl
@@ -39,7 +36,7 @@ class LocaleURLMiddleware(object):
             raise django.core.exceptions.MiddlewareNotUsed()
 
     def process_request(self, request):
-        locale, path = self.split_locale_from_request(request)
+        locale, path = utils.strip_path(request.path_info)
         locale_path = utils.locale_path(path, locale)
         if locale_path != request.path_info:
             if request.META.get("QUERY_STRING", ""):
@@ -48,7 +45,10 @@ class LocaleURLMiddleware(object):
             return HttpResponseRedirect(locale_path)
         request.path_info = path
         if not locale:
-            locale = settings.LANGUAGE_CODE
+            try:
+                locale = request.LANGUAGE_CODE
+            except AttributeError:
+                locale = settings.LANGUAGE_CODE
         translation.activate(locale)
         request.LANGUAGE_CODE = translation.get_language()
 
@@ -57,13 +57,3 @@ class LocaleURLMiddleware(object):
             response['Content-Language'] = translation.get_language()
         translation.deactivate()
         return response
-
-    def split_locale_from_request(self, request):
-        if localeurl.settings.URL_TYPE == 'domain':
-            raise AssertionError("URL_TYPE 'domain' not yet supported")
-        elif localeurl.settings.URL_TYPE == 'domain_component':
-            locale, _ = utils.strip_domain(request.get_host())
-            path_info = request.path_info
-        else:
-            locale, path_info = utils.strip_path(request.path_info)
-        return locale, path_info
