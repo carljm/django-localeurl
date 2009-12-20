@@ -1,6 +1,3 @@
-# Copyright (c) 2008 Joost Cassee
-# Licensed under the terms of the MIT License (see LICENSE.txt)
-
 from django import template
 from django.template import Node, Token, TemplateSyntaxError
 from django.template import resolve_variable, defaulttags

@@ -1,6 +1,3 @@
-# Copyright (c) 2008 Joost Cassee
-# Licensed under the terms of the MIT License (see LICENSE.txt)
-
 from django.conf import settings
 import django.core.exceptions
 from django.http import HttpResponseRedirect

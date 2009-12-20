@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2009 Joost Cassee
-# Licensed under the terms of the MIT License (see LICENSE.txt)
-
 from django.conf import settings
 from django.core import urlresolvers
 from django.utils import translation
