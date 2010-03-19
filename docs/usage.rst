@@ -120,7 +120,7 @@ This form shows a drop-down box to change the page language::
   {% load i18n %}
 
   <form id="locale_switcher" method="POST" action="{% url localeurl_change_locale %}">
-      <select name="language" onchange="$('#locale_switcher').submit()">
+      <select name="locale" onchange="$('#locale_switcher').submit()">
           {% for lang in LANGUAGES %}
               <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected="selected"{% endifequal %}>{{ lang.1 }}</option>
           {% endfor %}
