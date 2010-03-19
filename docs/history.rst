@@ -5,7 +5,7 @@ History
 Changelog
 ---------
 
-Repository:
+Release 1.4: (2010-03-19)
   * Moved localeurl settings from localeurl/__init__.py to
     localeurl/settings.py.  
   * Added ``LocaleurlSitemap`` for easier creation of multilingual
