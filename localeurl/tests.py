@@ -7,6 +7,7 @@ import localeurl
 from localeurl import middleware
 from localeurl import test_utils
 from localeurl import utils
+from localeurl.sitemaps import LocaleurlSitemap
 from localeurl.templatetags import localeurl_tags
 
 from django.core import urlresolvers
@@ -259,3 +260,33 @@ class TagsTestCase(LocaleurlTestCase):
 
         self.assertEqual('/fr/dummy/', self.render_template(
                 '{{"/nl-nl/dummy/"|chlocale:"fr"}}'))
+
+class DummyModel(object):
+    def __init__(self, num):
+        self.num = num
+
+    def get_absolute_url(self):
+        return '/dummy/%s/' % self.num
+
+class DummySitemap(LocaleurlSitemap):
+    def items(self):
+        return [DummyModel(i) for i in range(3)]
+
+class SitemapTestCase(LocaleurlTestCase):
+    def setUp(self):
+        super(SitemapTestCase, self).setUp()
+        class DummySite(object):
+            domain = 'www.example.com'
+        from django.contrib.sites.models import Site
+        self._orig_get_current = Site.objects.get_current
+        Site.objects.get_current = lambda: DummySite()
+    
+    def test_localeurl_sitemap(self):
+        sitemap = DummySitemap('fr')
+        self.assertEqual(sitemap.get_urls()[0]['location'],
+                         'http://www.example.com/fr/dummy/0/')
+
+    def tearDown(self):
+        super(SitemapTestCase, self).tearDown()
+        from django.contrib.sites.models import Site
+        Site.objects.get_current = self._orig_get_current

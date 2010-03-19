@@ -129,3 +129,40 @@ This form shows a drop-down box to change the page language::
           <input type="submit" value="Set" />
       </noscript>
   </form>
+
+Sitemaps
+========
+
+Localeurl supplies a ``LocaleurlSitemap`` class for more convenient
+creation of sitemaps that include URLs in all available languages,
+based on `this snippet`_.
+
+.. _`this snippet`: http://www.djangosnippets.org/snippets/1620/
+
+To use, just inherit your sitemap classes from
+``localeurl.sitemaps.LocaleurlSitemap`` instead of
+``django.contrib.sitemaps.Sitemap``, and instantiate one for each
+language in your sitemaps dictionary.
+
+Example
+~~~~~~~
+
+The following show how might create a multilingual sitemap::
+
+    from localeurl.sitemaps import LocaleurlSitemap
+
+    # example Sitemap
+    class AdvertisementsSitemap(LocaleurlSitemap):
+        def items(self):
+            return Advertisement.active_objects.all()
+
+    # create each section in all languages
+    sitemaps = {
+        'advertisements-sk': sitemaps.AdvertisementsSitemap('sk'),
+        'advertisements-cs': sitemaps.AdvertisementsSitemap('cs'),
+    }
+
+    # add sitemap into urls
+    urlpatterns = patterns('',
+        url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
+    )   
