@@ -1,2 +1,3 @@
+include HGREV
 include *.txt *.py
 include docs/*.rst
