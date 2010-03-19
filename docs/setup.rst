@@ -14,14 +14,11 @@ The localeurl application requires Django_ 1.0 or higher.
 .. _Django: http://www.djangoproject.com/download/
 
 
-Installation
-------------
+Setup
+-----
 
-Installation basically consists of installing the middleware and adding
-``'localeurl'`` to the installed applications list.
-
-#. Place the ``localeurl`` module in your Python path. You can put it into your
-   Django project directory or run ``python setup.py install`` from a shell.
+Setup consists of installing the middleware and adding ``'localeurl'``
+to the installed applications list.
 
 #. Add ``'localeurl.middleware.LocaleURLMiddleware'`` to
    ``settings.MIDDLEWARE_CLASSES``. It must come *before*
