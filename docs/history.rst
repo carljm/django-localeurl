@@ -33,9 +33,10 @@ Release 1.0: (2008-09-10):
 Credits
 -------
 
-localeurl is developed by `Joost Cassee`_ based on the
-work by Atli Þorbjörnsson. Contributions by Jonas Christian. Includes code
-from the `django-localize`_ project by `Artiom Diomin`_.
+localeurl was developed by `Joost Cassee`_ based on the work by Atli
+Þorbjörnsson. Contributions by Jonas Christian. Includes code from the
+`django-localize`_ project by `Artiom Diomin`_. Currently maintained
+by `Carl Meyer`_.
 
 It was partly taken from and partly inspired by discussions on the
 django-users_ and django-multilingual_ mailinglists:
@@ -51,6 +52,7 @@ The announcement of localeurl on these lists can be found here:
  * `Announcement on django-users`_
  * `Announcement on django-multilingual`_
 
+.. _`Carl Meyer`: http://www.oddbird.net/
 .. _`Joost Cassee`: http://joost.cassee.net/
 .. _`django-localize`: http://github.com/kron4eg/django-localize/tree/master
 .. _`Artiom Diomin`: http://jabber.linux.md/
