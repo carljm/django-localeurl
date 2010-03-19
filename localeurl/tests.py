@@ -125,60 +125,78 @@ class MiddlewareTestCase(LocaleurlTestCase):
         self.request_factory = test_utils.RequestFactory()
         self.middleware = middleware.LocaleURLMiddleware()
 
-    def test_process_request(self):
-        r1 = self.request_factory.get('/test/')
-        r2 = self.middleware.process_request(r1)
-        self.assertEqual(301, r2.status_code)
-        self.assertEqual('/en/test/', r2['Location'])
-
-        r1 = self.request_factory.get('/test/?somevar=someval')
-        r2 = self.middleware.process_request(r1)
-        self.assertEqual(301, r2.status_code)
-        self.assertEqual('/en/test/?somevar=someval', r2['Location'])
-
+    def test_with_locale(self):
         r1 = self.request_factory.get('/fr/test/')
         r2 = self.middleware.process_request(r1)
         self.assertEqual(None, r2)
         self.assertEqual('fr', r1.LANGUAGE_CODE)
         self.assertEqual('/test/', r1.path_info)
 
+    def test_with_sublocale(self):
         r1 = self.request_factory.get('/nl-nl/test/bla/bla/')
         r2 = self.middleware.process_request(r1)
         self.assertEqual(None, r2)
         self.assertEqual('nl-nl', r1.LANGUAGE_CODE)
         self.assertEqual('/test/bla/bla/', r1.path_info)
 
+    def test_locale_independent_url(self):
         r1 = self.request_factory.get('/test/independent/bla/bla/')
         r2 = self.middleware.process_request(r1)
         self.assertEqual(None, r2)
         self.assertEqual('en-gb', r1.LANGUAGE_CODE)
         self.assertEqual('/test/independent/bla/bla/', r1.path_info)
 
+    def test_locale_specified_on_independent_url_with_query_string(self):
         r1 = self.request_factory.get('/nl-be/test/independent/?foo=bar')
         r2 = self.middleware.process_request(r1)
         self.assertEqual(301, r2.status_code)
         self.assertEqual('/test/independent/?foo=bar', r2['Location'])
 
-    def test_process_request_no_default_prefix(self):
+class DefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
+    def setUp(self):
+        super(DefaultPrefixMiddlewareTestCase, self).setUp()
+
+    def test_no_locale(self):
+        r1 = self.request_factory.get('/test/')
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(301, r2.status_code)
+        self.assertEqual('/en/test/', r2['Location'])
+        
+    def test_with_query_string(self):
+        r1 = self.request_factory.get('/test/?somevar=someval')
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(301, r2.status_code)
+        self.assertEqual('/en/test/?somevar=someval', r2['Location'])
+
+class NoDefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
+    def setUp(self):
+        super(NoDefaultPrefixMiddlewareTestCase, self).setUp()
+        self.request_factory = test_utils.RequestFactory()
+        self.middleware = middleware.LocaleURLMiddleware()
         self.settings_manager.set(PREFIX_DEFAULT_LOCALE=False)
         reload(localeurl)
-
+        
+    def test_default_locale(self):
         r1 = self.request_factory.get('/test/foo/')
         r2 = self.middleware.process_request(r1)
         self.assertEqual(None, r2)
         self.assertEqual('en-gb', r1.LANGUAGE_CODE)
         self.assertEqual('/test/foo/', r1.path_info)
 
+    def test_default_locale_specified(self):
         r1 = self.request_factory.get('/en/test/foo/')
         r2 = self.middleware.process_request(r1)
         self.assertEqual(301, r2.status_code)
         self.assertEqual('/test/foo/', r2['Location'])
 
+    def test_alternate_locale(self):
         r1 = self.request_factory.get('/fr/test/foo/')
         r2 = self.middleware.process_request(r1)
         self.assertEqual(None, r2)
         self.assertEqual('fr', r1.LANGUAGE_CODE)
         self.assertEqual('/test/foo/', r1.path_info)
+
+
 
 
 class TagsTestCase(LocaleurlTestCase):
