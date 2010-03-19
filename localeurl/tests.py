@@ -152,6 +152,15 @@ class MiddlewareTestCase(LocaleurlTestCase):
         self.assertEqual(301, r2.status_code)
         self.assertEqual('/test/independent/?foo=bar', r2['Location'])
 
+    def test_check_accept_lang(self):
+        self.settings_manager.set(LOCALEURL_USE_ACCEPT_LANGUAGE=True)
+        reload(localeurl)
+
+        r1 = self.request_factory.get('/test/', HTTP_ACCEPT_LANGUAGE='fr, de;q=0.8')
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(301, r2.status_code)
+        self.assertEqual('/fr/test/', r2['Location'])
+
 class DefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
     def setUp(self):
         super(DefaultPrefixMiddlewareTestCase, self).setUp()
@@ -171,8 +180,6 @@ class DefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
 class NoDefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
     def setUp(self):
         super(NoDefaultPrefixMiddlewareTestCase, self).setUp()
-        self.request_factory = test_utils.RequestFactory()
-        self.middleware = middleware.LocaleURLMiddleware()
         self.settings_manager.set(PREFIX_DEFAULT_LOCALE=False)
         reload(localeurl)
         
@@ -195,8 +202,6 @@ class NoDefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
         self.assertEqual(None, r2)
         self.assertEqual('fr', r1.LANGUAGE_CODE)
         self.assertEqual('/test/foo/', r1.path_info)
-
-
 
 
 class TagsTestCase(LocaleurlTestCase):

@@ -84,3 +84,9 @@ Example::
   (``settings.LANGUAGE_CODE``). For example, if ``LANGUAGE_CODE == 'en'`` then
   the path ``/about/`` will be passed to the URL resolver unchanged and
   ``/en/about/`` will be redirected to ``/about/``.
+
+``LOCALEURL_USE_ACCEPT_LANGUAGE`` (default: ``False``)
+  Whether to check the ``Accept-Language`` header from the browser as
+  an intermediate fallback in case no locale is specified in the
+  URL. (The default behavior, preserved for backwards compatibility,
+  is to fallback directly to ``settings.LANGUAGE_CODE``).

@@ -2,6 +2,8 @@ from django.conf import settings
 import django.core.exceptions
 from django.http import HttpResponsePermanentRedirect
 from django.utils import translation
+# TODO importing undocumented function
+from django.utils.translation.trans_real import parse_accept_lang_header
 import localeurl
 from localeurl import utils
 
@@ -34,6 +36,13 @@ class LocaleURLMiddleware(object):
 
     def process_request(self, request):
         locale, path = utils.strip_path(request.path_info)
+        if localeurl.USE_ACCEPT_LANGUAGE and not locale:
+            accept_langs = filter(lambda x: x, [utils.supported_language(lang[0])
+                                                for lang in
+                                                parse_accept_lang_header(
+                        request.META.get('HTTP_ACCEPT_LANGUAGE', ''))])
+            if accept_langs:
+                locale = accept_langs[0]
         locale_path = utils.locale_path(path, locale)
         if locale_path != request.path_info:
             if request.META.get("QUERY_STRING", ""):
