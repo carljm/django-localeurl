@@ -6,6 +6,13 @@ Changelog
 ---------
 
 Repository:
+  * Added ``LocaleurlSitemap`` for easier creation of multilingual
+    sitemaps.
+  * Added ``LOCALEURL_USE_ACCEPT_LANGUAGE`` setting to check HTTP
+    Accept-Language header before resorting to
+    ``settings.LANGUAGE_CODE`` when locale is not specified in URL.
+  * Switched to 301 permanent redirects for no-locale URL redirect.
+  * Moved to `BitBucket`_ for source code hosting.
   * Added the ``change_locale`` view, contributed by Panos Laganakos.
 
 Release 1.3: (2009-04-06)
@@ -28,6 +35,7 @@ Release 1.0: (2008-09-10):
   * Added Django 1.0 or higher as a prerequisite.
   * Moved to Google Code.
 
+.. _`BitBucket`: http://www.bitbucket.org/carljm/django-localeurl/
 .. _`a blog post`: http://andialbrecht.blogspot.com/2008/10/google-code-sphinx-theme.html
 
 Credits
