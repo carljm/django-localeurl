@@ -7,7 +7,7 @@ DATABASE_NAME = ':memory:'
 
 SITE_ID = 1
 
-ROOT_URLCONF = 'localeurl.test_urls'
+ROOT_URLCONF = 'localeurl.tests.test_urls'
 
 INSTALLED_APPS = (
     'localeurl',

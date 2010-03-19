@@ -6,6 +6,8 @@ Changelog
 ---------
 
 Repository:
+  * Moved localeurl settings from localeurl/__init__.py to
+    localeurl/settings.py.  
   * Added ``LocaleurlSitemap`` for easier creation of multilingual
     sitemaps.
   * Added ``LOCALEURL_USE_ACCEPT_LANGUAGE`` setting to check HTTP

@@ -1,16 +1,16 @@
 from django.conf import settings
 from django.core import urlresolvers
 from django.core import urlresolvers
-import localeurl
+from localeurl import settings as localeurl_settings
 
 def is_locale_independent(path):
     """
     Returns whether the path is locale-independent.
     """
-    if localeurl.LOCALE_INDEPENDENT_MEDIA_URL and settings.MEDIA_URL \
+    if localeurl_settings.LOCALE_INDEPENDENT_MEDIA_URL and settings.MEDIA_URL \
             and path.startswith(settings.MEDIA_URL):
         return True
-    for regex in localeurl.LOCALE_INDEPENDENT_PATHS:
+    for regex in localeurl_settings.LOCALE_INDEPENDENT_PATHS:
         if regex.search(path):
             return True
     return False
@@ -20,7 +20,7 @@ def strip_path(path):
     Separates the locale prefix from the rest of the path. If the path does not
     begin with a locale it is returned without change.
     """
-    check = localeurl.PATH_RE.match(path)
+    check = localeurl_settings.PATH_RE.match(path)
     if check:
         path_info = check.group('path') or '/'
         if path_info.startswith('/'):
@@ -31,9 +31,9 @@ def supported_language(locale):
     """
     Returns the supported language (from settings.LANGUAGES) for the locale.
     """
-    if locale in localeurl.SUPPORTED_LOCALES:
+    if locale in localeurl_settings.SUPPORTED_LOCALES:
         return locale
-    elif locale[:2] in localeurl.SUPPORTED_LOCALES:
+    elif locale[:2] in localeurl_settings.SUPPORTED_LOCALES:
         return locale[:2]
     else:
         return None
@@ -54,7 +54,7 @@ def locale_path(path, locale=''):
         locale = supported_language(settings.LANGUAGE_CODE)
     if is_locale_independent(path):
         return path
-    elif is_default_locale(locale) and not localeurl.PREFIX_DEFAULT_LOCALE:
+    elif is_default_locale(locale) and not localeurl_settings.PREFIX_DEFAULT_LOCALE:
         return path
     else:
         return ''.join([u'/', locale, path])

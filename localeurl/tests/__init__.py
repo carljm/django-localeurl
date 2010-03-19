@@ -3,9 +3,9 @@ Tests for the localeurl application.
 """
 
 import re
-import localeurl
+from localeurl import settings as localeurl_settings
 from localeurl import middleware
-from localeurl import test_utils
+from localeurl.tests import test_utils
 from localeurl import utils
 from localeurl.sitemaps import LocaleurlSitemap
 from localeurl.templatetags import localeurl_tags
@@ -40,17 +40,17 @@ def settings_fixture(mgr):
 
 
 class LocaleurlTestCase(TestCase):
-    urls = 'localeurl.test_urls'
+    urls = 'localeurl.tests.test_urls'
 
     def setUp(self):
         self.settings_manager = test_utils.TestSettingsManager()
         settings_fixture(self.settings_manager)
-        reload(localeurl)
+        reload(localeurl_settings)
         reload(urlresolvers)
 
     def tearDown(self):
         self.settings_manager.revert()
-        reload(localeurl)
+        reload(localeurl_settings)
         reload(urlresolvers)
 
 
@@ -155,7 +155,7 @@ class MiddlewareTestCase(LocaleurlTestCase):
 
     def test_check_accept_lang(self):
         self.settings_manager.set(LOCALEURL_USE_ACCEPT_LANGUAGE=True)
-        reload(localeurl)
+        reload(localeurl_settings)
 
         r1 = self.request_factory.get('/test/', HTTP_ACCEPT_LANGUAGE='fr, de;q=0.8')
         r2 = self.middleware.process_request(r1)
@@ -182,7 +182,7 @@ class NoDefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
     def setUp(self):
         super(NoDefaultPrefixMiddlewareTestCase, self).setUp()
         self.settings_manager.set(PREFIX_DEFAULT_LOCALE=False)
-        reload(localeurl)
+        reload(localeurl_settings)
         
     def test_default_locale(self):
         r1 = self.request_factory.get('/test/foo/')
@@ -243,7 +243,7 @@ class TagsTestCase(LocaleurlTestCase):
 
     def test_locale_url_tag_no_default_prefix(self):
         self.settings_manager.set(PREFIX_DEFAULT_LOCALE=False)
-        reload(localeurl)
+        reload(localeurl_settings)
 
         self.assertEqual('/dummy/', self.render_template(
                 '{% locale_url "en-us" dummy0 %}'))
@@ -253,7 +253,7 @@ class TagsTestCase(LocaleurlTestCase):
 
     def test_chlocale_filter_no_default_prefix(self):
         self.settings_manager.set(PREFIX_DEFAULT_LOCALE=False)
-        reload(localeurl)
+        reload(localeurl_settings)
 
         self.assertEqual('/dummy/', self.render_template(
                 '{{ "/nl-nl/dummy/"|chlocale:"en-gb" }}'))
