@@ -128,12 +128,12 @@ class MiddlewareTestCase(LocaleurlTestCase):
     def test_process_request(self):
         r1 = self.request_factory.get('/test/')
         r2 = self.middleware.process_request(r1)
-        self.assertEqual(302, r2.status_code)
+        self.assertEqual(301, r2.status_code)
         self.assertEqual('/en/test/', r2['Location'])
 
         r1 = self.request_factory.get('/test/?somevar=someval')
         r2 = self.middleware.process_request(r1)
-        self.assertEqual(302, r2.status_code)
+        self.assertEqual(301, r2.status_code)
         self.assertEqual('/en/test/?somevar=someval', r2['Location'])
 
         r1 = self.request_factory.get('/fr/test/')
@@ -156,7 +156,7 @@ class MiddlewareTestCase(LocaleurlTestCase):
 
         r1 = self.request_factory.get('/nl-be/test/independent/?foo=bar')
         r2 = self.middleware.process_request(r1)
-        self.assertEqual(302, r2.status_code)
+        self.assertEqual(301, r2.status_code)
         self.assertEqual('/test/independent/?foo=bar', r2['Location'])
 
     def test_process_request_no_default_prefix(self):
@@ -171,7 +171,7 @@ class MiddlewareTestCase(LocaleurlTestCase):
 
         r1 = self.request_factory.get('/en/test/foo/')
         r2 = self.middleware.process_request(r1)
-        self.assertEqual(302, r2.status_code)
+        self.assertEqual(301, r2.status_code)
         self.assertEqual('/test/foo/', r2['Location'])
 
         r1 = self.request_factory.get('/fr/test/foo/')
