@@ -11,10 +11,9 @@ def change_locale(request):
     """
     next = request.REQUEST.get('next', None)
     if not next:
-        next = request.META.get('HTTP_REFERER', None)
+        next = urlsplit(request.META.get('HTTP_REFERER', None))[2]
     if not next:
         next = '/'
-    next = urlsplit(next).path
     _, path = utils.strip_path(next)
     if request.method == 'POST':
         locale = request.POST.get('locale', None)
