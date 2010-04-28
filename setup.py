@@ -44,4 +44,5 @@ setup(
         'Topic :: Software Development :: Localization',
     ],
     url = "http://packages.python.org/django-%s/" % app_name,
+    test_suite = 'runtests.runtests',
 )
