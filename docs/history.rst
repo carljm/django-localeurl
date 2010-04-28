@@ -5,6 +5,10 @@ History
 Changelog
 ---------
 
+Tip: (unreleased)
+  * Prevent change_locale view from stripping query params from ``next``.
+    Fixes #7. Thanks Sverre Johansen.
+
 Release 1.4: (2010-03-19)
   * Moved localeurl settings from localeurl/__init__.py to
     localeurl/settings.py.  
