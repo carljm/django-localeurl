@@ -6,6 +6,10 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Add ``localeurl_future`` template tag library to provide ``locale_url`` tag
+    that wraps the new Django ``url`` tag to allow using the new syntax and
+    avoid deprecation warnings under Django 1.3. Fixes #17. Thanks Fabian
+    Büchler for the report.
   * Account for reverse() receiving kwargs=None. Fixes #18. Thanks Alexander
     Clausen for report and tests, Joel Ryan for draft patch.
   * Prevent change_locale view from stripping query params from ``next``.
@@ -13,7 +17,7 @@ Tip: (unreleased)
 
 Release 1.4: (2010-03-19)
   * Moved localeurl settings from localeurl/__init__.py to
-    localeurl/settings.py.  
+    localeurl/settings.py.
   * Added ``LocaleurlSitemap`` for easier creation of multilingual
     sitemaps.
   * Added ``LOCALEURL_USE_ACCEPT_LANGUAGE`` setting to check HTTP

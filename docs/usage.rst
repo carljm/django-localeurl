@@ -35,6 +35,16 @@ changed. To manipulate the language on rendered URLs you can use the
 ``locale_url`` tag. This tag behaves exactly like the standard ``url`` tag,
 except you specify a language.
 
+.. note::
+
+   In Django 1.3 and later, using the ``locale_url`` tag from
+   ``localeurl_tags`` will result in a deprecation warning about changed url
+   tag syntax. To avoid this warning, ``{% load locale_url from
+   localeurl_future %}`` in your template after you ``{% load localeurl_tags
+   %}``. This also requires that you adopt the `new url tag syntax`_.
+
+.. _new url tag syntax: http://docs.djangoproject.com/en/1.3/releases/1.3/#changes-to-url-and-ssi
+
 Example
 -------
 
@@ -42,6 +52,10 @@ You can refer to a specific URL in a specified language like this::
 
   <a href="{% locale_url "de" articles.views.display id=article.id %}">Show article in German</a>
 
+If you are using Django 1.3+ and you loaded ``locale_url`` from the
+``localeurl_future`` library, you'd need quotes around the view name::
+
+  <a href="{% locale_url "de" "articles.views.display" id=article.id %}">Show article in German</a>
 
 The ``chlocale`` filter
 ~~~~~~~~~~~~~~~~~~~~~~~

@@ -2,9 +2,12 @@ from django import template
 from django.template import Node, Token, TemplateSyntaxError
 from django.template import resolve_variable, defaulttags
 from django.template.defaultfilters import stringfilter
+from django.utils.functional import wraps
+
 from localeurl import utils
 
 register = template.Library()
+
 
 
 def chlocale(url, locale):
@@ -16,8 +19,10 @@ def chlocale(url, locale):
     _, path = utils.strip_path(path)
     return utils.locale_url(path, locale)
 
+
 chlocale = stringfilter(chlocale)
 register.filter('chlocale', chlocale)
+
 
 
 def rmlocale(url):
@@ -26,11 +31,13 @@ def rmlocale(url):
     _, path = utils.strip_path(path)
     return ''.join([script_prefix, path])
 
+
 rmlocale = stringfilter(rmlocale)
 register.filter('rmlocale', rmlocale)
 
 
-def locale_url(parser, token):
+
+def locale_url(parser, token, django_url_tag):
     """
     Renders the url for the view with another locale prefix. The syntax is
     like the 'url' tag, only with a locale before the view.
@@ -45,8 +52,9 @@ def locale_url(parser, token):
         raise TemplateSyntaxError("'%s' takes at least two arguments:"
                 " the locale and a view" % bits[0])
     urltoken = Token(token.token_type, bits[0] + ' ' + ' '.join(bits[2:]))
-    urlnode = defaulttags.url(parser, urltoken)
+    urlnode = django_url_tag(parser, urltoken)
     return LocaleURLNode(bits[1], urlnode)
+
 
 class LocaleURLNode(Node):
     def __init__(self, locale, urlnode):
@@ -66,4 +74,14 @@ class LocaleURLNode(Node):
         else:
             return chlocale(path, locale)
 
-register.tag('locale_url', locale_url)
+
+
+def locale_url_wrapper(parser, token):
+    return locale_url(parser, token, django_url_tag=defaulttags.url)
+
+
+locale_url_wrapper = wraps(locale_url)(locale_url_wrapper)
+
+
+
+register.tag('locale_url', locale_url_wrapper)
