@@ -23,7 +23,9 @@ to the installed applications list.
 #. Add ``'localeurl.middleware.LocaleURLMiddleware'`` to
    ``settings.MIDDLEWARE_CLASSES``. It must come *before*
    ``'django.middleware.common.CommonMiddleware'`` or ``settings.APPEND_SLASH``
-   will not work.
+   will not work. Make sure Django's built-in ``LocaleMiddleware`` is **not**
+   in your ``MIDDLEWARE_CLASSES`` setting; ``LocaleURLMiddleware`` replaces it
+   and the two will not work together.
 
 #. Add ``'localeurl'`` to ``settings.INSTALLED_APPS``. Because the application
    needs to replace the standard ``urlresolvers.reverse`` function, it is
