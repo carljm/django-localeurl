@@ -6,6 +6,8 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Account for reverse() receiving kwargs=None. Fixes #18. Thanks Alexander
+    Clausen for report and tests, Joel Ryan for draft patch.
   * Prevent change_locale view from stripping query params from ``next``.
     Fixes #7. Thanks Sverre Johansen.
 
