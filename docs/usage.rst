@@ -179,4 +179,4 @@ The following show how might create a multilingual sitemap::
     # add sitemap into urls
     urlpatterns = patterns('',
         url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
-    )   
+    )

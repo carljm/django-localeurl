@@ -6,6 +6,10 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Added ``LOCALE_INDEPENDENT_STATIC_URL`` setting to mirror
+    ``LOCALE_INDEPENDENT_MEDIA_URL``. This setting defaults to True, so if you
+    want URLs under STATIC_URL to be locale-dependent, you will need to set it
+    to False.
   * Fixed middleware redirection when there is a script
     prefix. Fixes #10. Thanks iro for report and draft patch.
   * Added ``localeurl_future`` template tag library to provide ``locale_url``

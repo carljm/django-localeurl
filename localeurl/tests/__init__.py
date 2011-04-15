@@ -18,9 +18,6 @@ from localeurl.tests import test_utils
 
 def settings_fixture(mgr):
     mgr.set(
-        INSTALLED_APPS = (
-            'localeurl',
-        ),
         USE_I18N = True,
         LANGUAGES = (
             ('en', 'English'),
@@ -35,6 +32,8 @@ def settings_fixture(mgr):
         ),
         LOCALE_INDEPENDENT_MEDIA_URL = True,
         MEDIA_URL = '/media/',
+        LOCALE_INDEPENDENT_STATIC_URL = True,
+        STATIC_URL = '/static/',
         TEMPLATE_CONTEXT_PROCESSORS = (
             'django.core.context_processors.i18n',
         ),
@@ -66,6 +65,7 @@ class UtilsTestCase(LocaleurlTestCase):
         self.assertFalse(utils.is_locale_independent('/fr/about'))
         self.assertFalse(utils.is_locale_independent('/about'))
         self.assertTrue(utils.is_locale_independent('/media/img/logo.png'))
+        self.assertTrue(utils.is_locale_independent('/static/img/logo.png'))
         self.assertTrue(utils.is_locale_independent('/'))
         self.assertTrue(utils.is_locale_independent(
                 '/test/independent/bla/bla'))

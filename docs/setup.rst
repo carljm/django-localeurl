@@ -76,6 +76,10 @@ Example::
   Whether paths starting with ``settings.MEDIA_URL`` (if it is a path, i.e. not
   a full URL) are considered to be locale-independent.
 
+``LOCALE_INDEPENDENT_STATIC_URL`` (default: ``True``)
+  Whether paths starting with ``settings.STATIC_URL`` (if it is a path, i.e. not
+  a full URL) are considered to be locale-independent.
+
 ``PREFIX_DEFAULT_LOCALE`` (default: ``True``)
   Whether to add the prefix for the default language
   (``settings.LANGUAGE_CODE``). For example, if ``LANGUAGE_CODE == 'en'`` then

@@ -1,14 +1,18 @@
 from django.conf import settings
 from django.core import urlresolvers
-from django.core import urlresolvers
 from localeurl import settings as localeurl_settings
 
 def is_locale_independent(path):
     """
     Returns whether the path is locale-independent.
     """
-    if localeurl_settings.LOCALE_INDEPENDENT_MEDIA_URL and settings.MEDIA_URL \
-            and path.startswith(settings.MEDIA_URL):
+    if (localeurl_settings.LOCALE_INDEPENDENT_MEDIA_URL and
+        settings.MEDIA_URL and
+        path.startswith(settings.MEDIA_URL)):
+        return True
+    if (localeurl_settings.LOCALE_INDEPENDENT_STATIC_URL and
+        getattr(settings, "STATIC_URL", None) and
+        path.startswith(settings.STATIC_URL)):
         return True
     for regex in localeurl_settings.LOCALE_INDEPENDENT_PATHS:
         if regex.search(path):
