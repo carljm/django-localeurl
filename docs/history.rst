@@ -6,8 +6,8 @@ Changelog
 ---------
 
 Tip: (unreleased)
-  * Sorted language codes longest-first to avoid matching e.g. 'nl' before
-    'nl-be'. Fixes #15. Thanks Roman Barczyński for report and draft patch.
+  * Sorted language codes longest-first to avoid matching e.g. 'pt' before
+    'pt-br'. Fixes #15. Thanks Roman Barczyński for report and draft patch.
   * Added ``LOCALE_INDEPENDENT_STATIC_URL`` setting to mirror
     ``LOCALE_INDEPENDENT_MEDIA_URL``. This setting defaults to True, so if you
     want URLs under STATIC_URL to be locale-dependent, you will need to set it

@@ -2,7 +2,7 @@ import re
 from django.conf import settings
 
 SUPPORTED_LOCALES = dict(settings.LANGUAGES)
-# Sort locale codes longest-first to avoid matching e.g. 'nl' before 'nl-be'
+# Issue #15. Sort locale codes to avoid matching e.g. 'pt' before 'pt-br'
 LOCALES_RE = '|'.join(
     sorted(SUPPORTED_LOCALES.keys(), key=lambda i: len(i), reverse=True))
 PATH_RE = re.compile(r'^/(?P<locale>%s)(?P<path>.*)$' % LOCALES_RE)

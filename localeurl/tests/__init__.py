@@ -21,10 +21,11 @@ def settings_fixture(mgr):
         USE_I18N = True,
         LANGUAGES = (
             ('en', 'English'),
-            ('nl', 'Dutch'),
             ('nl-nl', 'Dutch'),
             ('nl-be', 'Flemish'),
             ('fr', 'French'),
+            ('pt', 'Portuguese'),
+            ('pt-br', 'Brazilian Portuguese'),
         ),
         LANGUAGE_CODE = 'en-gb',
         LOCALE_INDEPENDENT_PATHS = (
@@ -83,6 +84,12 @@ class UtilsTestCase(LocaleurlTestCase):
                 utils.strip_path('/nl-be/about/localeurl/'))
         self.assertEqual(('', '/de/about/localeurl/'),
                 utils.strip_path('/de/about/localeurl/'))
+
+
+    def test_strip_path_takes_longer_code_first(self):
+        # Refs issue #15.
+        self.assertEqual(('pt-br', '/about/localeurl/'),
+                utils.strip_path('/pt-br/about/localeurl/'))
 
 
     def test_supported_language(self):
@@ -254,7 +261,7 @@ class TagsTestCase(LocaleurlTestCase):
 
     def test_locale_url_tag(self):
         self.assertRaises(ValueError, self.render_template,
-                '{% locale_url "pt" dummy0 %}')
+                '{% locale_url "nl" dummy0 %}')
 
         self.assertEqual('/en/dummy/', self.render_template(
                 '{% locale_url "en-us" dummy0 %}'))
@@ -323,7 +330,7 @@ if localeurl_future is not None:
 
         def test_locale_url_tag(self):
             self.assertRaises(ValueError, self.render_template,
-                    '{% locale_url "pt" "dummy0" %}')
+                    '{% locale_url "nl" "dummy0" %}')
 
             self.assertEqual('/en/dummy/', self.render_template(
                     '{% locale_url "en-us" "dummy0" %}'))
