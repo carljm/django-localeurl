@@ -114,21 +114,21 @@ class UtilsTestCase(LocaleurlTestCase):
 
 
     def test_locale_url(self):
-        # We'd like to be able to test using settings.FORCE_SCRIPT_NAME, but
-        # the urlresolvers module caches the prefix.
-        script_name = urlresolvers.get_script_prefix()
-        self.assertEqual(script_name + 'en/about/localeurl/',
+        previous_script_prefix = urlresolvers.get_script_prefix()
+        urlresolvers.set_script_prefix("/blah/")
+        self.assertEqual('/blah/en/about/localeurl/',
                 utils.locale_url('/about/localeurl/'))
-        self.assertEqual(script_name + 'en/about/localeurl/',
+        self.assertEqual('/blah/en/about/localeurl/',
                 utils.locale_url('/about/localeurl/', 'de'))
-        self.assertEqual(script_name + 'en/about/localeurl/',
+        self.assertEqual('/blah/en/about/localeurl/',
                 utils.locale_url('/about/localeurl/', 'en'))
-        self.assertEqual(script_name + 'en/about/localeurl/',
+        self.assertEqual('/blah/en/about/localeurl/',
                 utils.locale_url('/about/localeurl/', 'en-us'))
-        self.assertEqual(script_name + 'nl-nl/about/localeurl/',
+        self.assertEqual('/blah/nl-nl/about/localeurl/',
                 utils.locale_url('/about/localeurl/', 'nl-nl'))
-        self.assertEqual(script_name + 'test/independent/bla/bla',
-                utils.locale_path('/test/independent/bla/bla', 'en'))
+        self.assertEqual('/blah/test/independent/bla/bla',
+                utils.locale_url('/test/independent/bla/bla', 'en'))
+        urlresolvers.set_script_prefix(previous_script_prefix)
 
 
 
