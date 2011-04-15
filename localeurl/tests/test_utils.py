@@ -1,13 +1,10 @@
 """
-Test settings manager, originally copied from a `Django snippet`_ by 'carljm'.
+Test utilities.
 
-.. _`Django snippet`: http://www.djangosnippets.org/snippets/1011/
 """
 
 from django.conf import settings as django_settings
 from django.core.handlers.wsgi import WSGIRequest
-from django.core.management import call_command
-from django.db.models import loading
 from django import template
 from django.test import Client
 from django.utils import encoding
@@ -20,9 +17,6 @@ class TestSettingsManager(object):
     A class which can modify some Django settings temporarily for a
     test and then revert them to their original values later.
 
-    Automatically handles resyncing the DB if INSTALLED_APPS is
-    modified.
-
     Based on the work by 'carljm':
     http://www.djangosnippets.org/snippets/1011/
     """
@@ -30,20 +24,17 @@ class TestSettingsManager(object):
         self._settings = settings
         self._original_settings = {}
 
+
     def set(self, **kwargs):
         self.set_from_dict(kwargs)
+
 
     def set_from_dict(self, settings):
         for k,v in settings.iteritems():
             self._original_settings.setdefault(k,
                     getattr(self._settings, k, NO_SETTING))
             setattr(self._settings, k, v)
-        if 'INSTALLED_APPS' in settings:
-            self.syncdb()
 
-    def syncdb(self):
-        loading.cache.loaded = False
-        call_command('syncdb', verbosity=0)
 
     def revert(self):
         for k,v in self._original_settings.iteritems():
@@ -55,10 +46,8 @@ class TestSettingsManager(object):
                     delattr(self._settings._wrapped, k)
             else:
                 setattr(self._settings, k, v)
-        if self._settings == django_settings \
-                and 'INSTALLED_APPS' in self._original_settings:
-            self.syncdb()
         self._original_settings = {}
+
 
 
 class RequestFactory(Client):
