@@ -4,9 +4,9 @@ from django.utils import translation
 from localeurl import utils
 
 def reverse(*args, **kwargs):
-    reverse_kwargs = kwargs.get('kwargs', {})
-    locale = utils.supported_language(reverse_kwargs.pop('locale',
-            translation.get_language()))
+    reverse_kwargs = kwargs.get('kwargs') or {}
+    locale = utils.supported_language(reverse_kwargs.pop(
+            'locale', translation.get_language()))
     url = django_reverse(*args, **kwargs)
     _, path = utils.strip_script_prefix(url)
     return utils.locale_url(path, locale)
