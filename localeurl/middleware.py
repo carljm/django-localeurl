@@ -43,12 +43,12 @@ class LocaleURLMiddleware(object):
                         request.META.get('HTTP_ACCEPT_LANGUAGE', ''))])
             if accept_langs:
                 locale = accept_langs[0]
-        locale_path = utils.locale_path(path, locale)
-        if locale_path != request.path_info:
+        locale_url = utils.locale_url(path, locale)
+        if locale_url != request.path_info:
             if request.META.get("QUERY_STRING", ""):
-                locale_path = "%s?%s" % (locale_path,
+                locale_url = "%s?%s" % (locale_url,
                         request.META['QUERY_STRING'])
-            return HttpResponsePermanentRedirect(locale_path)
+            return HttpResponsePermanentRedirect(locale_url)
         request.path_info = path
         if not locale:
             try:

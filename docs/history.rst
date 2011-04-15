@@ -6,13 +6,15 @@ Changelog
 ---------
 
 Tip: (unreleased)
-  * Add ``localeurl_future`` template tag library to provide ``locale_url`` tag
-    that wraps the new Django ``url`` tag to allow using the new syntax and
+  * Fixed middleware redirection when there is a script
+    prefix. Fixes #10. Thanks iro for report and draft patch.
+  * Added ``localeurl_future`` template tag library to provide ``locale_url``
+    tag that wraps the new Django ``url`` tag to allow using the new syntax and
     avoid deprecation warnings under Django 1.3. Fixes #17. Thanks Fabian
     Büchler for the report.
-  * Account for reverse() receiving kwargs=None. Fixes #18. Thanks Alexander
+  * Accounted for reverse() receiving kwargs=None. Fixes #18. Thanks Alexander
     Clausen for report and tests, Joel Ryan for draft patch.
-  * Prevent change_locale view from stripping query params from ``next``.
+  * Prevented change_locale view from stripping query params from ``next``.
     Fixes #7. Thanks Sverre Johansen.
 
 Release 1.4: (2010-03-19)

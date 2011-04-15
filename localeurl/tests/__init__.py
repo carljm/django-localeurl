@@ -170,6 +170,18 @@ class MiddlewareTestCase(LocaleurlTestCase):
         self.assertEqual('/test/independent/?foo=bar', r2['Location'])
 
 
+    def test_redirect_with_script_prefix(self):
+        previous_script_prefix = urlresolvers.get_script_prefix()
+        urlresolvers.set_script_prefix('/prefix/')
+
+        r1 = self.request_factory.get('/nl-be/test/independent/')
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(301, r2.status_code)
+        self.assertEqual('/prefix/test/independent/', r2['Location'])
+
+        urlresolvers.set_script_prefix(previous_script_prefix)
+
+
     def test_check_accept_lang(self):
         self.settings_manager.set(LOCALEURL_USE_ACCEPT_LANGUAGE=True)
         reload(localeurl_settings)
