@@ -6,6 +6,7 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Added iri_to_uri encoding of non-ASCII redirect URLs. Fixes #13.
   * Sorted language codes longest-first to avoid matching e.g. 'pt' before
     'pt-br'. Fixes #15. Thanks Roman Barczyński for report and draft patch.
   * Added ``LOCALE_INDEPENDENT_STATIC_URL`` setting to mirror

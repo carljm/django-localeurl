@@ -32,15 +32,15 @@ def runtests(*test_args):
     sys.path.insert(0, parent)
     try:
         from django.test.simple import DjangoTestSuiteRunner
-        def run_tests(test_args, verbosity, interactive, failfast):
+        def run_tests(test_args, verbosity, interactive):
             runner = DjangoTestSuiteRunner(
-                verbosity=verbosity, interactive=interactive, failfast=failfast)
+                verbosity=verbosity, interactive=interactive, failfast=False)
             return runner.run_tests(test_args)
     except ImportError:
         # for Django versions that don't have DjangoTestSuiteRunner
         from django.test.simple import run_tests
     failures = run_tests(
-        test_args, verbosity=1, interactive=True, failfast=False)
+        test_args, verbosity=1, interactive=True)
     sys.exit(failures)
 
 

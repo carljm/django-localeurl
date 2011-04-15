@@ -2,7 +2,7 @@ from django.conf import settings
 import django.core.exceptions
 from django.http import HttpResponsePermanentRedirect
 from django.utils import translation
-# TODO importing undocumented function
+from django.utils.encoding import iri_to_uri
 from django.utils.translation.trans_real import parse_accept_lang_header
 from localeurl import settings as localeurl_settings
 from localeurl import utils
@@ -49,7 +49,7 @@ class LocaleURLMiddleware(object):
             if request.META.get("QUERY_STRING", ""):
                 locale_url = "%s?%s" % (locale_url,
                         request.META['QUERY_STRING'])
-            return HttpResponsePermanentRedirect(locale_url)
+            return HttpResponsePermanentRedirect(iri_to_uri(locale_url))
         request.path_info = path
         if not locale:
             try:

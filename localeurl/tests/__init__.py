@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Tests for the localeurl application.
 """
@@ -211,6 +212,13 @@ class DefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
         r2 = self.middleware.process_request(r1)
         self.assertEqual(301, r2.status_code)
         self.assertEqual('/en/test/', r2['Location'])
+
+
+    def test_non_ascii(self):
+        r1 = self.request_factory.get('/plaît/')
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(301, r2.status_code)
+        self.assertEqual('/en/pla%C3%AEt/', r2['Location'])
 
 
     def test_with_query_string(self):
