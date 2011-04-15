@@ -10,6 +10,7 @@ if not settings.configured:
     settings_dict = dict(
         INSTALLED_APPS=(
             'localeurl',
+            'django.contrib.sites', # for sitemap test
             ),
         ROOT_URLCONF='localeurl.tests.test_urls',
         )
