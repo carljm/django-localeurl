@@ -6,6 +6,10 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Added import of ``localeurl.models`` to ``localeurl.middleware``, to ensure
+    that ``reverse`` is monkeypatched before any requests are
+    served. Fixes #5. Thanks Antti Kaihola for the report, Andrey Shipilov and
+    jefurii for fix confirmation.
   * Added iri_to_uri encoding of non-ASCII redirect URLs. Fixes #13.
   * Sorted language codes longest-first to avoid matching e.g. 'pt' before
     'pt-br'. Fixes #15. Thanks Roman Barczyński for report and draft patch.

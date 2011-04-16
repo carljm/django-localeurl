@@ -5,7 +5,8 @@ from django.utils import translation
 from django.utils.encoding import iri_to_uri
 from django.utils.translation.trans_real import parse_accept_lang_header
 from localeurl import settings as localeurl_settings
-from localeurl import utils
+# Importing models ensures that reverse() is patched soon enough. Refs #5.
+from localeurl import models, utils
 
 # Make sure the default language is in the list of supported languages
 assert utils.supported_language(settings.LANGUAGE_CODE) is not None, \
