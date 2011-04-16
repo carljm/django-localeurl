@@ -10,6 +10,7 @@ if not settings.configured:
     settings_dict = dict(
         INSTALLED_APPS=(
             'localeurl',
+            'localeurl.tests',
             'django.contrib.sites', # for sitemap test
             ),
         ROOT_URLCONF='localeurl.tests.test_urls',
@@ -27,7 +28,7 @@ if not settings.configured:
 
 def runtests(*test_args):
     if not test_args:
-        test_args = ['localeurl']
+        test_args = ['tests']
     parent = dirname(abspath(__file__))
     sys.path.insert(0, parent)
     try:
