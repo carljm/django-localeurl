@@ -31,7 +31,7 @@ def settings_fixture(mgr):
         LANGUAGE_CODE = 'en-gb',
         LOCALE_INDEPENDENT_PATHS = (
             re.compile('^/$'),
-            re.compile('^/test/independent/'),
+            '^/test/independent/',
         ),
         LOCALE_INDEPENDENT_MEDIA_URL = True,
         MEDIA_URL = '/media/',

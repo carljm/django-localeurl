@@ -6,6 +6,8 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * ``LOCALE_INDEPENDENT_PATHS`` can now be plain string regular expressions,
+    they don't have to be compiled regex objects. Fixes #9.
   * Added import of ``localeurl.models`` to ``localeurl.middleware``, to ensure
     that ``reverse`` is monkeypatched before any requests are
     served. Fixes #5. Thanks Antti Kaihola for the report, Andrey Shipilov and
