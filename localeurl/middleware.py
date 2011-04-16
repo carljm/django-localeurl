@@ -49,6 +49,7 @@ class LocaleURLMiddleware(object):
             if request.META.get("QUERY_STRING", ""):
                 locale_url = "%s?%s" % (locale_url,
                         request.META['QUERY_STRING'])
+            # @@@ iri_to_uri for Django 1.0; 1.1+ do it in HttpResp...Redirect
             return HttpResponsePermanentRedirect(iri_to_uri(locale_url))
         request.path_info = path
         if not locale:
