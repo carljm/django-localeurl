@@ -188,6 +188,11 @@ class MiddlewareTestCase(LocaleurlTestCase):
         self.assertEqual(301, r2.status_code)
         self.assertEqual('/prefix/test/independent/', r2['Location'])
 
+        # no infinite redirects
+        r3 = self.request_factory.get('/test/independent/')
+        r4 = self.middleware.process_request(r3)
+        self.assertEqual(None, r4)
+
         urlresolvers.set_script_prefix(previous_script_prefix)
 
 

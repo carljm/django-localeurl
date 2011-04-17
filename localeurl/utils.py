@@ -69,7 +69,7 @@ def locale_url(path, locale=''):
     the locale is empty settings.LANGUAGE_CODE is used.
     """
     path = locale_path(path, locale)
-    return ''.join([urlresolvers.get_script_prefix(), path[1:]])
+    return add_script_prefix(path)
 
 def strip_script_prefix(url):
     """
@@ -80,3 +80,10 @@ def strip_script_prefix(url):
             "URL must start with SCRIPT_PREFIX: %s" % url
     pos = len(urlresolvers.get_script_prefix()) - 1
     return url[:pos], url[pos:]
+
+def add_script_prefix(path):
+    """
+    Prepends the SCRIPT_PREFIX to a path.
+
+    """
+    return ''.join([urlresolvers.get_script_prefix(), path[1:]])
