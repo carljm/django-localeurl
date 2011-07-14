@@ -206,7 +206,7 @@ class MiddlewareTestCase(LocaleurlTestCase):
 
 
     def test_redirect_statuscode_not_supported(self):
-        self.settings_manager.set(LOCALE_REDIRECT_CODE=408)
+        self.settings_manager.set(LOCALE_REDIRECT_CODE=418)
         reload(localeurl_settings)
 
         r1 = self.request_factory.get('/nl-be/test/independent/?foo=bar')
