@@ -1,12 +1,12 @@
 from django.conf import settings
 import django.core.exceptions
-from django.http import HttpResponsePermanentRedirect
+from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.utils import translation
 from django.utils.encoding import iri_to_uri
 from django.utils.translation.trans_real import parse_accept_lang_header
 from localeurl import settings as localeurl_settings
 # Importing models ensures that reverse() is patched soon enough. Refs #5.
-from localeurl import models, utils
+from localeurl import utils
 
 # Make sure the default language is in the list of supported languages
 assert utils.supported_language(settings.LANGUAGE_CODE) is not None, \
@@ -51,9 +51,11 @@ class LocaleURLMiddleware(object):
                 locale_path = "%s?%s" % (locale_path,
                         request.META['QUERY_STRING'])
             locale_url = utils.add_script_prefix(locale_path)
-            redirect_class = getattr(settings,
-                                     "LANGUAGE_REDIRECT_CLASS",
-                                     HttpResponsePermanentRedirect)
+            redirect_class = {
+                301: HttpResponsePermanentRedirect,
+                302: HttpResponseRedirect,
+            }.get(getattr(localeurl_settings, "LOCALE_REDIRECT_CODE"),
+                  HttpResponsePermanentRedirect)
             # @@@ iri_to_uri for Django 1.0; 1.1+ do it in HttpResp...Redirect
             return redirect_class(iri_to_uri(locale_url))
         request.path_info = path

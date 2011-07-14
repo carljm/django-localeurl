@@ -196,6 +196,24 @@ class MiddlewareTestCase(LocaleurlTestCase):
         urlresolvers.set_script_prefix(previous_script_prefix)
 
 
+    def test_redirect_statuscode_302(self):
+        self.settings_manager.set(LOCALE_REDIRECT_CODE=302)
+        reload(localeurl_settings)
+
+        r1 = self.request_factory.get('/nl-be/test/independent/?foo=bar')
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(302, r2.status_code)
+
+
+    def test_redirect_statuscode_not_supported(self):
+        self.settings_manager.set(LOCALE_REDIRECT_CODE=408)
+        reload(localeurl_settings)
+
+        r1 = self.request_factory.get('/nl-be/test/independent/?foo=bar')
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(301, r2.status_code)
+
+
     def test_check_accept_lang(self):
         self.settings_manager.set(LOCALEURL_USE_ACCEPT_LANGUAGE=True)
         reload(localeurl_settings)
