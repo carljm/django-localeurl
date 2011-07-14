@@ -6,6 +6,8 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Added ``LOCALE_REDIRECT_PERMANENT`` setting; defaults to True, if set to
+    ``False`` 302 redirects are used rather than 301. Thanks oyvindeh.
   * ``LOCALE_INDEPENDENT_PATHS`` can now be plain string regular expressions,
     they don't have to be compiled regex objects. Fixes #9.
   * Added import of ``localeurl.models`` to ``localeurl.middleware``, to ensure
