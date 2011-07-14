@@ -51,11 +51,9 @@ class LocaleURLMiddleware(object):
                 locale_path = "%s?%s" % (locale_path,
                         request.META['QUERY_STRING'])
             locale_url = utils.add_script_prefix(locale_path)
-            redirect_class = {
-                301: HttpResponsePermanentRedirect,
-                302: HttpResponseRedirect,
-            }.get(getattr(localeurl_settings, "LOCALE_REDIRECT_CODE"),
-                  HttpResponsePermanentRedirect)
+            redirect_class = HttpResponsePermanentRedirect
+            if not localeurl_settings.LOCALE_REDIRECT_PERMANENT:
+                redirect_class = HttpResponseRedirect
             # @@@ iri_to_uri for Django 1.0; 1.1+ do it in HttpResp...Redirect
             return redirect_class(iri_to_uri(locale_url))
         request.path_info = path

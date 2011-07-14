@@ -91,3 +91,13 @@ file.
   an intermediate fallback in case no locale is specified in the
   URL. (The default behavior, preserved for backwards compatibility,
   is to fallback directly to ``settings.LANGUAGE_CODE``).
+
+``LOCALE_REDIRECT_PERMANENT`` (default: ``True``)
+  Whether to use a permanent redirect (301 status code) or temporary
+  redirect (302) when redirecting users from the no-locale version of a URL
+  to the default locale (or the locale specified in their Accept-Language
+  header if ``LOCALEURL_USE_ACCEPT_LANGUAGE`` is True).  If Accept-Language
+  is not used, these redirects will never change (as long as the default
+  locale never changes), so 301 (the default) is a fine choice.  If you use
+  Accept-Language you may want to consider switching this to ``False``, as
+  the redirect will then be dependent on the user's Accept-Language header.
