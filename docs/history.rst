@@ -5,6 +5,8 @@ History
 Changelog
 ---------
 
+Tip: (unreleased)
+
 Release 1.5: (2011-08-24)
   * Added ``LOCALE_REDIRECT_PERMANENT`` setting; defaults to True, if set to
     ``False`` 302 redirects are used rather than 301. Thanks oyvindeh.
