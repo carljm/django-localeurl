@@ -14,6 +14,7 @@ if not settings.configured:
             'django.contrib.sites', # for sitemap test
             ),
         ROOT_URLCONF='localeurl.tests.test_urls',
+        SITE_ID=1,
         )
     if VERSION >= (1, 2):
         settings_dict["DATABASES"] = {
