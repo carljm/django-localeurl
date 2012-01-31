@@ -6,6 +6,8 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Dropped support for Django 1.0 and Python 2.4.
+  * Fixed issue with non-ASCII characters in URLs. Thanks Chris Adams.
 
 Release 1.5: (2011-08-24)
   * Added ``LOCALE_REDIRECT_PERMANENT`` setting; defaults to True, if set to
