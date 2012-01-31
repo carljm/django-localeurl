@@ -247,6 +247,14 @@ class DefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
         self.assertEqual(301, r2.status_code)
         self.assertEqual('/en/test/?somevar=someval', r2['Location'])
 
+    def test_with_unescaped_query_string(self):
+        # This contains an ISO-88591-2 latin small letter C with cedilla,
+        # received in a request declared as windows-1251:
+        r1 = self.request_factory.get('/test/?somevar=Mudan\xe7as_recentes')
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(301, r2.status_code)
+        self.assertEqual('/en/test/?somevar=Mudan%E7as_recentes', r2['Location'])
+
 
 
 class NoDefaultPrefixMiddlewareTestCase(MiddlewareTestCase):

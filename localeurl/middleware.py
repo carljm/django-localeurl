@@ -47,10 +47,15 @@ class LocaleURLMiddleware(object):
                 locale = accept_langs[0]
         locale_path = utils.locale_path(path, locale)
         if locale_path != request.path_info:
-            if request.META.get("QUERY_STRING", ""):
-                locale_path = "%s?%s" % (locale_path,
-                        request.META['QUERY_STRING'])
             locale_url = utils.add_script_prefix(locale_path)
+
+            qs = request.META.get("QUERY_STRING", "")
+            if qs:
+                # Force this to remain a byte-string by encoding locale_path
+                # first to avoid Unicode tainting - downstream will need to
+                # handle the job of handling in-the-wild character encodings:
+                locale_url = "%s?%s" % (locale_path.encode("utf-8"), qs)
+
             redirect_class = HttpResponsePermanentRedirect
             if not localeurl_settings.LOCALE_REDIRECT_PERMANENT:
                 redirect_class = HttpResponseRedirect

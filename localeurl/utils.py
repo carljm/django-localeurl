@@ -84,6 +84,6 @@ def strip_script_prefix(url):
 def add_script_prefix(path):
     """
     Prepends the SCRIPT_PREFIX to a path.
-
     """
+
     return ''.join([urlresolvers.get_script_prefix(), path[1:]])
