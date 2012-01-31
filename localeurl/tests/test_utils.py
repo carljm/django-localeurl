@@ -2,6 +2,10 @@
 Test utilities.
 
 """
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
 
 from django.conf import settings as django_settings
 from django.core.handlers.wsgi import WSGIRequest
@@ -50,6 +54,26 @@ class TestSettingsManager(object):
 
 
 
+class FakePayload(object):
+    """
+    A wrapper around StringIO that restricts what can be read since data from
+    the network can't be seeked and cannot be read outside of its content
+    length. This makes sure that views can't do anything under the test client
+    that wouldn't work in Real Life.
+    """
+    def __init__(self, content):
+        self.__content = StringIO(content)
+        self.__len = len(content)
+
+    def read(self, num_bytes=None):
+        if num_bytes is None:
+            num_bytes = self.__len or 0
+        assert self.__len >= num_bytes, "Cannot read more than the available bytes from the HTTP incoming data."
+        content = self.__content.read(num_bytes)
+        self.__len -= num_bytes
+        return content
+
+
 class RequestFactory(Client):
     """
     Class that lets you create mock Request objects for use in testing.
@@ -83,6 +107,13 @@ class RequestFactory(Client):
             'SERVER_NAME': 'testserver',
             'SERVER_PORT': 80,
             'SERVER_PROTOCOL': 'HTTP/1.1',
+            'wsgi.version':      (1,0),
+            'wsgi.url_scheme':   'http',
+            'wsgi.input':        FakePayload(''),
+            'wsgi.errors':       self.errors,
+            'wsgi.multiprocess': True,
+            'wsgi.multithread':  False,
+            'wsgi.run_once':     False,
         }
         environ.update(self.defaults)
         environ.update(request)
