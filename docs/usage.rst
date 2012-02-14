@@ -15,7 +15,10 @@ Paths without locale prefix are redirected to the default locale, either from
 as ``django.middleware.locale.LocaleMiddleware``) or from
 ``settings.LANGUAGE_CODE``. So a request for ``/about/`` would be redirected to
 ``/fr/about/`` if French is the default language. (This behavior can be changed
-using ``settings.PREFIX_DEFAULT_LOCALE``.)
+using ``settings.PREFIX_DEFAULT_LOCALE``.) Determination of the default locale
+can also take into account the ``Accept-Language`` browser header (see
+``settings.LOCALURL_USE_ACCEPT_LANGUAGE``), or a previously user-selected locale
+(see ``settings.LOCALURL_USE_SESSION``, and the ``change_locale`` view below).
 
 Templates
 =========
@@ -125,6 +128,11 @@ you can use the ``localeurl_change_locale`` view to switch to a different
 language. It is designed to mimic the Django ``set_language`` `redirect view`_.
 
 .. _`redirect view`: http://docs.djangoproject.com/en/dev/topics/i18n/#the-set-language-redirect-view
+
+When ``settings.LOCALURL_USE_SESSION`` is set to ``True`` (default is
+``False``), It also records the user-selected locale to the current Django
+session. The last selected locale will then be used as the default locale when
+redirecting from paths missing a locale prefix.
 
 Example
 -------
