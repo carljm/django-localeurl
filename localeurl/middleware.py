@@ -38,13 +38,19 @@ class LocaleURLMiddleware(object):
 
     def process_request(self, request):
         locale, path = utils.strip_path(request.path_info)
-        if localeurl_settings.USE_ACCEPT_LANGUAGE and not locale:
-            accept_langs = filter(lambda x: x, [utils.supported_language(lang[0])
-                                                for lang in
-                                                parse_accept_lang_header(
-                        request.META.get('HTTP_ACCEPT_LANGUAGE', ''))])
-            if accept_langs:
-                locale = accept_langs[0]
+        if not locale:
+            if localeurl_settings.USE_SESSION:
+                slocale = request.session.get('locale')
+                if slocale and utils.supported_language(slocale):
+                    locale = slocale
+            elif localeurl_settings.USE_ACCEPT_LANGUAGE:
+                accept_lang_header = request.META.get('HTTP_ACCEPT_LANGUAGE', '')
+                header_langs = parse_accept_lang_header(accept_lang_header)
+                accept_langs = filter(lambda x: x, 
+                                            [utils.supported_language(lang[0])
+                                            for lang in header_langs])
+                if accept_langs:
+                    locale = accept_langs[0]
         locale_path = utils.locale_path(path, locale)
         if locale_path != request.path_info:
             locale_url = utils.add_script_prefix(locale_path)
