@@ -221,6 +221,17 @@ class MiddlewareTestCase(LocaleurlTestCase):
         self.assertEqual('/fr/test/', r2['Location'])
 
 
+    def test_check_session_enabled(self):
+        self.settings_manager.set(LOCALEURL_USE_SESSION=True)
+        reload(localeurl_settings)
+
+        r1 = self.request_factory.get('/test/')
+        r1.session = {'locale': 'fr'}
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(301, r2.status_code)
+        self.assertEqual('/fr/test/', r2['Location'])
+
+
 
 class DefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
     def setUp(self):
@@ -256,6 +267,19 @@ class DefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
         self.assertEqual('/en/test/?somevar=Mudan%E7as_recentes', r2['Location'])
 
 
+    def test_check_session_disabled(self):
+        self.settings_manager.set(LOCALEURL_USE_SESSION=False)
+        reload(localeurl_settings)
+
+        r1 = self.request_factory.get('/test/')
+        r1.session = {'locale': 'fr'}
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(301, r2.status_code)
+        self.assertEqual('/en/test/', r2['Location'])
+
+
+
+
 
 class NoDefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
     def setUp(self):
@@ -285,6 +309,15 @@ class NoDefaultPrefixMiddlewareTestCase(MiddlewareTestCase):
         self.assertEqual(None, r2)
         self.assertEqual('fr', r1.LANGUAGE_CODE)
         self.assertEqual('/test/foo/', r1.path_info)
+
+    def test_check_session_disabled(self):
+        self.settings_manager.set(LOCALEURL_USE_SESSION=False)
+        reload(localeurl_settings)
+
+        r1 = self.request_factory.get('/test/')
+        r1.session = {'locale': 'fr'}
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(None, r2)
 
 
 
