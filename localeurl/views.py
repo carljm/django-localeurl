@@ -2,6 +2,7 @@ from urlparse import urlsplit
 from django import http
 from django.utils.translation import check_for_language
 from localeurl import utils
+from localeurl import settings as localeurl_settings
 
 def change_locale(request):
     """
@@ -18,6 +19,8 @@ def change_locale(request):
     if request.method == 'POST':
         locale = request.POST.get('locale', None)
         if locale and check_for_language(locale):
+            if localeurl_settings.USE_SESSION:
+                request.session['locale'] = locale
             path = utils.locale_path(path, locale)
 
     response = http.HttpResponseRedirect(path)

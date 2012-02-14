@@ -476,3 +476,24 @@ class ReverseTestCase(LocaleurlTestCase):
     def test_kwargs_none(self):
         url = reverse("dummy1", args=["test"], kwargs=None)
         self.assertEqual(url, "/en/dummy/test")
+
+
+class ViewsTestCase(LocaleurlTestCase):
+
+    urls = 'localeurl.urls'
+
+    def setUp(self):
+        super(LocaleurlTestCase, self).setUp()
+        self.settings_manager = test_utils.TestSettingsManager()
+
+    def test_change_locale_check_session_enabled(self):
+        self.settings_manager.set(LOCALEURL_USE_SESSION=True)
+        reload(localeurl_settings)
+        self.client.post('/change/', data={'locale': 'de', 'next': '/foo'})
+        self.assertEqual("de", self.client.session['locale'])
+
+    def test_change_locale_check_session_disabled(self):
+        self.settings_manager.set(LOCALEURL_USE_SESSION=False)
+        reload(localeurl_settings)
+        self.client.post('/change/', data={'locale': 'de', 'next': '/foo'})
+        self.assertNotEqual("de", self.client.session.get('locale'))
