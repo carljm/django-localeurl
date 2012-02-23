@@ -17,8 +17,9 @@ as ``django.middleware.locale.LocaleMiddleware``) or from
 ``/fr/about/`` if French is the default language. (This behavior can be changed
 using ``settings.PREFIX_DEFAULT_LOCALE``.) Determination of the default locale
 can also take into account the ``Accept-Language`` browser header (see
-``settings.LOCALURL_USE_ACCEPT_LANGUAGE``), or a previously user-selected locale
-(see ``settings.LOCALURL_USE_SESSION``, and the ``change_locale`` view below).
+``settings.LOCALEURL_USE_ACCEPT_LANGUAGE``), or a previously user-selected
+locale (see ``settings.LOCALEURL_USE_SESSION``, and the ``change_locale`` view
+below).
 
 Templates
 =========

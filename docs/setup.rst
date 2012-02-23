@@ -27,7 +27,7 @@ to the installed applications list.
    your ``MIDDLEWARE_CLASSES`` setting; ``LocaleURLMiddleware`` replaces it and
    the two will not work together. It must also come after
    ``django.contrib.sessions.middleware.SessionMiddleware`` if you plan using
-   the session fallback (see ``LOCALEURL_USE_SESSION`` below). 
+   the session fallback (see ``LOCALEURL_USE_SESSION`` below).
 
 #. Add ``'localeurl'`` to ``settings.INSTALLED_APPS``. Because the application
    needs to replace the standard ``urlresolvers.reverse`` function, it is
@@ -95,21 +95,18 @@ file.
   is to fallback directly to ``settings.LANGUAGE_CODE``).
 
 ``LOCALEURL_USE_SESSION`` (default: ``False``)
-  Whether to check the availability of a user-selected locale in the Django
-  session as a fallback in case no locale is specified in the URL. If set to
-  ``True``, the locale will be saved to the session every time the
-  ``change_locale`` view is invoked, under the ``locale`` key. When used and
-  available, the session locale takes precedence over the ``Accepted-Language``
-  fallback (see ``LOCALEURL_USE_ACCEPT_LANGUAGE`` above). It's safe to change
-  the ``locale`` key in the session from any external view (from a user
-  preferences for instance), and the change will be picked up by ``locale-url``.
-  It's also possible to write a `middleware`_ to have a more
-  complicated ``locale`` setup policy if you have special needs, such as setting
-  ``locale`` from a field in the current user profile. 
 
-  Finally, it's important to understand than just following a localized link
-  such as one generated using the ``chlocale`` filter won't switch the session's
-  ``locale``: only calling the ``change_locale`` view will.
+  Whether to check for a user-selected locale in the Django session as a
+  fallback in case no locale is specified in the URL. If ``True``, the
+  ``change_locale`` view will save the chosen locale to the user's session
+  under the ``django_language`` session key. When used and available, the
+  session locale takes precedence over the ``Accept-Language`` header fallback
+  (see ``LOCALEURL_USE_ACCEPT_LANGUAGE`` above).
+
+  A localized URL still takes precedence over a locale in the user's
+  session. Following a localized link such as one generated using the
+  ``chlocale`` filter won't switch the session's ``django_language``; only the
+  ``change_locale`` view will.
 
   To use this feature, `sessions`_ must be in use, and
   ``django.contrib.sessions.middleware.SessionMiddleware`` must come *before*
