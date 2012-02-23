@@ -6,8 +6,11 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Added support for a session-stored locale fallback. Thanks Sylvain
+    Fourmanoit for report and draft patch, and Alex Marandon for adding
+    tests. Fixes #23.
   * Made language-code matching case-insensitive, per RFC. Thanks torgeilo for
-    the report.
+    the report. Fixes #32.
   * Dropped support for Django 1.0 and Python 2.4.
   * Fixed issue with non-ASCII characters in URLs. Thanks Chris Adams.
 
