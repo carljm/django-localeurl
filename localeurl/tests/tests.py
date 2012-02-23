@@ -53,13 +53,11 @@ class LocaleurlTestCase(TestCase):
         settings_fixture(self.settings_manager)
         translation.activate("en")
         reload(localeurl_settings)
-        reload(urlresolvers)
 
 
     def tearDown(self):
         self.settings_manager.revert()
         reload(localeurl_settings)
-        reload(urlresolvers)
 
 
 
