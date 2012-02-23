@@ -46,7 +46,7 @@ class LocaleURLMiddleware(object):
             if accept_langs:
                 locale = accept_langs[0]
         locale_path = utils.locale_path(path, locale)
-        if locale_path != request.path_info:
+        if locale_path != request.path_info.lower():
             locale_url = utils.add_script_prefix(locale_path)
 
             qs = request.META.get("QUERY_STRING", "")

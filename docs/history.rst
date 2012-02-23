@@ -6,6 +6,8 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Made language-code matching case-insensitive, per RFC. Thanks torgeilo for
+    the report.
   * Dropped support for Django 1.0 and Python 2.4.
   * Fixed issue with non-ASCII characters in URLs. Thanks Chris Adams.
 
