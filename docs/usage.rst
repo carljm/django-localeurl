@@ -130,7 +130,7 @@ language. It is designed to mimic the Django ``set_language`` `redirect view`_.
 
 .. _`redirect view`: http://docs.djangoproject.com/en/dev/topics/i18n/#the-set-language-redirect-view
 
-When ``settings.LOCALURL_USE_SESSION`` is set to ``True`` (default is
+When ``settings.LOCALEURL_USE_SESSION`` is set to ``True`` (default is
 ``False``), It also records the user-selected locale to the current Django
 session. The last selected locale will then be used as the default locale when
 redirecting from paths missing a locale prefix.
