@@ -20,7 +20,7 @@ def change_locale(request):
         locale = request.POST.get('locale', None)
         if locale and check_for_language(locale):
             if localeurl_settings.USE_SESSION:
-                request.session['locale'] = locale
+                request.session['django_language'] = locale
             path = utils.locale_path(path, locale)
 
     response = http.HttpResponseRedirect(path)

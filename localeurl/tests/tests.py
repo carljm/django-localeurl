@@ -224,7 +224,7 @@ class MiddlewareTestCase(LocaleurlTestCase):
         reload(localeurl_settings)
 
         r1 = self.request_factory.get('/test/')
-        r1.session = {'locale': 'fr'}
+        r1.session = {'django_language': 'fr'}
         r2 = self.middleware.process_request(r1)
         self.assertEqual(301, r2.status_code)
         self.assertEqual('/fr/test/', r2['Location'])
@@ -488,10 +488,10 @@ class ViewsTestCase(LocaleurlTestCase):
         self.settings_manager.set(LOCALEURL_USE_SESSION=True)
         reload(localeurl_settings)
         self.client.post('/change/', data={'locale': 'de', 'next': '/foo'})
-        self.assertEqual("de", self.client.session['locale'])
+        self.assertEqual("de", self.client.session['django_language'])
 
     def test_change_locale_check_session_disabled(self):
         self.settings_manager.set(LOCALEURL_USE_SESSION=False)
         reload(localeurl_settings)
         self.client.post('/change/', data={'locale': 'de', 'next': '/foo'})
-        self.assertNotEqual("de", self.client.session.get('locale'))
+        self.assertNotEqual("de", self.client.session.get('django_language'))
