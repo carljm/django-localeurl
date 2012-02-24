@@ -170,6 +170,14 @@ class MiddlewareTestCase(LocaleurlTestCase):
         self.assertEqual('/test/bla/bla/', r1.path_info)
 
 
+    def test_non_lowercase_path(self):
+        r1 = self.request_factory.get('/nl-nl/TEST/bla/bla/')
+        r2 = self.middleware.process_request(r1)
+        self.assertEqual(None, r2)
+        self.assertEqual('nl-nl', r1.LANGUAGE_CODE)
+        self.assertEqual('/TEST/bla/bla/', r1.path_info)
+
+
     def test_locale_independent_url(self):
         r1 = self.request_factory.get('/test/independent/bla/bla/')
         r2 = self.middleware.process_request(r1)

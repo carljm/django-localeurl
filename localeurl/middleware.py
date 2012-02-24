@@ -52,7 +52,9 @@ class LocaleURLMiddleware(object):
             if accept_langs:
                 locale = accept_langs[0]
         locale_path = utils.locale_path(path, locale)
-        if locale_path != request.path_info.lower():
+        # locale case might be different in the two paths, that doesn't require
+        # a redirect (besides locale they'll be identical anyway)
+        if locale_path.lower() != request.path_info.lower():
             locale_url = utils.add_script_prefix(locale_path)
 
             qs = request.META.get("QUERY_STRING", "")
