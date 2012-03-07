@@ -12,7 +12,9 @@ def change_locale(request):
     """
     next = request.REQUEST.get('next', None)
     if not next:
-        next = urlsplit(request.META.get('HTTP_REFERER', None))[2]
+        referrer = request.META.get('HTTP_REFERER', None)
+        if referrer:
+            next = urlsplit(referrer)[2]
     if not next:
         next = '/'
     _, path = utils.strip_path(next)

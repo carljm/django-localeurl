@@ -511,3 +511,7 @@ class ViewsTestCase(LocaleurlTestCase):
         reload(localeurl_settings)
         self.client.post('/change/', data={'locale': 'de', 'next': '/foo'})
         self.assertNotEqual("de", self.client.session.get('django_language'))
+
+    def test_change_without_next(self):
+        response = self.client.post('/change/', data={'locale': 'de'})
+        self.assertEqual(response.status_code, 302)
