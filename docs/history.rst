@@ -6,6 +6,7 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Don't try to parse referrer if not present. Fixes #33. Thanks Simon Luijk.
   * Added support for a session-stored locale fallback. Thanks Sylvain
     Fourmanoit for report and draft patch, and Alex Marandon for adding
     tests. Fixes #23.
