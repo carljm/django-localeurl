@@ -344,16 +344,16 @@ class TagsTestCase(LocaleurlTestCase):
 
     def test_locale_url_tag(self):
         self.assertRaises(ValueError, self.render_template,
-                '{% locale_url "nl" dummy0 %}')
+                '{% locale_url "nl" "dummy0" %}')
 
         self.assertEqual('/en/dummy/', self.render_template(
-                '{% locale_url "en-us" dummy0 %}'))
+                '{% locale_url "en-us" "dummy0" %}'))
 
         self.assertEqual('/fr/dummy/4', self.render_template(
-            '{% locale_url "fr" dummy1 test=4 %}'))
+            '{% locale_url "fr" "dummy1" test=4 %}'))
 
         self.assertEqual('/en/dummy/4', self.render_template(
-            '{% locale_url "en" dummy1 test=4 as testvar %}{{ testvar }}'))
+            '{% locale_url "en" "dummy1" test=4 as testvar %}{{ testvar }}'))
 
 
     def test_chlocale_filter(self):
@@ -380,10 +380,10 @@ class TagsTestCase(LocaleurlTestCase):
         reload(localeurl_settings)
 
         self.assertEqual('/dummy/', self.render_template(
-                '{% locale_url "en-us" dummy0 %}'))
+                '{% locale_url "en-us" "dummy0" %}'))
 
         self.assertEqual('/fr/dummy/', self.render_template(
-            '{% locale_url "fr" dummy0 %}'))
+            '{% locale_url "fr" "dummy0" %}'))
 
 
     def test_chlocale_filter_no_default_prefix(self):
@@ -395,45 +395,6 @@ class TagsTestCase(LocaleurlTestCase):
 
         self.assertEqual('/fr/dummy/', self.render_template(
                 '{{"/nl-nl/dummy/"|chlocale:"fr"}}'))
-
-try:
-    from localeurl.templatetags import localeurl_future
-except ImportError:
-    localeurl_future = None
-
-
-# @@@ use proper test skipping once Django 1.2 is minimum version
-if localeurl_future is not None:
-    class FutureTagsTestCase(LocaleurlTestCase):
-        def render_template(self, text):
-            t = test_utils.TestTemplate(text, libraries=[localeurl_future.register])
-            c = template.Context()
-            return t.render(c)
-
-
-        def test_locale_url_tag(self):
-            self.assertRaises(ValueError, self.render_template,
-                    '{% locale_url "nl" "dummy0" %}')
-
-            self.assertEqual('/en/dummy/', self.render_template(
-                    '{% locale_url "en-us" "dummy0" %}'))
-
-            self.assertEqual('/fr/dummy/4', self.render_template(
-                '{% locale_url "fr" "dummy1" test=4 %}'))
-
-            self.assertEqual('/en/dummy/4', self.render_template(
-                '{% locale_url "en" "dummy1" test=4 as testvar %}{{ testvar }}'))
-
-
-        def test_locale_url_tag_no_default_prefix(self):
-            self.settings_manager.set(PREFIX_DEFAULT_LOCALE=False)
-            reload(localeurl_settings)
-
-            self.assertEqual('/dummy/', self.render_template(
-                    '{% locale_url "en-us" "dummy0" %}'))
-
-            self.assertEqual('/fr/dummy/', self.render_template(
-                '{% locale_url "fr" "dummy0" %}'))
 
 
 

@@ -6,14 +6,17 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Deprecate ``localeurl_future`` tag library, always use new url tag syntax.
+  * Try importing ``patterns, url`` first from ``django.conf.urls``; use
+    ``django.conf.urls.defaults`` only as Django 1.3 fallback. Fixes #36.
+  * Drop support for Django 1.1 and 1.2.
   * Don't try to parse referrer if not present. Fixes #33. Thanks Simon Luijk.
-  * Added support for a session-stored locale fallback. Thanks Sylvain
-    Fourmanoit for report and draft patch, and Alex Marandon for adding
-    tests. Fixes #23.
-  * Made language-code matching case-insensitive, per RFC. Thanks torgeilo for
+  * Add support for a session-stored locale fallback. Thanks Sylvain Fourmanoit
+    for report and draft patch, and Alex Marandon for adding tests. Fixes #23.
+  * Make language-code matching case-insensitive, per RFC. Thanks torgeilo for
     the report. Fixes #32.
-  * Dropped support for Django 1.0 and Python 2.4.
-  * Fixed issue with non-ASCII characters in URLs. Thanks Chris Adams.
+  * Drop support for Django 1.0 and Python 2.4.
+  * Fix issue with non-ASCII characters in URLs. Thanks Chris Adams.
 
 Release 1.5: (2011-08-24)
   * Added ``LOCALE_REDIRECT_PERMANENT`` setting; defaults to True, if set to

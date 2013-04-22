@@ -1,8 +1,10 @@
 """
 URLconf for testing.
 """
-
-from django.conf.urls.defaults import *
+try:
+    from django.conf.urls import patterns, url
+except ImportError:
+    from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('localeurl.tests.test_urls',
      url(r'^dummy/$', 'dummy', name='dummy0'),
