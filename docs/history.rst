@@ -6,6 +6,9 @@ Changelog
 ---------
 
 Tip: unreleased
+  * Change canonical documentation links from
+    http://pythonhosted.org/django-localeurl/ to
+    http://django-localeurl.readthedocs.org
 
 Release 2.0: (2013-09-19)
   * BACKWARDS-INCOMPATIBLE: Drop support for Django 1.0 - 1.2; Python 2.4 and 2.5.

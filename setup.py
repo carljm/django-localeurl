@@ -13,7 +13,7 @@ long_description = open('docs/index.rst').read().split('split here', 1)[0] + """
 
 See the `full documentation`_.
 
-.. _`full documentation`: http://packages.python.org/django-localeurl/
+.. _`full documentation`: http://django-localeurl.readthedocs.org
 """
 
 setup(
@@ -43,6 +43,6 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development :: Localization',
     ],
-    url = "http://packages.python.org/django-%s/" % app_name,
+    url = "http://django-%s.readthedocs.org/" % app_name,
     test_suite = 'runtests.runtests',
 )
