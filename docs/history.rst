@@ -5,6 +5,8 @@ History
 Changelog
 ---------
 
+Tip: (unreleased)
+
 Release 2.0.1: (2013-09-19)
   * Change canonical documentation links from
     http://pythonhosted.org/django-localeurl/ to
