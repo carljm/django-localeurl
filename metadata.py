@@ -2,7 +2,7 @@ import subprocess
 import os.path
 
 try:
-    # don't get confused if our sdist is unzipped in a subdir of some 
+    # don't get confused if our sdist is unzipped in a subdir of some
     # other hg repo
     if os.path.isdir('.hg'):
         p = subprocess.Popen(['hg', 'parents', r'--template={rev}\n'],
@@ -13,7 +13,7 @@ try:
             fh.close()
 except (OSError, IndexError):
     pass
-    
+
 try:
     hgrev = open('HGREV').read()
 except IOError:
@@ -22,5 +22,5 @@ except IOError:
 name = 'localeurl'
 authors = 'Joost Cassee, Artiom Diomin and Carl Meyer'
 copyright_years = '2008-2010'
-version = '2.0'
+version = '2.0.post%s' % hgrev
 release = version
