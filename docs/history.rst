@@ -5,7 +5,7 @@ History
 Changelog
 ---------
 
-Tip: (unreleased)
+Release 2.0: (2013-09-19)
   * BACKWARDS-INCOMPATIBLE: Drop support for Django 1.0 - 1.2; Python 2.4 and 2.5.
   * Deprecate ``localeurl_future`` tag library, always use new url tag syntax.
   * Try importing ``patterns, url`` first from ``django.conf.urls``; use
