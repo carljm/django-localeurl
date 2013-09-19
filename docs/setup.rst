@@ -9,9 +9,10 @@ project.
 Prerequisites
 -------------
 
-The localeurl application requires Django_ 1.0 or higher.
+The localeurl application requires Django_ 1.3 or higher and Python_ 2.6 or 2.7.
 
 .. _Django: http://www.djangoproject.com/download/
+.. _Python: http://www.python.org/download/
 
 
 Setup
