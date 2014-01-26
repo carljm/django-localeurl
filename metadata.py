@@ -9,7 +9,7 @@ try:
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if not p.returncode:
             fh = open('HGREV', 'w')
-            fh.write(p.communicate()[0].splitlines()[0])
+            fh.write((p.communicate()[0].splitlines()[0] or '').decode('utf-8'))
             fh.close()
 except (OSError, IndexError):
     pass
