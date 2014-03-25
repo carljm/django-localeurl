@@ -8,25 +8,21 @@ from django.conf import settings
 
 
 if not settings.configured:
-    settings_dict = dict(
+    settings.configure(
         INSTALLED_APPS=(
             'localeurl',
             'localeurl.tests',
             'django.contrib.sites', # for sitemap test
             'django.contrib.sessions', # for USE_SESSION
-            ),
-        ROOT_URLCONF='localeurl.tests.test_urls',
-        SITE_ID=1,
-        )
-    if django.VERSION >= (1, 2):
-        settings_dict["DATABASES"] = {
+        ),
+        DATABASES={
             "default": {
                 "ENGINE": "django.db.backends.sqlite3"
-                }}
-    else:
-        settings_dict["DATABASE_ENGINE"] = "sqlite3"
-
-    settings.configure(**settings_dict)
+            }
+        },
+        ROOT_URLCONF='localeurl.tests.test_urls',
+        SITE_ID=1,
+    )
 
 
 if django.VERSION >= (1, 7):
