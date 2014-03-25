@@ -6,6 +6,7 @@ Changelog
 ---------
 
 Tip: (unreleased)
+  * Fix detection of locales with >2 letter codes. Fixes #38.
 
 Release 2.0.1: (2013-09-19)
   * Change canonical documentation links from

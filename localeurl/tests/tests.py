@@ -16,37 +16,36 @@ from localeurl.templatetags import localeurl_tags
 from localeurl.tests import test_utils
 
 
-
 def settings_fixture(mgr):
     mgr.set(
-        USE_I18N = True,
-        LANGUAGES = (
+        USE_I18N=True,
+        LANGUAGES=(
             ('en', 'English'),
             ('nl-nl', 'Dutch'),
             ('nl-be', 'Flemish'),
             ('fr', 'French'),
             ('pt', 'Portuguese'),
             ('pt-br', 'Brazilian Portuguese'),
+            ('fi', 'Finnish'),
+            ('fil', 'Filipino'),
         ),
-        LANGUAGE_CODE = 'en-gb',
-        LOCALE_INDEPENDENT_PATHS = (
+        LANGUAGE_CODE='en-gb',
+        LOCALE_INDEPENDENT_PATHS=(
             re.compile('^/$'),
             '^/test/independent/',
         ),
-        LOCALE_INDEPENDENT_MEDIA_URL = True,
-        MEDIA_URL = '/media/',
-        LOCALE_INDEPENDENT_STATIC_URL = True,
-        STATIC_URL = '/static/',
-        TEMPLATE_CONTEXT_PROCESSORS = (
+        LOCALE_INDEPENDENT_MEDIA_URL=True,
+        MEDIA_URL='/media/',
+        LOCALE_INDEPENDENT_STATIC_URL=True,
+        STATIC_URL='/static/',
+        TEMPLATE_CONTEXT_PROCESSORS=(
             'django.core.context_processors.i18n',
         ),
     )
 
 
-
 class LocaleurlTestCase(TestCase):
     urls = 'localeurl.tests.test_urls'
-
 
     def setUp(self):
         self.settings_manager = test_utils.TestSettingsManager()
@@ -54,11 +53,9 @@ class LocaleurlTestCase(TestCase):
         translation.activate("en")
         reload(localeurl_settings)
 
-
     def tearDown(self):
         self.settings_manager.revert()
         reload(localeurl_settings)
-
 
 
 class UtilsTestCase(LocaleurlTestCase):
@@ -69,41 +66,37 @@ class UtilsTestCase(LocaleurlTestCase):
         self.assertTrue(utils.is_locale_independent('/static/img/logo.png'))
         self.assertTrue(utils.is_locale_independent('/'))
         self.assertTrue(utils.is_locale_independent(
-                '/test/independent/bla/bla'))
-
+            '/test/independent/bla/bla'))
 
     def test_strip_path(self):
         self.assertEqual(('', '/'), utils.strip_path('/'))
         self.assertEqual(('', '/about/'), utils.strip_path('/about/'))
         self.assertEqual(('', '/about/localeurl/'),
-                utils.strip_path('/about/localeurl/'))
+                         utils.strip_path('/about/localeurl/'))
         self.assertEqual(('fr', '/about/localeurl/'),
-                utils.strip_path('/fr/about/localeurl/'))
+                         utils.strip_path('/fr/about/localeurl/'))
         self.assertEqual(('nl-be', '/about/localeurl/'),
-                utils.strip_path('/nl-be/about/localeurl/'))
+                         utils.strip_path('/nl-be/about/localeurl/'))
         self.assertEqual(('', '/de/about/localeurl/'),
-                utils.strip_path('/de/about/localeurl/'))
-
+                         utils.strip_path('/de/about/localeurl/'))
 
     def test_strip_path_takes_longer_code_first(self):
         # Refs issue #15.
         self.assertEqual(('pt-br', '/about/localeurl/'),
-                utils.strip_path('/pt-br/about/localeurl/'))
-
+                         utils.strip_path('/pt-br/about/localeurl/'))
 
     def test_supported_language(self):
         self.assertEqual('fr', utils.supported_language('fr'))
         self.assertEqual('nl-be', utils.supported_language('nl-be'))
         self.assertEqual('en', utils.supported_language('en-gb'))
+        self.assertEqual('fil', utils.supported_language('fil-foo'))
         self.assertEqual(None, utils.supported_language('de'))
-
 
     def test_is_default_locale(self):
         self.assertTrue(utils.is_default_locale('en'))
         self.assertFalse(utils.is_default_locale('en-gb'))
         self.assertFalse(utils.is_default_locale('fr'))
         self.assertFalse(utils.is_default_locale('de'))
-
 
     def test_locale_path(self):
         self.assertEqual('/en/about/localeurl/',
