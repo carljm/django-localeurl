@@ -30,19 +30,27 @@ if django.VERSION >= (1, 7):
 
 
 def runtests(*test_args):
-    if not test_args:
-        test_args = ['tests']
     parent = dirname(abspath(__file__))
     sys.path.insert(0, parent)
     try:
-        from django.test.simple import DjangoTestSuiteRunner
+        from django.test.runner import DiscoverRunner
+
         def run_tests(test_args, verbosity, interactive):
-            runner = DjangoTestSuiteRunner(
+            runner = DiscoverRunner(
                 verbosity=verbosity, interactive=interactive, failfast=False)
             return runner.run_tests(test_args)
     except ImportError:
-        # for Django versions that don't have DjangoTestSuiteRunner
-        from django.test.simple import run_tests
+        if not test_args:
+            test_args = ['tests']
+        try:
+            from django.test.simple import DjangoTestSuiteRunner
+
+            def run_tests(test_args, verbosity, interactive):
+                runner = DjangoTestSuiteRunner(
+                    verbosity=verbosity, interactive=interactive, failfast=False)
+                return runner.run_tests(test_args)
+        except ImportError:
+            from django.test.simple import run_tests
     failures = run_tests(
         test_args, verbosity=1, interactive=True)
     sys.exit(failures)
