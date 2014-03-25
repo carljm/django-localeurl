@@ -3,10 +3,11 @@
 from os.path import dirname, abspath
 import sys
 
+import django
 from django.conf import settings
 
+
 if not settings.configured:
-    from django import VERSION
     settings_dict = dict(
         INSTALLED_APPS=(
             'localeurl',
@@ -17,7 +18,7 @@ if not settings.configured:
         ROOT_URLCONF='localeurl.tests.test_urls',
         SITE_ID=1,
         )
-    if VERSION >= (1, 2):
+    if django.VERSION >= (1, 2):
         settings_dict["DATABASES"] = {
             "default": {
                 "ENGINE": "django.db.backends.sqlite3"
@@ -26,6 +27,10 @@ if not settings.configured:
         settings_dict["DATABASE_ENGINE"] = "sqlite3"
 
     settings.configure(**settings_dict)
+
+
+if django.VERSION >= (1, 7):
+    django.setup()
 
 
 def runtests(*test_args):
