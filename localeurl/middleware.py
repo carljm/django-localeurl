@@ -45,10 +45,11 @@ class LocaleURLMiddleware(object):
         if localeurl_settings.USE_ACCEPT_LANGUAGE and not locale:
             accept_lang_header = request.META.get('HTTP_ACCEPT_LANGUAGE', '')
             header_langs = parse_accept_lang_header(accept_lang_header)
-            accept_langs = filter(
-                None,
-                [utils.supported_language(lang[0]) for lang in header_langs]
-                )
+            accept_langs = [
+                l for l in
+                (utils.supported_language(lang[0]) for lang in header_langs)
+                if l
+            ]
             if accept_langs:
                 locale = accept_langs[0]
         locale_path = utils.locale_path(path, locale)
