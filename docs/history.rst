@@ -5,7 +5,7 @@ History
 Changelog
 ---------
 
-Tip: (unreleased)
+Release 2.0.2: (2015-01-26)
   * (Re-)Add import of models in middleware, to ensure monkeypatch of
     ``reverse`` happens soon enough. Fixes #5, again.
   * Fix detection of locales with >2 letter codes. Fixes #38.
