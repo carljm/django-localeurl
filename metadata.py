@@ -22,5 +22,5 @@ except IOError:
 name = 'localeurl'
 authors = 'Joost Cassee, Artiom Diomin and Carl Meyer'
 copyright_years = '2008-2010'
-version = '2.0.2'
+version = '2.0.2.post%s' % hgrev
 release = version
