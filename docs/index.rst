@@ -1,6 +1,17 @@
 Welcome to django-localeurl
 ===========================
 
+.. warning::
+
+   django-localeurl is currently un-maintained (so pull requests will not be
+   reviewed or merged), and its approach has been obsoleted by the introduction
+   of `locale-aware URL patterns`_ in Django itself. If you are nonetheless
+   interested in taking over maintenance of django-localeurl, please `file an
+   issue`_ to volunteer. Thank you!
+
+.. _locale-aware URL patterns: https://docs.djangoproject.com/en/1.8/topics/i18n/translation/#module-django.conf.urls.i18n
+.. _file an issue: https://bitbucket.org/carljm/django-localeurl/issues
+
 The localeurl Django_ application allows you to specify the language
 of a page in the URL.
 
